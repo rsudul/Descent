@@ -67,10 +67,9 @@ namespace ProjectSC.Gameplay.Player
             _inputController.Refresh();
 
             _lookInput = new Vector2(_inputController.LookX, _inputController.LookY);
-            _lookInput = Vector2.ClampMagnitude(_lookInput, 1.0f);
 
             _moveInput = new Vector2(_inputController.MoveX, _inputController.MoveY);
-            _moveInput = Vector2.ClampMagnitude(_moveInput, 1.0f);
+            _moveInput = _moveInput.normalized;
         }
 
         private void FeedInputToControllers()
@@ -82,7 +81,6 @@ namespace ProjectSC.Gameplay.Player
         private void UpdateControllers(float deltaTime)
         {
             _playerMovementController.UpdateLook(_playerBody, deltaTime);
-            _playerMovementController.PrepareMovement(_playerBody);
         }
 
         private void UpdateControllersPhysics(float deltaTime)
