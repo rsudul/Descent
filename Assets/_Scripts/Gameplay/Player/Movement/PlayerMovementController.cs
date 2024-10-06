@@ -9,12 +9,7 @@ namespace ProjectSC.Gameplay.Player.Movement
         private float _yawRotation = 0.0f;
         private Quaternion _localRotation = Quaternion.identity;
 
-        private float _movementFactorHorizontal = 0.0f;
-        private float _movementFactorForward = 0.0f;
-
         private Vector3 _movementDirection = Vector3.zero;
-        private Vector3 _currentVelocity = Vector3.zero;
-        private Vector3 _targetVelocity = Vector3.zero;
 
         /*
          * TODO:
@@ -55,26 +50,17 @@ namespace ProjectSC.Gameplay.Player.Movement
             transform.localRotation = Quaternion.Slerp(transform.localRotation, _localRotation, _lookSmoothness * deltaTime);
         }
 
-        public void PrepareMovement(Transform transform)
-        {
-            _movementDirection = new Vector3(_movementFactorHorizontal, 0.0f, _movementFactorForward);
-
-            _movementDirection = transform.TransformDirection(_movementDirection);
-
-            _targetVelocity = _movementDirection * _movementSpeed;
-        }
-
         public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime)
         {
-            _currentVelocity = rigidbody.velocity;
+            Vector3 currentVelocity = rigidbody.velocity;
 
-            float xVelocity = Mathf.MoveTowards(_currentVelocity.x, _targetVelocity.x, _acceleration * deltaTime);
-            float yVelocity = Mathf.MoveTowards(_currentVelocity.y, _targetVelocity.y, _acceleration * deltaTime);
-            float zVelocity = Mathf.MoveTowards(_currentVelocity.z, _targetVelocity.z, _acceleration * deltaTime);
+            Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
 
-            _currentVelocity = new Vector3(xVelocity, yVelocity, zVelocity);
+            targetVelocity = targetVelocity * _movementSpeed;
 
-            rigidbody.velocity = _currentVelocity;
+            currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, _acceleration * deltaTime);
+
+            rigidbody.velocity = currentVelocity;
         }
 
         public void SetPitchAndYaw(float pitch, float yaw)
@@ -85,8 +71,7 @@ namespace ProjectSC.Gameplay.Player.Movement
 
         public void SetMovementFactors(float moveHorizontal, float moveForward)
         {
-            _movementFactorHorizontal = moveHorizontal;
-            _movementFactorForward = moveForward;
+            _movementDirection = new Vector3(moveHorizontal, 0.0f, moveForward);
         }
     }
 }
