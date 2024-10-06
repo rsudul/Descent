@@ -1,0 +1,2 @@
+﻿Create scriptable objects for storing player movement settings
+Create an infrastructure for handling reading and applying the player movement settings
