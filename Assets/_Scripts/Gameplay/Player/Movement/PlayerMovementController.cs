@@ -1,3 +1,4 @@
+using ProjectSC.Gameplay.Player.Settings.Movement;
 using UnityEngine;
 
 namespace ProjectSC.Gameplay.Player.Movement
@@ -11,21 +12,9 @@ namespace ProjectSC.Gameplay.Player.Movement
 
         private Vector3 _movementDirection = Vector3.zero;
 
-        /*
-         * TODO:
-         * Move this to separate class, i.e. PlayerMovementSettings
-        */
-        [Header("Look")]
+        [Header("Settings")]
         [SerializeField]
-        private float _lookSensitivityX = 3.5f;
-        [SerializeField]
-        private float _lookSensitivityY = 3.5f;
-        [SerializeField]
-        private float _lookSmoothness = 64.0f;
-        [SerializeField]
-        private float _movementSpeed = 4.0f;
-        [SerializeField]
-        private float _acceleration = 1.0f;
+        private PlayerMovementSettings _movementSettings;
 
         public void Initialize(Transform transform, Rigidbody rigidbody)
         {
@@ -47,7 +36,7 @@ namespace ProjectSC.Gameplay.Player.Movement
         {
             _localRotation *= Quaternion.Euler(-_yawRotation, _pitchRotation, 0.0f);
 
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, _localRotation, _lookSmoothness * deltaTime);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, _localRotation, _movementSettings.LookSmoothness * deltaTime);
         }
 
         public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime)
@@ -56,17 +45,17 @@ namespace ProjectSC.Gameplay.Player.Movement
 
             Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
 
-            targetVelocity = targetVelocity * _movementSpeed;
+            targetVelocity = targetVelocity * _movementSettings.MovementSpeed;
 
-            currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, _acceleration * deltaTime);
+            currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, _movementSettings.Acceleration * deltaTime);
 
             rigidbody.velocity = currentVelocity;
         }
 
         public void SetPitchAndYaw(float pitch, float yaw)
         {
-            _pitchRotation = pitch * _lookSensitivityX;
-            _yawRotation = yaw * _lookSensitivityY;
+            _pitchRotation = pitch * _movementSettings.LookSensitivityX;
+            _yawRotation = yaw * _movementSettings.LookSensitivityY;
         }
 
         public void SetMovementFactors(float moveHorizontal, float moveForward)
