@@ -12,6 +12,7 @@ namespace ProjectSC.Gameplay.Player
 
         private Vector2 _lookInput = Vector2.zero;
         private Vector2 _moveInput = Vector2.zero;
+        private bool _shootInput = false;
 
         [SerializeField]
         private Transform _playerBody = null;
@@ -70,6 +71,8 @@ namespace ProjectSC.Gameplay.Player
 
             _moveInput = new Vector2(_inputController.MoveX, _inputController.MoveY);
             _moveInput = _moveInput.normalized;
+
+            _shootInput = _inputController.Shoot;
         }
 
         private void FeedInputToControllers()

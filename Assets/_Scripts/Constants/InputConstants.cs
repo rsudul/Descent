@@ -10,5 +10,11 @@ namespace ProjectSC.Constants
         public readonly static string MoveForward = "MoveForward";
 
         #endregion
+
+        #region PlayerActions
+
+        public readonly static string Shoot = "Shoot";
+
+        #endregion
     }
 }
