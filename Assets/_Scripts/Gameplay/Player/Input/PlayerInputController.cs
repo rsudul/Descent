@@ -12,11 +12,15 @@ namespace ProjectSC.Gameplay.Player.Input
         private float _moveX = 0.0f;
         private float _moveY = 0.0f;
 
+        private bool _shoot = false;
+
         public float LookX { get { return _lookX; } }
         public float LookY { get { return _lookY; } }
 
         public float MoveX { get { return _moveX; } }
         public float MoveY { get { return _moveY; } }
+
+        public bool Shoot { get { return _shoot; } }
 
         public void Refresh()
         {
@@ -25,6 +29,8 @@ namespace ProjectSC.Gameplay.Player.Input
 
             _moveX = Input.GetAxis(InputConstants.MoveHorizontal);
             _moveY = Input.GetAxis(InputConstants.MoveForward);
+
+            _shoot = Input.GetButtonDown(InputConstants.Shoot);
         }
     }
 }

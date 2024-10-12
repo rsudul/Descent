@@ -8,6 +8,8 @@ namespace ProjectSC.Gameplay.Player.Input
         float MoveX { get; }
         float MoveY { get; }
 
+        bool Shoot { get; }
+
         void Refresh();
     }
 }
