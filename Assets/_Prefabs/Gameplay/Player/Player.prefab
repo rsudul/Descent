@@ -81,11 +81,8 @@ MonoBehaviour:
   _playerBody: {fileID: 4761460170510606788}
   _rigidbody: {fileID: 5621184922152031883}
   _playerMovementController:
-    _lookSensitivityX: 3.5
-    _lookSensitivityY: 3.5
-    _lookSmoothness: 64
-    _movementSpeed: 4
-    _acceleration: 12
+    _movementSettings: {fileID: 11400000, guid: f714b7dc86c0d4643939772c8ee38f58,
+      type: 2}
 --- !u!54 &5621184922152031883
 Rigidbody:
   m_ObjectHideFlags: 0
