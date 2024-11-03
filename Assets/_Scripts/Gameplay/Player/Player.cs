@@ -1,10 +1,11 @@
+using ProjectSC.Common;
 using ProjectSC.Gameplay.Player.Input;
 using ProjectSC.Gameplay.Player.Movement;
 using UnityEngine;
 
 namespace ProjectSC.Gameplay.Player
 {
-    public class Player : MonoBehaviour
+    public class Player : Actor
     {
         private IInputController _inputController;
 
