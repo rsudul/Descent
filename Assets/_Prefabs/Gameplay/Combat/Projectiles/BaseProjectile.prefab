@@ -142,6 +142,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6733986896536466436}
+  - component: {fileID: 2639453473490678350}
   m_Layer: 0
   m_Name: BaseProjectile
   m_TagString: Untagged
@@ -165,3 +166,17 @@ Transform:
   - {fileID: 2525227107746195485}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2639453473490678350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8428330636409476340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a95288ee7e0dee45b31940164b797bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 6663659370062823170}
+  _movementSettings: {fileID: 11400000, guid: bb9719d0521102347b626a7331b7ecae, type: 2}
