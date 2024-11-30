@@ -22,15 +22,26 @@ namespace ProjectSC.Combat.Projectiles.BasicProjectile
         [SerializeField]
         private bool _actAsSolidBody = false;
 
-        private void InitializeControllers()
+        public void Initialize(Vector3 movementDirection)
+        {
+            InitializeControllers(movementDirection);
+        }
+
+        private void InitializeControllers(Vector3 movementDirection)
         {
             _movementController = new BasicProjectileMovementController();
             _movementController.Initialize(_movementSettings);
+            _movementController.PrepareMovement(movementDirection);
 
             if (_collisionController != null)
             {
                 _collisionController.Initialize(actAsSolidBody: _actAsSolidBody);
             }
+        }
+
+        public void StartMovement(float deltaTime)
+        {
+            _movementController.StartMovement(_rigidbody, deltaTime);
         }
     }
 }
