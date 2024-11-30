@@ -1,3 +1,4 @@
+using ProjectSC.Combat.Projectiles.BasicProjectile.Collisions;
 using ProjectSC.Combat.Projectiles.BasicProjectile.Movement;
 using ProjectSC.Combat.Projectiles.BasicProjectile.Settings.Movement;
 using ProjectSC.Combat.Projectiles.Common;
@@ -14,6 +15,9 @@ namespace ProjectSC.Combat.Projectiles.BasicProjectile
 
         [SerializeField]
         private BasicProjectileMovementSettings _movementSettings = null;
+
+        [SerializeField]
+        private BasicProjectileCollisionsController _collisionController = null;
 
         private void InitializeControllers()
         {

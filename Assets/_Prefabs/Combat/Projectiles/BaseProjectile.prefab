@@ -143,6 +143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6733986896536466436}
   - component: {fileID: 2639453473490678350}
+  - component: {fileID: 2634256504724142270}
   m_Layer: 0
   m_Name: BaseProjectile
   m_TagString: Untagged
@@ -180,3 +181,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 6663659370062823170}
   _movementSettings: {fileID: 11400000, guid: bb9719d0521102347b626a7331b7ecae, type: 2}
+  _collisionController: {fileID: 2634256504724142270}
+--- !u!114 &2634256504724142270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8428330636409476340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6aa5ecd57392e647aa5e87ab551313c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
