@@ -1,8 +1,8 @@
-using UnityEngine;
+using ProjectSC.Combat.Projectiles.Common;
 
 namespace ProjectSC.Combat.Projectiles.BasicProjectile.Collisions
 {
-    public class BasicProjectileCollisionsController : MonoBehaviour
+    public class BasicProjectileCollisionsController : ProjectileCollisionsController
     {
 
     }
