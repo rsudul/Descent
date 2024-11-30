@@ -1,4 +1,5 @@
 using ProjectSC.Common;
+using ProjectSC.Gameplay.Player.Combat;
 using ProjectSC.Gameplay.Player.Input;
 using ProjectSC.Gameplay.Player.Movement;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace ProjectSC.Gameplay.Player
     public class Player : Actor
     {
         private IInputController _inputController;
+        private PlayerShootingController _playerShootingController;
 
         private float _deltaTime = 0.0f;
 
@@ -34,6 +36,7 @@ namespace ProjectSC.Gameplay.Player
         private void InitializeControllers()
         {
             _inputController = new PlayerInputController();
+            _playerShootingController = new PlayerShootingController();
 
             _playerMovementController.Initialize(_playerBody, _rigidbody);
         }
