@@ -18,7 +18,7 @@ namespace ProjectSC.Combat.Projectiles.Common
                 return;
             }
 
-            _collider.isTrigger = actAsSolidBody;
+            _collider.isTrigger = !actAsSolidBody;
         }
 
         private void OnCollisionEnter(Collision collision)
