@@ -88,6 +88,11 @@ namespace ProjectSC.Gameplay.Player
         private void UpdateControllers(float deltaTime)
         {
             _playerMovementController.UpdateLook(_playerBody, deltaTime);
+
+            if (_shootInput)
+            {
+                _playerShootingController.Shoot(transform.forward, deltaTime);
+            }
         }
 
         private void UpdateControllersPhysics(float deltaTime)
