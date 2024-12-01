@@ -30,7 +30,6 @@ namespace ProjectSC.Combat.Projectiles.BasicProjectile.Movement
 
         public void StartMovement(Rigidbody rigidbody, float deltaTime)
         {
-
             rigidbody.velocity = _movementDirection * _settings.MovementSpeed * deltaTime;
         }
     }

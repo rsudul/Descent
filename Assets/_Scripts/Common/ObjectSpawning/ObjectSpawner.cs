@@ -22,8 +22,6 @@ namespace ProjectSC.Common.ObjectSpawning
 
                 objectTypeDictionary.Add(wrapper.SpawnType, wrapper.SpawnObject);
             }
-
-            Debug.Log(objectTypeDictionary.Count);
         }
 
         public static GameObject SpawnObject(ObjectSpawnType objectType)

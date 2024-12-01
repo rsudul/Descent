@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e72eb1471ef1c5149b3daf6e65a86665, type: 3}
   m_Name: DefaultBasicProjectileMovementSettings
   m_EditorClassIdentifier: 
-  <MovementSpeed>k__BackingField: 500
+  <MovementSpeed>k__BackingField: 1500
