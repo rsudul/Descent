@@ -91,7 +91,9 @@ namespace ProjectSC.Gameplay.Player
 
             if (_shootInput)
             {
-                _playerShootingController.Shoot(transform.forward, deltaTime);
+                // store projectile spawn position somewhere else
+                _playerShootingController.Shoot(transform.forward,
+                    transform.position + transform.forward * 5.0f, deltaTime);
             }
         }
 
