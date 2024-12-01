@@ -11,8 +11,6 @@ namespace ProjectSC.Gameplay.Player
         private IInputController _inputController;
         private PlayerShootingController _playerShootingController;
 
-        private float _deltaTime = 0.0f;
-
         private Vector2 _lookInput = Vector2.zero;
         private Vector2 _moveInput = Vector2.zero;
         private bool _shootInput = false;
@@ -93,7 +91,7 @@ namespace ProjectSC.Gameplay.Player
             {
                 // store projectile spawn position somewhere else
                 _playerShootingController.Shoot(transform.forward,
-                    transform.position + transform.forward * 5.0f, deltaTime);
+                    transform.position + transform.forward * 0.5f, deltaTime);
             }
         }
 

@@ -19,7 +19,7 @@ namespace ProjectSC.Combat.Projectiles.BasicProjectile
         [Header("Collisions")]
         [SerializeField]
         private BasicProjectileCollisionsController _collisionController = null;
-        [SerializeField]
+        [SerializeField, Tooltip("If set to false, the object will pass through other objects.")]
         private bool _actAsSolidBody = false;
 
         public void Initialize(Vector3 movementDirection)
