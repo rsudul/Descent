@@ -35,5 +35,15 @@ namespace ProjectSC.Common.ObjectSpawning
 
             return Instantiate(objectTypeDictionary[objectType]);
         }
+
+        public static GameObject SpawnObjectAtPosition(ObjectSpawnType objectType, Vector3 spawnPosition)
+        {
+            if (!objectTypeDictionary.ContainsKey(objectType))
+            {
+                return null;
+            }
+
+            return Instantiate(objectTypeDictionary[objectType], spawnPosition, Quaternion.identity);
+        }
     }
 }
