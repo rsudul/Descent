@@ -12,3 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d505a5374fa2d264db8dc0cbaa69570a, type: 3}
   m_Name: DefaultPlayerMovementSettings
   m_EditorClassIdentifier: 
+  <LookSensitivityX>k__BackingField: 3.5
+  <LookSensitivityY>k__BackingField: 3.5
+  <LookSmoothness>k__BackingField: 64
+  <MovementSpeed>k__BackingField: 10
+  <Acceleration>k__BackingField: 1.5
+  <AccelerationForMovementInOppositeDirection>k__BackingField: 6
+  <Decceleration>k__BackingField: 2.5

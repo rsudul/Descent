@@ -11,5 +11,7 @@ namespace ProjectSC.Gameplay.Player.Settings.Movement
 
         [field: SerializeField, Header("Movement")] public float MovementSpeed { get; private set; } = 4.0f;
         [field: SerializeField] public float Acceleration { get; private set; } = 12.0f;
+        [field: SerializeField] public float AccelerationForMovementInOppositeDirection { get; private set; } = 9.0f;
+        [field: SerializeField] public float Decceleration { get; private set; } = 4.5f;
     }
 }
