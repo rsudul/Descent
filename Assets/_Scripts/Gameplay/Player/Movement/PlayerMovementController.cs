@@ -47,7 +47,41 @@ namespace ProjectSC.Gameplay.Player.Movement
 
             targetVelocity = targetVelocity * _movementSettings.MovementSpeed;
 
-            currentVelocity = Vector3.MoveTowards(currentVelocity, targetVelocity, _movementSettings.Acceleration * deltaTime);
+            float speedChangeX = _movementSettings.Acceleration;
+            float speedChangeY = _movementSettings.Acceleration;
+            float speedChangeZ = _movementSettings.Acceleration;
+
+            Vector3 relativeCurrentVelocity = transform.InverseTransformDirection(currentVelocity);
+            Vector3 relativeTargetVelocity = transform.InverseTransformDirection(targetVelocity);
+
+            if (relativeTargetVelocity.x == 0.0f)
+            {
+                speedChangeX = _movementSettings.Decceleration;
+            }
+            else
+            {
+                if (Mathf.Sign(relativeCurrentVelocity.x) != Mathf.Sign(relativeTargetVelocity.x))
+                {
+                    speedChangeX = _movementSettings.AccelerationForMovementInOppositeDirection;
+                }
+            }
+            if (relativeTargetVelocity.z == 0.0f)
+            {
+                speedChangeZ = _movementSettings.Decceleration;
+            }
+            else
+            {
+                if (Mathf.Sign(relativeCurrentVelocity.z) != Mathf.Sign(relativeTargetVelocity.z))
+                {
+                    speedChangeZ = _movementSettings.AccelerationForMovementInOppositeDirection;
+                }
+            }
+
+            relativeCurrentVelocity.x = Mathf.Lerp(relativeCurrentVelocity.x, relativeTargetVelocity.x, speedChangeX * deltaTime);
+            relativeCurrentVelocity.y = Mathf.Lerp(relativeCurrentVelocity.y, relativeTargetVelocity.y, speedChangeY * deltaTime);
+            relativeCurrentVelocity.z = Mathf.Lerp(relativeCurrentVelocity.z, relativeTargetVelocity.z, speedChangeZ * deltaTime);
+
+            currentVelocity = transform.TransformDirection(relativeCurrentVelocity);
 
             rigidbody.velocity = currentVelocity;
         }
