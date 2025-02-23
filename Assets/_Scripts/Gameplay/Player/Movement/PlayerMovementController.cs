@@ -34,9 +34,22 @@ namespace ProjectSC.Gameplay.Player.Movement
 
         public void UpdateLook(Transform transform, float deltaTime)
         {
+            Quaternion currentLocalRotation = transform.localRotation;
+
             _localRotation *= Quaternion.Euler(-_yawRotation, _pitchRotation, 0.0f);
 
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, _localRotation, _movementSettings.LookSmoothness * deltaTime);
+            currentLocalRotation = Quaternion.Slerp(transform.localRotation, _localRotation, _movementSettings.LookSmoothness * deltaTime);
+
+            transform.localRotation = currentLocalRotation;
+
+            if (_yawRotation == 0.0f && _pitchRotation == 0.0f)
+            {
+                transform.localRotation = Quaternion.Slerp(transform.localRotation,
+                    Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, 0.0f),
+                    _movementSettings.RollAxisResetSpeed * deltaTime);
+            }
+
+            _localRotation = transform.localRotation;
         }
 
         public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime)
