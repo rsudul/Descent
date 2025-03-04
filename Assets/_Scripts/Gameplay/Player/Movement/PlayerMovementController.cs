@@ -1,4 +1,5 @@
 using ProjectSC.Gameplay.Player.Settings.Movement;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjectSC.Gameplay.Player.Movement
@@ -8,7 +9,10 @@ namespace ProjectSC.Gameplay.Player.Movement
     {
         private float _pitchRotation = 0.0f;
         private float _yawRotation = 0.0f;
-        private Quaternion _localRotation = Quaternion.identity;
+        private Quaternion _rotation = Quaternion.identity;
+        private bool _beginLookingAround = false;
+        private bool _lastBeginLookingAround = false;
+        private bool _doneLookingAround = false;
 
         private Vector3 _movementDirection = Vector3.zero;
 
@@ -18,7 +22,7 @@ namespace ProjectSC.Gameplay.Player.Movement
 
         public void Initialize(Transform transform, Rigidbody rigidbody)
         {
-            _localRotation = transform.localRotation;
+            _rotation = transform.rotation;
             InitializeRigidbody(rigidbody);
         }
 
@@ -34,22 +38,44 @@ namespace ProjectSC.Gameplay.Player.Movement
 
         public void UpdateLook(Transform transform, float deltaTime)
         {
-            Quaternion currentLocalRotation = transform.localRotation;
-
-            _localRotation *= Quaternion.Euler(-_yawRotation, _pitchRotation, 0.0f);
-
-            currentLocalRotation = Quaternion.Slerp(transform.localRotation, _localRotation, _movementSettings.LookSmoothness * deltaTime);
-
-            transform.localRotation = currentLocalRotation;
-
-            if (_yawRotation == 0.0f && _pitchRotation == 0.0f)
+            if (!_beginLookingAround)
             {
-                transform.localRotation = Quaternion.Slerp(transform.localRotation,
-                    Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, 0.0f),
-                    _movementSettings.RollAxisResetSpeed * deltaTime);
+                _beginLookingAround = _yawRotation != 0.0f || _pitchRotation != 0.0f;
             }
 
-            _localRotation = transform.localRotation;
+            if (_beginLookingAround)
+            {
+                if (_doneLookingAround)
+                {
+                    _doneLookingAround = false;
+                }
+
+                if (!_lastBeginLookingAround)
+                {
+                    _rotation = transform.rotation;
+                }
+
+                _rotation *= Quaternion.AngleAxis(-_yawRotation, Vector3.right);
+                _rotation *= Quaternion.AngleAxis(_pitchRotation, Vector3.up);
+
+                transform.rotation = Quaternion.Lerp(transform.rotation, _rotation, _movementSettings.LookSmoothness * deltaTime);
+
+                float remainingAngle = Quaternion.Angle(transform.rotation, _rotation);
+                if (remainingAngle == 0.0f)
+                {
+                    Debug.Log("done looking around");
+                    _beginLookingAround = false;
+                    _doneLookingAround = true;
+                }
+            }
+
+            if (_doneLookingAround)
+            {
+                StabilizeRollAxis(transform, deltaTime, out bool axisStabilized);
+                _doneLookingAround = !axisStabilized;
+            }
+
+            _lastBeginLookingAround = _beginLookingAround;
         }
 
         public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime)
@@ -108,6 +134,38 @@ namespace ProjectSC.Gameplay.Player.Movement
         public void SetMovementFactors(float moveHorizontal, float moveForward)
         {
             _movementDirection = new Vector3(moveHorizontal, 0.0f, moveForward);
+        }
+
+        private void StabilizeRollAxis(Transform transform, float deltaTime, out bool axisStabilized)
+        {
+            axisStabilized = false;
+
+            Vector3 nearestWorldAxis = NearestWorldAxis(transform.up);
+
+            Quaternion targetRotation = Quaternion.LookRotation(transform.forward, nearestWorldAxis);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime);
+
+            axisStabilized = Quaternion.Angle(transform.rotation, targetRotation) == 0.0f;
+        }
+
+        private Vector3 NearestWorldAxis(Vector3 vector)
+        {
+            List<Vector3> worldVectors = new List<Vector3>() { Vector3.up, Vector3.down, Vector3.left,
+                    Vector3.right, Vector3.back, Vector3.forward };
+            float dotProduct = -Mathf.Infinity;
+            Vector3 worldVectorToAlignWith = Vector3.zero;
+
+            foreach (Vector3 worldVector in worldVectors)
+            {
+                float tempDotProduct = Vector3.Dot(vector, worldVector);
+                if (tempDotProduct > dotProduct)
+                {
+                    dotProduct = tempDotProduct;
+                    worldVectorToAlignWith = worldVector;
+                }
+            }
+
+            return worldVectorToAlignWith;
         }
     }
 }
