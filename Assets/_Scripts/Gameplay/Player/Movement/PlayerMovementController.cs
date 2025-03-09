@@ -36,7 +36,7 @@ namespace ProjectSC.Gameplay.Player.Movement
             rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         }
 
-        public void UpdateLook(Transform transform, float deltaTime)
+        public void UpdateLook(Transform transform, Rigidbody rigidbody, float deltaTime)
         {
             if (!_beginLookingAround)
             {
@@ -52,15 +52,15 @@ namespace ProjectSC.Gameplay.Player.Movement
 
                 if (!_lastBeginLookingAround)
                 {
-                    _rotation = transform.rotation;
+                    _rotation = rigidbody.rotation;
                 }
 
                 _rotation *= Quaternion.AngleAxis(-_yawRotation, Vector3.right);
                 _rotation *= Quaternion.AngleAxis(_pitchRotation, Vector3.up);
 
-                transform.rotation = Quaternion.Lerp(transform.rotation, _rotation, _movementSettings.LookSmoothness * deltaTime);
+                rigidbody.MoveRotation(Quaternion.Lerp(rigidbody.rotation, _rotation, _movementSettings.LookSmoothness * deltaTime));
 
-                float remainingAngle = Quaternion.Angle(transform.rotation, _rotation);
+                float remainingAngle = Quaternion.Angle(rigidbody.rotation, _rotation);
                 if (remainingAngle == 0.0f)
                 {
                     Debug.Log("done looking around");
@@ -71,7 +71,7 @@ namespace ProjectSC.Gameplay.Player.Movement
 
             if (_doneLookingAround)
             {
-                StabilizeRollAxis(transform, deltaTime, out bool axisStabilized);
+                StabilizeRollAxis(transform, rigidbody, deltaTime, out bool axisStabilized);
                 _doneLookingAround = !axisStabilized;
             }
 
@@ -136,16 +136,16 @@ namespace ProjectSC.Gameplay.Player.Movement
             _movementDirection = new Vector3(moveHorizontal, 0.0f, moveForward);
         }
 
-        private void StabilizeRollAxis(Transform transform, float deltaTime, out bool axisStabilized)
+        private void StabilizeRollAxis(Transform transform, Rigidbody rigidbody, float deltaTime, out bool axisStabilized)
         {
             axisStabilized = false;
 
             Vector3 nearestWorldAxis = NearestWorldAxis(transform.up);
 
             Quaternion targetRotation = Quaternion.LookRotation(transform.forward, nearestWorldAxis);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime);
+            rigidbody.MoveRotation(Quaternion.Slerp(rigidbody.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime));
 
-            axisStabilized = Quaternion.Angle(transform.rotation, targetRotation) == 0.0f;
+            axisStabilized = Quaternion.Angle(rigidbody.rotation, targetRotation) == 0.0f;
         }
 
         private Vector3 NearestWorldAxis(Vector3 vector)

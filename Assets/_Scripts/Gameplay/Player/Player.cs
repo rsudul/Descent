@@ -85,7 +85,7 @@ namespace ProjectSC.Gameplay.Player
 
         private void UpdateControllers(float deltaTime)
         {
-            _playerMovementController.UpdateLook(_playerBody, deltaTime);
+            _playerMovementController.UpdateLook(_playerBody, _rigidbody, deltaTime);
 
             if (_shootInput)
             {
