@@ -63,7 +63,6 @@ namespace ProjectSC.Gameplay.Player.Movement
                 float remainingAngle = Quaternion.Angle(rigidbody.rotation, _rotation);
                 if (remainingAngle == 0.0f)
                 {
-                    Debug.Log("done looking around");
                     _beginLookingAround = false;
                     _doneLookingAround = true;
                 }
