@@ -4,6 +4,7 @@ namespace ProjectSC.Gameplay.Player.Input
     {
         float LookX { get; }
         float LookY { get; }
+        float Banking { get; }
 
         float MoveX { get; }
         float MoveY { get; }

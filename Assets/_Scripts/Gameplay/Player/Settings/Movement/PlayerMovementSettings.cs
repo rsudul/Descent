@@ -7,6 +7,7 @@ namespace ProjectSC.Gameplay.Player.Settings.Movement
     {
         [field: SerializeField, Header("Look")] public float LookSensitivityX { get; private set; } = 3.5f;
         [field: SerializeField] public float LookSensitivityY { get; private set; } =  3.5f;
+        [field: SerializeField] public float BankingSensitivity { get; private set; } = 3.5f;
         [field: SerializeField] public float LookSmoothness { get; private set; } = 64.0f;
         [field: SerializeField] public float RollAxisResetSpeed { get; private set; } = 2.0f;
 
