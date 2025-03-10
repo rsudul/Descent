@@ -9,6 +9,7 @@ namespace ProjectSC.Gameplay.Player.Movement
     {
         private float _pitchRotation = 0.0f;
         private float _yawRotation = 0.0f;
+        private float _rollRotation = 0.0f;
         private Quaternion _rotation = Quaternion.identity;
         private bool _beginLookingAround = false;
         private bool _lastBeginLookingAround = false;
@@ -40,7 +41,7 @@ namespace ProjectSC.Gameplay.Player.Movement
         {
             if (!_beginLookingAround)
             {
-                _beginLookingAround = _yawRotation != 0.0f || _pitchRotation != 0.0f;
+                _beginLookingAround = _yawRotation != 0.0f || _pitchRotation != 0.0f || _rollRotation != 0.0f;
             }
 
             if (_beginLookingAround)
@@ -57,6 +58,7 @@ namespace ProjectSC.Gameplay.Player.Movement
 
                 _rotation *= Quaternion.AngleAxis(-_yawRotation, Vector3.right);
                 _rotation *= Quaternion.AngleAxis(_pitchRotation, Vector3.up);
+                _rotation *= Quaternion.AngleAxis(_rollRotation, Vector3.forward);
 
                 rigidbody.MoveRotation(Quaternion.Lerp(rigidbody.rotation, _rotation, _movementSettings.LookSmoothness * deltaTime));
 
@@ -124,10 +126,11 @@ namespace ProjectSC.Gameplay.Player.Movement
             rigidbody.velocity = currentVelocity;
         }
 
-        public void SetPitchAndYaw(float pitch, float yaw)
+        public void SetPitchYawAndRoll(float pitch, float yaw, float roll)
         {
             _pitchRotation = pitch * _movementSettings.LookSensitivityX;
             _yawRotation = yaw * _movementSettings.LookSensitivityY;
+            _rollRotation = roll * _movementSettings.BankingSensitivity;
         }
 
         public void SetMovementFactors(float moveHorizontal, float moveForward)
@@ -142,7 +145,7 @@ namespace ProjectSC.Gameplay.Player.Movement
             Vector3 nearestWorldAxis = NearestWorldAxis(transform.up);
 
             Quaternion targetRotation = Quaternion.LookRotation(transform.forward, nearestWorldAxis);
-            rigidbody.MoveRotation(Quaternion.Slerp(rigidbody.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime));
+            rigidbody.MoveRotation(Quaternion.Lerp(rigidbody.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime));
 
             axisStabilized = Quaternion.Angle(rigidbody.rotation, targetRotation) == 0.0f;
         }

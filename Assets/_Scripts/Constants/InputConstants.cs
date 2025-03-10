@@ -6,6 +6,7 @@ namespace ProjectSC.Constants
 
         public readonly static string LookHorizontal = "LookHorizontal";
         public readonly static string LookVertical = "LookVertical";
+        public readonly static string Banking = "Banking";
         public readonly static string MoveHorizontal = "MoveHorizontal";
         public readonly static string MoveForward = "MoveForward";
 

@@ -12,6 +12,7 @@ namespace ProjectSC.Gameplay.Player
         private PlayerShootingController _playerShootingController;
 
         private Vector2 _lookInput = Vector2.zero;
+        private float _bankInput = 0.0f;
         private Vector2 _moveInput = Vector2.zero;
         private bool _shootInput = false;
 
@@ -70,6 +71,7 @@ namespace ProjectSC.Gameplay.Player
             _inputController.Refresh();
 
             _lookInput = new Vector2(_inputController.LookX, _inputController.LookY);
+            _bankInput = _inputController.Banking;
 
             _moveInput = new Vector2(_inputController.MoveX, _inputController.MoveY);
             _moveInput = _moveInput.normalized;
@@ -79,7 +81,7 @@ namespace ProjectSC.Gameplay.Player
 
         private void FeedInputToControllers()
         {
-            _playerMovementController.SetPitchAndYaw(_lookInput.x, _lookInput.y);
+            _playerMovementController.SetPitchYawAndRoll(_lookInput.x, _lookInput.y, _bankInput);
             _playerMovementController.SetMovementFactors(_moveInput.x, _moveInput.y);
         }
 

@@ -8,6 +8,7 @@ namespace ProjectSC.Gameplay.Player.Input
     {
         private float _lookX = 0.0f;
         private float _lookY = 0.0f;
+        private float _banking = 0.0f;
 
         private float _moveX = 0.0f;
         private float _moveY = 0.0f;
@@ -16,6 +17,7 @@ namespace ProjectSC.Gameplay.Player.Input
 
         public float LookX { get { return _lookX; } }
         public float LookY { get { return _lookY; } }
+        public float Banking { get { return _banking; } }
 
         public float MoveX { get { return _moveX; } }
         public float MoveY { get { return _moveY; } }
@@ -26,6 +28,7 @@ namespace ProjectSC.Gameplay.Player.Input
         {
             _lookX = Input.GetAxis(InputConstants.LookHorizontal);
             _lookY = Input.GetAxis(InputConstants.LookVertical);
+            _banking = Input.GetAxis(InputConstants.Banking);
 
             _moveX = Input.GetAxis(InputConstants.MoveHorizontal);
             _moveY = Input.GetAxis(InputConstants.MoveForward);
