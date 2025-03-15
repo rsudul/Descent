@@ -26,10 +26,16 @@ namespace ProjectSC.Gameplay.Player
 
         private void Awake()
         {
+            Initialize();
             InitializeControllers();
 
             // this should be put somewhere else
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
         }
 
         private void InitializeControllers()
