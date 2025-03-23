@@ -2,6 +2,7 @@ using ProjectSC.Common;
 using ProjectSC.Gameplay.Player.Combat;
 using ProjectSC.Gameplay.Player.Input;
 using ProjectSC.Gameplay.Player.Movement;
+using ProjectSC.Saving;
 using UnityEngine;
 
 namespace ProjectSC.Gameplay.Player
@@ -53,6 +54,14 @@ namespace ProjectSC.Gameplay.Player
             GetInput();
             FeedInputToControllers();
             UpdateControllers(deltaTime);
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.F5))
+            {
+                SaveSystem.Save();
+            } else if (UnityEngine.Input.GetKeyDown(KeyCode.F7))
+            {
+                SaveSystem.Load();
+            }
         }
 
         private void FixedUpdate()

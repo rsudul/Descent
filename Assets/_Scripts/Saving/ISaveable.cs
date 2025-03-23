@@ -1,7 +1,9 @@
+using ProjectSC.Saving.SaveData;
+
 namespace ProjectSC.Saving
 {
     public interface ISaveable
     {
-        void Save();
+        SaveData.SaveData Save();
     }
 }
