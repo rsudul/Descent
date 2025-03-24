@@ -1,8 +1,8 @@
-namespace ProjectSC.Saving
+namespace ProjectSC.SaveSystem
 {
     public class SaveSystemOperationResult
     {
-        public bool Successfull { get; set; }
+        public bool Successful { get; set; }
         public string Exception { get; set; }
     }
 }

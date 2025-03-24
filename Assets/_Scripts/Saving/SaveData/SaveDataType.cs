@@ -1,4 +1,4 @@
-namespace ProjectSC.Saving.SaveData
+namespace ProjectSC.SaveSystem
 {
     public enum SaveDataType
     {

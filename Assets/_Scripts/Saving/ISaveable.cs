@@ -1,9 +1,8 @@
-using ProjectSC.Saving.SaveData;
-
-namespace ProjectSC.Saving
+namespace ProjectSC.SaveSystem
 {
     public interface ISaveable
     {
-        SaveData.SaveData Save();
+        SaveData Save();
+        void Load(SaveData saveData);
     }
 }

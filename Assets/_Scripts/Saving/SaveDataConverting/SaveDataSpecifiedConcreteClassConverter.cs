@@ -2,13 +2,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 
-namespace ProjectSC.Saving.SaveDataConverting
+namespace ProjectSC.SaveSystem.SaveDataConverting
 {
     public class SaveDataSpecifiedConcreteClassConverter : DefaultContractResolver
     {
         protected override JsonConverter ResolveContractConverter(Type objectType)
         {
-            if (typeof(SaveData.SaveData).IsAssignableFrom(objectType) && !objectType.IsAbstract)
+            if (typeof(SaveData).IsAssignableFrom(objectType) && !objectType.IsAbstract)
             {
                 return null;
             }

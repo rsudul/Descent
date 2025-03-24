@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
-using ProjectSC.Saving.SaveDataConverting;
+using ProjectSC.SaveSystem.SaveDataConverting;
 
-namespace ProjectSC.Saving.SaveData
+namespace ProjectSC.SaveSystem
 {
     [JsonConverter(typeof(SaveDataConverter))]
     public abstract class SaveData

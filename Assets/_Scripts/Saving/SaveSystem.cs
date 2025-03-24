@@ -2,18 +2,17 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using ProjectSC.Saving.SaveData;
 using System;
 
-namespace ProjectSC.Saving
+namespace ProjectSC.SaveSystem
 {
     public class SaveSystem : MonoBehaviour
     {
-        private static HashSet<ISaveable> _saveableObjects = new HashSet<ISaveable>();
+        private static Dictionary<string, ISaveable> _saveableObjects = new Dictionary<string, ISaveable> ();
 
-        public static void RegisterSaveable(ISaveable saveable)
+        public static void RegisterSaveable(string guid, ISaveable saveable)
         {
-            _saveableObjects.Add(saveable);
+            _saveableObjects.Add(guid, saveable);
         }
 
         public static SaveSystemOperationResult Save()
@@ -26,11 +25,11 @@ namespace ProjectSC.Saving
                 string saveFilePath = "SaveDataFile.json";
                 SaveDataFile saveDataFile = new SaveDataFile();
                 saveDataFile.Filename = saveDataFileName;
-                List<SaveData.SaveData> saveDataList = new List<SaveData.SaveData>();
+                List<SaveData> saveDataList = new List<SaveData>();
 
-                foreach (ISaveable saveable in _saveableObjects)
+                foreach (KeyValuePair<string, ISaveable> saveable in _saveableObjects)
                 {
-                    SaveData.SaveData saveData = saveable.Save();
+                    SaveData saveData = saveable.Value.Save();
                     saveDataList.Add(saveData);
                 }
 
@@ -41,12 +40,12 @@ namespace ProjectSC.Saving
                 File.WriteAllText(saveFilePath, saveDataJson);
             } catch (Exception e)
             {
-                saveResult.Successfull = false;
+                saveResult.Successful = false;
                 saveResult.Exception = e.Message;
                 return saveResult;
             }
 
-            saveResult.Successfull = true;
+            saveResult.Successful = true;
 
             return saveResult;
         }
@@ -63,19 +62,23 @@ namespace ProjectSC.Saving
                 string saveDataString = File.ReadAllText(saveFilePath);
                 saveDataFile = JsonConvert.DeserializeObject<SaveDataFile>(saveDataString);
 
-                foreach (SaveData.SaveData saveData in saveDataFile.SaveData)
+                foreach (SaveData saveData in saveDataFile.SaveData)
                 {
-                    Debug.Log(((TransformSaveData)saveData).PositionX);
+                    if (saveData is not SerializedObjectSaveData serializedObjectSaveData)
+                    {
+                        continue;
+                    }
+
+                    _saveableObjects[serializedObjectSaveData.Guid].Load(saveData);
                 }
             } catch (Exception e)
             {
-                loadResult.Successfull = false;
+                loadResult.Successful = false;
                 loadResult.Exception = e.Message;
-                Debug.LogError(e.Message);
                 return loadResult;
             }
 
-            loadResult.Successfull = true;
+            loadResult.Successful = true;
             return loadResult;
         }
     }

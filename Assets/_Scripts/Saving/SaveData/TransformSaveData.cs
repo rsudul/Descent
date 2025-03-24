@@ -1,9 +1,7 @@
-using UnityEngine;
-
-namespace ProjectSC.Saving.SaveData
+namespace ProjectSC.SaveSystem
 {
     [System.Serializable]
-    public class TransformSaveData : SaveData
+    public class TransformSaveData : SerializedObjectSaveData
     {
         public float PositionX { get; set; } = 0.0f;
         public float PositionY { get; set; } = 0.0f;

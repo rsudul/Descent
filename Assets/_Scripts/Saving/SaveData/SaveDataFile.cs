@@ -1,4 +1,4 @@
-namespace ProjectSC.Saving.SaveData
+namespace ProjectSC.SaveSystem
 {
     [System.Serializable]
     public class SaveDataFile

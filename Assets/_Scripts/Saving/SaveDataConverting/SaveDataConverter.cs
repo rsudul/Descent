@@ -1,9 +1,8 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ProjectSC.Saving.SaveData;
 using System;
 
-namespace ProjectSC.Saving.SaveDataConverting
+namespace ProjectSC.SaveSystem.SaveDataConverting
 {
     public class SaveDataConverter : JsonConverter
     {
@@ -13,7 +12,7 @@ namespace ProjectSC.Saving.SaveDataConverting
 
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(SaveData.SaveData));
+            return (objectType == typeof(SaveData));
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
