@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ProjectSC.Common.ObjectSpawning
+namespace Descent.Common.ObjectSpawning
 {
     [System.Serializable]
     public struct ObjectSpawnWrapper

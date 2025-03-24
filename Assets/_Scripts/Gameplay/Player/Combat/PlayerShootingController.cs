@@ -1,9 +1,9 @@
-using ProjectSC.Combat.Projectiles.BasicProjectile;
-using ProjectSC.Common.ObjectSpawning;
+using Descent.Combat.Projectiles.BasicProjectile;
+using Descent.Common.ObjectSpawning;
 
 using UnityEngine;
 
-namespace ProjectSC.Gameplay.Player.Combat
+namespace Descent.Gameplay.Player.Combat
 {
     public class PlayerShootingController
     {

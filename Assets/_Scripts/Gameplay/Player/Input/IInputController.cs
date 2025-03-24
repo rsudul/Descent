@@ -1,4 +1,4 @@
-namespace ProjectSC.Gameplay.Player.Input
+namespace Descent.Gameplay.Player.Input
 {
     public interface IInputController
     {

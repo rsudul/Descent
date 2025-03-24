@@ -1,6 +1,6 @@
-using ProjectSC.Constants;
+using Descent.Constants;
 
-namespace ProjectSC.Gameplay.Player.Input
+namespace Descent.Gameplay.Player.Input
 {
     using Input = UnityEngine.Input;
 

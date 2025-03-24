@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using System;
 
-namespace ProjectSC.SaveSystem
+namespace Descent.SaveSystem
 {
     public class SaveSystem : MonoBehaviour
     {

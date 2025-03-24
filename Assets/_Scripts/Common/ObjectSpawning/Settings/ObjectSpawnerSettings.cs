@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ProjectSC.Common.ObjectSpawning.Settings
+namespace Descent.Common.ObjectSpawning.Settings
 {
     [CreateAssetMenu(fileName = "ObjectSpawnerSettings", menuName = "Descent/ObjectSpawning/Settings")]
     public class ObjectSpawnerSettings : ScriptableObject

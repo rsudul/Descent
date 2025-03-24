@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ProjectSC.Combat.Projectiles.Common
+namespace Descent.Combat.Projectiles.Common
 {
     [RequireComponent(typeof(Collider))]
     public abstract class ProjectileCollisionsController : MonoBehaviour

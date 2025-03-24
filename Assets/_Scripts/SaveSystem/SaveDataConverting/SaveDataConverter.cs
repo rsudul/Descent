@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace ProjectSC.SaveSystem.SaveDataConverting
+namespace Descent.SaveSystem.SaveDataConverting
 {
     public class SaveDataConverter : JsonConverter
     {

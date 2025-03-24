@@ -1,8 +1,8 @@
-using ProjectSC.Gameplay.Player.Settings.Movement;
+using Descent.Gameplay.Player.Settings.Movement;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ProjectSC.Gameplay.Player.Movement
+namespace Descent.Gameplay.Player.Movement
 {
     [System.Serializable]
     public class PlayerMovementController

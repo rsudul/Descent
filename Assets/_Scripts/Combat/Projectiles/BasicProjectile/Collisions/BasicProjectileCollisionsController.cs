@@ -1,6 +1,6 @@
-using ProjectSC.Combat.Projectiles.Common;
+using Descent.Combat.Projectiles.Common;
 
-namespace ProjectSC.Combat.Projectiles.BasicProjectile.Collisions
+namespace Descent.Combat.Projectiles.BasicProjectile.Collisions
 {
     public class BasicProjectileCollisionsController : ProjectileCollisionsController
     {
