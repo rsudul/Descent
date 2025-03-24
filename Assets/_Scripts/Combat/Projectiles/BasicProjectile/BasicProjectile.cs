@@ -1,10 +1,10 @@
-using ProjectSC.Combat.Projectiles.BasicProjectile.Collisions;
-using ProjectSC.Combat.Projectiles.BasicProjectile.Movement;
-using ProjectSC.Combat.Projectiles.BasicProjectile.Settings.Movement;
-using ProjectSC.Combat.Projectiles.Common;
+using Descent.Combat.Projectiles.BasicProjectile.Collisions;
+using Descent.Combat.Projectiles.BasicProjectile.Movement;
+using Descent.Combat.Projectiles.BasicProjectile.Settings.Movement;
+using Descent.Combat.Projectiles.Common;
 using UnityEngine;
 
-namespace ProjectSC.Combat.Projectiles.BasicProjectile
+namespace Descent.Combat.Projectiles.BasicProjectile
 {
     public class BasicProjectile : Projectile
     {

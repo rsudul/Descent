@@ -1,4 +1,4 @@
-namespace ProjectSC.Common.ObjectSpawning
+namespace Descent.Common.ObjectSpawning
 {
     public enum ObjectSpawnType
     {

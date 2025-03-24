@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ProjectSC.Common
+namespace Descent.Common
 {
     public abstract class Actor : MonoBehaviour
     {

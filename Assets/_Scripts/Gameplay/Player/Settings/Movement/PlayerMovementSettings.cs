@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ProjectSC.Gameplay.Player.Settings.Movement
+namespace Descent.Gameplay.Player.Settings.Movement
 {
     [CreateAssetMenu(fileName = "PlayerMovementSettings", menuName = "Descent/Player/Settings/Movement")]
     public class PlayerMovementSettings : ScriptableObject

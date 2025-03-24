@@ -1,4 +1,4 @@
-namespace ProjectSC.Constants
+namespace Descent.Constants
 {
     public static class InputConstants
     {

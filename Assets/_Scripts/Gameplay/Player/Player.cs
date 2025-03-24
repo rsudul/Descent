@@ -1,10 +1,10 @@
-using ProjectSC.Common;
-using ProjectSC.Gameplay.Player.Combat;
-using ProjectSC.Gameplay.Player.Input;
-using ProjectSC.Gameplay.Player.Movement;
+using Descent.Common;
+using Descent.Gameplay.Player.Combat;
+using Descent.Gameplay.Player.Input;
+using Descent.Gameplay.Player.Movement;
 using UnityEngine;
 
-namespace ProjectSC.Gameplay.Player
+namespace Descent.Gameplay.Player
 {
     public class Player : Actor
     {
