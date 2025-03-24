@@ -1,0 +1,7 @@
+namespace ProjectSC.SaveSystem
+{
+    public abstract class SerializedObjectSaveData : SaveData
+    {
+        public string Guid { get; set; }
+    }
+}
