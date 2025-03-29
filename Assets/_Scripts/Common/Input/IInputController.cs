@@ -1,4 +1,4 @@
-namespace Descent.Gameplay.Player.Input
+namespace Descent.Common.Input
 {
     public interface IInputController
     {
@@ -10,6 +10,8 @@ namespace Descent.Gameplay.Player.Input
         float MoveY { get; }
 
         bool Shoot { get; }
+        bool SaveGame { get; }
+        bool LoadGame { get; }
 
         void Refresh();
     }

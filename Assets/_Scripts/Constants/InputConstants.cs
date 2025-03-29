@@ -17,5 +17,12 @@ namespace Descent.Constants
         public readonly static string Shoot = "Shoot";
 
         #endregion
+
+        #region GameActions
+
+        public readonly static string SaveGame = "SaveGame";
+        public readonly static string LoadGame = "LoadGame";
+
+        #endregion
     }
 }
