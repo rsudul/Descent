@@ -1,11 +1,11 @@
 using Descent.Common.Input;
 using Descent.Constants;
 
-namespace Descent.Gameplay.Player.Input
+namespace Descent.Gameplay.Game.Input
 {
     using Input = UnityEngine.Input;
 
-    public class PlayerInputController : IInputController
+    public class GameInputController : IInputController
     {
         private float _lookX = 0.0f;
         private float _lookY = 0.0f;
@@ -33,14 +33,8 @@ namespace Descent.Gameplay.Player.Input
 
         public void Refresh()
         {
-            _lookX = Input.GetAxis(InputConstants.LookHorizontal);
-            _lookY = Input.GetAxis(InputConstants.LookVertical);
-            _banking = Input.GetAxis(InputConstants.Banking);
-
-            _moveX = Input.GetAxis(InputConstants.MoveHorizontal);
-            _moveY = Input.GetAxis(InputConstants.MoveForward);
-
-            _shoot = Input.GetButtonDown(InputConstants.Shoot);
+            _saveGame = Input.GetButtonDown(InputConstants.SaveGame);
+            _loadGame = Input.GetButtonDown(InputConstants.LoadGame);
         }
     }
 }

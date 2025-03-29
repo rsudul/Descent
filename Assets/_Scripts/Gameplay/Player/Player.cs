@@ -1,4 +1,5 @@
 using Descent.Common;
+using Descent.Common.Input;
 using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
