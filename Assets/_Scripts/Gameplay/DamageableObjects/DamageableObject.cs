@@ -1,4 +1,5 @@
-using Descent.Common.Collisions;
+using Descent.Common.Collisions.Controllers;
+using Descent.Common.Collisions.Parameters;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Descent.Gameplay.DamageableObjects
     {
         public event EventHandler OnDamageTaken;
         public event EventHandler OnDied;
+
+        public GameObject GameObject { get { return gameObject; } }
 
         [SerializeField]
         private List<HitController> _hitControllers = new List<HitController>();
@@ -23,10 +26,16 @@ namespace Descent.Gameplay.DamageableObjects
             }
         }
 
-        private void TakeDamage(object sender, EventArgs e)
+        private void TakeDamage(object sender, EventArgs args)
         {
-            TakeDamage(0);
-            OnDamageTaken?.Invoke(this, null);
+            IDamageDealer damageDealer = args as IDamageDealer;
+            if (damageDealer == null)
+            {
+                return;
+            }
+
+            TakeDamage(damageDealer.Damage);
+            OnDamageTaken?.Invoke(this, args);
         }
 
         public void TakeDamage(int damage)

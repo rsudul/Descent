@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Descent.Gameplay.DamageableObjects
 {
@@ -6,6 +7,8 @@ namespace Descent.Gameplay.DamageableObjects
     {
         event EventHandler OnDamageTaken;
         event EventHandler OnDied;
+
+        GameObject GameObject { get; }
 
         void TakeDamage(int damage);
     }
