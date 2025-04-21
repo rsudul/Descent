@@ -22,16 +22,18 @@ namespace Descent.Combat.Projectiles.BasicProjectile
         [SerializeField, Tooltip("If set to false, the object will pass through other objects.")]
         private bool _actAsSolidBody = false;
 
-        public void Initialize(Vector3 movementDirection)
+        public void Initialize(Vector3 movementDirection, Vector3 orientation)
         {
-            InitializeControllers(movementDirection);
+            InitializeControllers(movementDirection, orientation);
+            transform.rotation = Quaternion.LookRotation(orientation);
         }
 
-        private void InitializeControllers(Vector3 movementDirection)
+        private void InitializeControllers(Vector3 movementDirection, Vector3 orientation)
         {
             _movementController = new BasicProjectileMovementController();
             _movementController.Initialize(_movementSettings);
             _movementController.PrepareMovement(movementDirection);
+            _movementController.OrientateInDirection(transform, orientation);
 
             if (_collisionController != null)
             {

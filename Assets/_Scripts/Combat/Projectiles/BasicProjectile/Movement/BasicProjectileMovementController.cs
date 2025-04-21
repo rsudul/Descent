@@ -28,6 +28,11 @@ namespace Descent.Combat.Projectiles.BasicProjectile.Movement
             _movementDirection = movementDirection;
         }
 
+        public void OrientateInDirection(Transform transform, Vector3 oritentation)
+        {
+            transform.rotation = Quaternion.LookRotation(oritentation);
+        }
+
         public void StartMovement(Rigidbody rigidbody, float deltaTime)
         {
             rigidbody.velocity = _movementDirection * _settings.MovementSpeed * deltaTime;
