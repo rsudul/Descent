@@ -15,7 +15,7 @@ namespace Descent.Gameplay.Player.Combat
 
             if (projectile != null)
             {
-                projectile.Initialize(movementDirection: forwardVector);
+                projectile.Initialize(movementDirection: forwardVector, orientation: forwardVector);
                 projectile.StartMovement(deltaTime);
             }
         }
