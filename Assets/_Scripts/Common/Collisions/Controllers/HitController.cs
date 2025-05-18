@@ -24,5 +24,21 @@ namespace Descent.Common.Collisions.Controllers
 
             OnHit?.Invoke(this, collisionParameters);
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.transform.TryGetComponent<ICollisionParametersProvider>(out ICollisionParametersProvider collisionParametersProvider))
+            {
+                return;
+            }
+
+            CollisionParameters collisionParameters = collisionParametersProvider.GetCollisionParameters();
+            if (collisionParameters == null)
+            {
+                return;
+            }
+
+            OnHit?.Invoke(this, collisionParameters);
+        }
     }
 }

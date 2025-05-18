@@ -2,6 +2,8 @@ using Descent.Combat.Projectiles.BasicProjectile.Collisions;
 using Descent.Combat.Projectiles.BasicProjectile.Movement;
 using Descent.Combat.Projectiles.BasicProjectile.Settings.Movement;
 using Descent.Combat.Projectiles.Common;
+using Descent.Common.Collisions.Parameters;
+using System;
 using UnityEngine;
 
 namespace Descent.Combat.Projectiles.BasicProjectile
@@ -19,8 +21,6 @@ namespace Descent.Combat.Projectiles.BasicProjectile
         [Header("Collisions")]
         [SerializeField]
         private BasicProjectileCollisionsController _collisionController = null;
-        [SerializeField, Tooltip("If set to false, the object will pass through other objects.")]
-        private bool _actAsSolidBody = false;
 
         public void Initialize(Vector3 movementDirection, Vector3 orientation)
         {
@@ -37,7 +37,7 @@ namespace Descent.Combat.Projectiles.BasicProjectile
 
             if (_collisionController != null)
             {
-                _collisionController.Initialize(actAsSolidBody: _actAsSolidBody);
+                _collisionController.Initialize();
             }
         }
 
