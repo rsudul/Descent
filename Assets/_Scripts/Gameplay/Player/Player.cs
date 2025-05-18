@@ -1,5 +1,6 @@
 using Descent.Common;
 using Descent.Common.Input;
+using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
@@ -19,11 +20,15 @@ namespace Descent.Gameplay.Player
 
         [SerializeField]
         private Transform _playerBody = null;
+        [SerializeField]
+        private Transform _playerCameraPivot = null;
 
         [SerializeField]
         private Rigidbody _rigidbody = null;
         [SerializeField]
         private PlayerMovementController _playerMovementController = new PlayerMovementController();
+        [SerializeField]
+        private PlayerAnimationsController _playerAnimationsController = new PlayerAnimationsController();
 
         private void Awake()
         {
@@ -45,6 +50,7 @@ namespace Descent.Gameplay.Player
             _playerShootingController = new PlayerShootingController();
 
             _playerMovementController.Initialize(_playerBody, _rigidbody);
+            _playerAnimationsController.Initialize(_playerCameraPivot);
         }
 
         private void Update()
@@ -90,11 +96,13 @@ namespace Descent.Gameplay.Player
         {
             _playerMovementController.SetPitchYawAndRoll(_lookInput.x, _lookInput.y, _bankInput);
             _playerMovementController.SetMovementFactors(_moveInput.x, _moveInput.y);
+            _playerAnimationsController.SetMovementVelocity(new Vector3(_moveInput.x, 0.0f, _moveInput.y));
         }
 
         private void UpdateControllers(float deltaTime)
         {
             _playerMovementController.UpdateLook(_playerBody, _rigidbody, deltaTime);
+            _playerAnimationsController.UpdateAnimations(deltaTime);
 
             if (_shootInput)
             {
