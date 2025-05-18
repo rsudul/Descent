@@ -79,9 +79,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerBody: {fileID: 4761460170510606788}
+  _playerCameraPivot: {fileID: 2223336610152187968}
   _rigidbody: {fileID: 5621184922152031883}
   _playerMovementController:
     _movementSettings: {fileID: 11400000, guid: f714b7dc86c0d4643939772c8ee38f58,
+      type: 2}
+  _playerAnimationsController:
+    _animationsSettings: {fileID: 11400000, guid: bc7f8c320a967c44c97d2781ed7c2150,
       type: 2}
 --- !u!54 &5621184922152031883
 Rigidbody:
