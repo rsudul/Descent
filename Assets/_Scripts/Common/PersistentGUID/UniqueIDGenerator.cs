@@ -1,7 +1,4 @@
 using System;
-using System.Xml;
-using UnityEditor;
-using UnityEngine;
 
 namespace Descent.Common.PersistentGUID
 {
