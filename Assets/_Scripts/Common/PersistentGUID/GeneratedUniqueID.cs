@@ -2,7 +2,6 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using System;
 
 namespace Descent.Common.PersistentGUID
 {
@@ -14,39 +13,57 @@ namespace Descent.Common.PersistentGUID
 
         public string UniqueID => _uniqueID;
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
-#if UNITY_EDITOR
-            if (string.IsNullOrEmpty(_uniqueID) || !GeneratedUniqueIDHelper.IsUnique(this))
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
-                GenerateUniqueID();
-                EditorUtility.SetDirty(this);
+                return;
             }
-#endif
-        }
 
-        private void GenerateUniqueID()
-        {
-            string newUniqueID = string.Empty;
-            int triesCount = 0;
-
-            do
+            if (PrefabUtility.IsPartOfPrefabAsset(gameObject))
             {
-                newUniqueID = Guid.NewGuid().ToString();
-                triesCount++;
-            } while (!GeneratedUniqueIDHelper.IsUnique(newUniqueID));
+                return;
+            }
 
-            _uniqueID = newUniqueID;
+            if (string.IsNullOrEmpty(_uniqueID) || !UniqueIDGenerator.IsUnique(this))
+            {
+                AssignNewUniqueID();
+            }
         }
+#endif
 
         private void OnEnable()
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                return;
+            }
+
+            if (PrefabUtility.IsPartOfPrefabAsset(gameObject))
+            {
+                return;
+            }
+
             GeneratedUniqueIDRegistry.Register(this);
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                return;
+            }
+
             GeneratedUniqueIDRegistry.Unregister(this);
+        }
+
+        public void AssignNewUniqueID()
+        {
+            _uniqueID = UniqueIDGenerator.GenerateUniqueID();
+
+            EditorUtility.SetDirty(this);
+            GeneratedUniqueIDRegistry.Register(this);
         }
     }
 }

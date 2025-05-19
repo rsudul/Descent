@@ -1,4 +1,3 @@
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,10 +16,18 @@ namespace Descent.Common.PersistentGUID.Editor
             {
                 EditorGUILayout.HelpBox("UniqueID is empty.", MessageType.Warning);
             }
-            else if (!GeneratedUniqueIDHelper.IsUnique(generatedUniqueID))
+            else if (!UniqueIDGenerator.IsUnique(generatedUniqueID))
             {
                 EditorGUILayout.HelpBox("This UniqueID is a duplicate!", MessageType.Error);
             }
+
+            GUI.enabled = !EditorApplication.isPlayingOrWillChangePlaymode;
+            if (GUILayout.Button("Regenerate ID"))
+            {
+                Undo.RecordObject(target, "Regenerate Unique ID");
+                generatedUniqueID.AssignNewUniqueID();
+            }
+            GUI.enabled = true;
         }
     }
 }
