@@ -1,5 +1,5 @@
+using Descent.Extensions.Math;
 using Descent.Gameplay.Player.Settings.Movement;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Descent.Gameplay.Player.Movement
@@ -142,32 +142,12 @@ namespace Descent.Gameplay.Player.Movement
         {
             axisStabilized = false;
 
-            Vector3 nearestWorldAxis = NearestWorldAxis(transform.up);
+            Vector3 nearestWorldAxis = Math3DUtility.NearestWorldAxis(transform.up);
 
             Quaternion targetRotation = Quaternion.LookRotation(transform.forward, nearestWorldAxis);
             rigidbody.MoveRotation(Quaternion.Lerp(rigidbody.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime));
 
             axisStabilized = Quaternion.Angle(rigidbody.rotation, targetRotation) == 0.0f;
-        }
-
-        private Vector3 NearestWorldAxis(Vector3 vector)
-        {
-            List<Vector3> worldVectors = new List<Vector3>() { Vector3.up, Vector3.down, Vector3.left,
-                    Vector3.right, Vector3.back, Vector3.forward };
-            float dotProduct = -Mathf.Infinity;
-            Vector3 worldVectorToAlignWith = Vector3.zero;
-
-            foreach (Vector3 worldVector in worldVectors)
-            {
-                float tempDotProduct = Vector3.Dot(vector, worldVector);
-                if (tempDotProduct > dotProduct)
-                {
-                    dotProduct = tempDotProduct;
-                    worldVectorToAlignWith = worldVector;
-                }
-            }
-
-            return worldVectorToAlignWith;
         }
     }
 }
