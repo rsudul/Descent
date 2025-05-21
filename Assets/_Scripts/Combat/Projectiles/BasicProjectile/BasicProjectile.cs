@@ -2,8 +2,6 @@ using Descent.Combat.Projectiles.BasicProjectile.Collisions;
 using Descent.Combat.Projectiles.BasicProjectile.Movement;
 using Descent.Combat.Projectiles.BasicProjectile.Settings.Movement;
 using Descent.Combat.Projectiles.Common;
-using Descent.Common.Collisions.Parameters;
-using System;
 using UnityEngine;
 
 namespace Descent.Combat.Projectiles.BasicProjectile
@@ -26,6 +24,8 @@ namespace Descent.Combat.Projectiles.BasicProjectile
         {
             InitializeControllers(movementDirection, orientation);
             transform.rotation = Quaternion.LookRotation(orientation);
+
+            base.Initialize();
         }
 
         private void InitializeControllers(Vector3 movementDirection, Vector3 orientation)
