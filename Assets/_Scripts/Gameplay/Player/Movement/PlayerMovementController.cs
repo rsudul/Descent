@@ -16,6 +16,10 @@ namespace Descent.Gameplay.Player.Movement
         private bool _doneLookingAround = false;
 
         private Vector3 _movementDirection = Vector3.zero;
+        private Vector3 _lastVelocity = Vector3.zero;
+
+        private float _movementFreezeTimer = 0.0f;
+        private float _bounceRotationFreezeTimer = 0.0f;
 
         [Header("Settings")]
         [SerializeField]
@@ -29,12 +33,13 @@ namespace Descent.Gameplay.Player.Movement
 
         private void InitializeRigidbody(Rigidbody rigidbody)
         {
-            rigidbody.freezeRotation = false;
+            rigidbody.freezeRotation = true;
             rigidbody.useGravity = false;
             rigidbody.drag = 0.0f;
-            rigidbody.angularDrag = 0.05f;
-            rigidbody.interpolation = RigidbodyInterpolation.None;
-            rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            rigidbody.angularDrag = 0.0f;
+            rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rigidbody.isKinematic = false;
         }
 
         public void UpdateLook(Transform transform, Rigidbody rigidbody, float deltaTime)
@@ -60,7 +65,7 @@ namespace Descent.Gameplay.Player.Movement
                 _rotation *= Quaternion.AngleAxis(_pitchRotation, Vector3.up);
                 _rotation *= Quaternion.AngleAxis(_rollRotation, Vector3.forward);
 
-                rigidbody.MoveRotation(Quaternion.Lerp(rigidbody.rotation, _rotation, _movementSettings.LookSmoothness * deltaTime));
+                rigidbody.rotation = Quaternion.Lerp(rigidbody.rotation, _rotation, deltaTime * _movementSettings.LookSmoothness);
 
                 float remainingAngle = Quaternion.Angle(rigidbody.rotation, _rotation);
                 if (remainingAngle == 0.0f)
@@ -81,6 +86,16 @@ namespace Descent.Gameplay.Player.Movement
 
         public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime)
         {
+            if (_movementFreezeTimer > 0.0f)
+            {
+                _movementFreezeTimer -= deltaTime;
+                return;
+            }
+            else
+            {
+                _movementFreezeTimer = 0.0f;
+            }
+
             Vector3 currentVelocity = rigidbody.velocity;
 
             Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
@@ -124,6 +139,8 @@ namespace Descent.Gameplay.Player.Movement
             currentVelocity = transform.TransformDirection(relativeCurrentVelocity);
 
             rigidbody.velocity = currentVelocity;
+
+            _lastVelocity = currentVelocity;
         }
 
         public void SetPitchYawAndRoll(float pitch, float yaw, float roll)
@@ -148,6 +165,18 @@ namespace Descent.Gameplay.Player.Movement
             rigidbody.MoveRotation(Quaternion.Lerp(rigidbody.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime));
 
             axisStabilized = Quaternion.Angle(rigidbody.rotation, targetRotation) == 0.0f;
+        }
+
+        public void FreezeMovement()
+        {
+            _movementFreezeTimer = _movementSettings.DisableMovementAfterCollisionTime;
+            _lastVelocity = Vector3.zero;
+        }
+
+        public void Bounce(Rigidbody rigidbody, Vector3 bounceNormal)
+        {
+            Vector3 reflected = Vector3.Reflect(_lastVelocity, bounceNormal) * _movementSettings.CollisionBounceForce;
+            rigidbody.velocity = reflected;
         }
     }
 }

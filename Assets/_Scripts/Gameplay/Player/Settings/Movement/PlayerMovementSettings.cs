@@ -15,5 +15,8 @@ namespace Descent.Gameplay.Player.Settings.Movement
         [field: SerializeField] public float Acceleration { get; private set; } = 12.0f;
         [field: SerializeField] public float AccelerationForMovementInOppositeDirection { get; private set; } = 9.0f;
         [field: SerializeField] public float Decceleration { get; private set; } = 4.5f;
+
+        [field: SerializeField, Header("Collisions")] public float DisableMovementAfterCollisionTime { get; private set; } = 0.5f;
+        [field: SerializeField] public float CollisionBounceForce { get; private set; } = 100.0f;
     }
 }

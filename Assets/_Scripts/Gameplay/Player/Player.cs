@@ -1,6 +1,9 @@
 using Descent.Common;
+using Descent.Common.Collisions.Controllers;
+using Descent.Common.Events.Arguments;
 using Descent.Common.Input;
 using Descent.Gameplay.Player.Animations;
+using Descent.Gameplay.Player.Collisions;
 using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
@@ -22,6 +25,8 @@ namespace Descent.Gameplay.Player
         private Transform _playerBody = null;
         [SerializeField]
         private Transform _playerCameraPivot = null;
+        [SerializeField]
+        private HitController _hitController = null;
 
         [SerializeField]
         private Rigidbody _rigidbody = null;
@@ -29,6 +34,8 @@ namespace Descent.Gameplay.Player
         private PlayerMovementController _playerMovementController = new PlayerMovementController();
         [SerializeField]
         private PlayerAnimationsController _playerAnimationsController = new PlayerAnimationsController();
+        [SerializeField]
+        private PlayerCollisionsController _playerCollisionsController = new PlayerCollisionsController();
 
         private void Awake()
         {
@@ -51,6 +58,9 @@ namespace Descent.Gameplay.Player
 
             _playerMovementController.Initialize(_playerBody, _rigidbody);
             _playerAnimationsController.Initialize(_playerCameraPivot);
+            _playerCollisionsController.Initialize(_hitController, _rigidbody);
+
+            _playerCollisionsController.OnCollision += OnCollision;
         }
 
         private void Update()
@@ -101,7 +111,7 @@ namespace Descent.Gameplay.Player
 
         private void UpdateControllers(float deltaTime)
         {
-            _playerMovementController.UpdateLook(_playerBody, _rigidbody, deltaTime);
+            _playerMovementController.UpdateLook(_playerBody, _rigidbody, Time.deltaTime);
             _playerAnimationsController.UpdateAnimations(deltaTime);
 
             if (_shootInput)
@@ -115,6 +125,12 @@ namespace Descent.Gameplay.Player
         private void UpdateControllersPhysics(float deltaTime)
         {
             _playerMovementController.UpdateMovement(transform, _rigidbody, deltaTime);
+        }
+
+        private void OnCollision(object sender, CollisionEventArguments args)
+        {
+            _playerMovementController.Bounce(_rigidbody, args.CollisionNormal);
+            _playerMovementController.FreezeMovement();
         }
     }
 }
