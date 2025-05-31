@@ -131,10 +131,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a95288ee7e0dee45b31940164b797bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collisionsController: {fileID: 2634256504724142270}
+  _destroyAfterTimeInSeconds: 5
+  _destroyAfterDistance: 1000
   _rigidbody: {fileID: 4366610678983306915}
   _movementSettings: {fileID: 11400000, guid: bb9719d0521102347b626a7331b7ecae, type: 2}
   _collisionController: {fileID: 2634256504724142270}
-  _actAsSolidBody: 0
 --- !u!114 &2634256504724142270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6aa5ecd57392e647aa5e87ab551313c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: 4348605918544752645}
+  _actAsSolidBody: 0
 --- !u!65 &4348605918544752645
 BoxCollider:
   m_ObjectHideFlags: 0

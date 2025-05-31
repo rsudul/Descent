@@ -12,6 +12,11 @@ namespace Descent.Gameplay.Player.Collisions
         private Rigidbody _rigidbody = null;
         private HitController _hitController = null;
 
+        public Collider Collider => _collider;
+
+        [SerializeField]
+        private Collider _collider = null;
+
         public event EventHandler<CollisionEventArguments> OnCollision;
 
         ~PlayerCollisionsController()

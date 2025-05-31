@@ -119,7 +119,7 @@ namespace Descent.Gameplay.Player
             {
                 // store projectile spawn position somewhere else
                 _playerShootingController.Shoot(transform.forward,
-                    transform.position + transform.forward * 0.5f, deltaTime);
+                    transform.position + transform.forward * 0.5f, deltaTime, _playerCollisionsController.Collider);
             }
         }
 
