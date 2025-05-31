@@ -21,6 +21,8 @@ namespace Descent.Gameplay.Player.Movement
         private float _movementFreezeTimer = 0.0f;
         private float _bounceRotationFreezeTimer = 0.0f;
 
+        public Vector3 LastVelocity => _lastVelocity;
+
         [Header("Settings")]
         [SerializeField]
         private PlayerMovementSettings _movementSettings;
@@ -98,6 +100,8 @@ namespace Descent.Gameplay.Player.Movement
 
             Vector3 currentVelocity = rigidbody.velocity;
 
+            _lastVelocity = currentVelocity;
+
             Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
 
             targetVelocity = targetVelocity * _movementSettings.MovementSpeed;
@@ -139,8 +143,6 @@ namespace Descent.Gameplay.Player.Movement
             currentVelocity = transform.TransformDirection(relativeCurrentVelocity);
 
             rigidbody.velocity = currentVelocity;
-
-            _lastVelocity = currentVelocity;
         }
 
         public void SetPitchYawAndRoll(float pitch, float yaw, float roll)

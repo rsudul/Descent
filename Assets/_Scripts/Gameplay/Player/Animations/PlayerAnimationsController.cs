@@ -9,17 +9,17 @@ namespace Descent.Gameplay.Player.Animations
         private Quaternion _originalLocalRotation = Quaternion.identity;
         private Vector3 _movementVelocity = Vector3.zero;
 
-        private Transform _playerCameraPivot = null;
+        private Transform _playerCamera = null;
 
         [Header("Settings")]
         [SerializeField]
         private PlayerAnimationsSettings _animationsSettings;
 
-        public void Initialize(Transform playerCameraPivot)
+        public void Initialize(Transform playerCamera)
         {
-            _playerCameraPivot = playerCameraPivot;
+            _playerCamera = playerCamera;
 
-            _originalLocalRotation = _playerCameraPivot.localRotation;
+            _originalLocalRotation = _playerCamera.localRotation;
         }
 
         public void SetMovementVelocity(Vector3 movementVelocity)
@@ -34,7 +34,7 @@ namespace Descent.Gameplay.Player.Animations
 
             Quaternion targetLocalRotation = _originalLocalRotation * Quaternion.Euler(targetForwardTilt, 0.0f, targetSidewaysTilt);
 
-            _playerCameraPivot.localRotation = Quaternion.Lerp(_playerCameraPivot.localRotation, targetLocalRotation,
+            _playerCamera.localRotation = Quaternion.Lerp(_playerCamera.localRotation, targetLocalRotation,
                 deltaTime * _animationsSettings.TiltSpeed);
         }
     }

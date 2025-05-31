@@ -3,6 +3,7 @@ using Descent.Common.Collisions.Controllers;
 using Descent.Common.Events.Arguments;
 using Descent.Common.Input;
 using Descent.Gameplay.Player.Animations;
+using Descent.Gameplay.Player.Camera;
 using Descent.Gameplay.Player.Collisions;
 using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Input;
@@ -24,7 +25,7 @@ namespace Descent.Gameplay.Player
         [SerializeField]
         private Transform _playerBody = null;
         [SerializeField]
-        private Transform _playerCameraPivot = null;
+        private PlayerCameraController _playerCameraController = null;
         [SerializeField]
         private HitController _hitController = null;
 
@@ -57,7 +58,7 @@ namespace Descent.Gameplay.Player
             _playerShootingController = new PlayerShootingController();
 
             _playerMovementController.Initialize(_playerBody, _rigidbody);
-            _playerAnimationsController.Initialize(_playerCameraPivot);
+            _playerAnimationsController.Initialize(_playerCameraController.CameraTransform);
             _playerCollisionsController.Initialize(_hitController, _rigidbody);
 
             _playerCollisionsController.OnCollision += OnCollision;
@@ -129,7 +130,11 @@ namespace Descent.Gameplay.Player
 
         private void OnCollision(object sender, CollisionEventArguments args)
         {
+            Vector3 impactVelocity = _playerMovementController.LastVelocity;
+            float shakeStrength = impactVelocity.magnitude;
+
             _playerMovementController.Bounce(_rigidbody, args.CollisionNormal);
+            _playerCameraController.Shake(shakeStrength);
             _playerMovementController.FreezeMovement();
         }
     }
