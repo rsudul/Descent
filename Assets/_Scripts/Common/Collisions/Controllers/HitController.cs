@@ -1,44 +1,44 @@
 using System;
 using UnityEngine;
 using Descent.Common.Collisions.Parameters;
+using Descent.Common.Events.Arguments;
 
 namespace Descent.Common.Collisions.Controllers
 {
     [RequireComponent(typeof(Collider))]
     public class HitController : MonoBehaviour
     {
-        public event EventHandler<CollisionParameters> OnHit;
+        public event EventHandler<CollisionEventArguments> OnHit;
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (!collision.transform.TryGetComponent<ICollisionParametersProvider>(out ICollisionParametersProvider collisionParametersProvider))
+            CollisionParameters collisionParameters = null;
+
+            if (collision.transform.TryGetComponent<ICollisionParametersProvider>(out ICollisionParametersProvider collisionParametersProvider))
             {
-                return;
+                collisionParameters = collisionParametersProvider.GetCollisionParameters();
             }
 
-            CollisionParameters collisionParameters = collisionParametersProvider.GetCollisionParameters();
-            if (collisionParameters == null)
-            {
-                return;
-            }
+            CollisionEventArguments eventArgs = new CollisionEventArguments(collision.transform, collision.contacts[0].point,
+                collision.contacts[0].normal, collisionParameters);
 
-            OnHit?.Invoke(this, collisionParameters);
+            OnHit?.Invoke(this, eventArgs);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.transform.TryGetComponent<ICollisionParametersProvider>(out ICollisionParametersProvider collisionParametersProvider))
+            CollisionParameters collisionParameters = null;
+
+            if (other.transform.TryGetComponent<ICollisionParametersProvider>(out ICollisionParametersProvider collisionParametersProvider))
             {
-                return;
+
+                collisionParameters = collisionParametersProvider.GetCollisionParameters();
             }
 
-            CollisionParameters collisionParameters = collisionParametersProvider.GetCollisionParameters();
-            if (collisionParameters == null)
-            {
-                return;
-            }
+            CollisionEventArguments eventArgs = new CollisionEventArguments(other.transform, Vector3.zero, Vector3.zero,
+                collisionParameters);
 
-            OnHit?.Invoke(this, collisionParameters);
+            OnHit?.Invoke(this, eventArgs);
         }
     }
 }
