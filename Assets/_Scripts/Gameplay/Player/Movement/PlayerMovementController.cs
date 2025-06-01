@@ -11,9 +11,9 @@ namespace Descent.Gameplay.Player.Movement
         private float _yawRotation = 0.0f;
         private float _rollRotation = 0.0f;
         private Quaternion _rotation = Quaternion.identity;
-        private bool _beginLookingAround = false;
-        private bool _lastBeginLookingAround = false;
-        private bool _doneLookingAround = false;
+        private float _rollStabilizationTimer = 0.0f;
+        private float _rollStabilizationDelay = 0.5f;
+        private bool _isStabilizingAxis = false;
 
         private Vector3 _movementDirection = Vector3.zero;
         private Vector3 _lastVelocity = Vector3.zero;
@@ -46,44 +46,36 @@ namespace Descent.Gameplay.Player.Movement
 
         public void UpdateLook(Transform transform, Rigidbody rigidbody, float deltaTime)
         {
-            if (!_beginLookingAround)
+            bool isLookingNow = _pitchRotation != 0.0f || _yawRotation != 0.0f || _rollRotation != 0.0f;
+
+            if (isLookingNow)
             {
-                _beginLookingAround = _yawRotation != 0.0f || _pitchRotation != 0.0f || _rollRotation != 0.0f;
-            }
+                _isStabilizingAxis = false;
+                _rollStabilizationTimer = _rollStabilizationDelay;
 
-            if (_beginLookingAround)
-            {
-                if (_doneLookingAround)
-                {
-                    _doneLookingAround = false;
-                }
-
-                if (!_lastBeginLookingAround)
-                {
-                    _rotation = rigidbody.rotation;
-                }
-
+                _rotation = rigidbody.rotation;
                 _rotation *= Quaternion.AngleAxis(-_yawRotation, Vector3.right);
                 _rotation *= Quaternion.AngleAxis(_pitchRotation, Vector3.up);
                 _rotation *= Quaternion.AngleAxis(_rollRotation, Vector3.forward);
+            }
+            else
+            {
+                _rollStabilizationTimer -= deltaTime;
 
-                rigidbody.rotation = Quaternion.Lerp(rigidbody.rotation, _rotation, deltaTime * _movementSettings.LookSmoothness);
-
-                float remainingAngle = Quaternion.Angle(rigidbody.rotation, _rotation);
-                if (remainingAngle == 0.0f)
+                if (_rollStabilizationTimer <= 0.0f)
                 {
-                    _beginLookingAround = false;
-                    _doneLookingAround = true;
+                    _isStabilizingAxis = true;
+                    StabilizeRollAxis(transform, rigidbody, deltaTime, out bool axisStabilized);
+
+                    if (axisStabilized)
+                    {
+                        _rollStabilizationTimer = _rollStabilizationDelay;
+                    }
                 }
             }
 
-            if (_doneLookingAround)
-            {
-                StabilizeRollAxis(transform, rigidbody, deltaTime, out bool axisStabilized);
-                _doneLookingAround = !axisStabilized;
-            }
-
-            _lastBeginLookingAround = _beginLookingAround;
+            float rotationSpeed = _isStabilizingAxis ? _movementSettings.RollAxisResetSpeed : _movementSettings.LookSmoothness;
+            rigidbody.rotation = Quaternion.Slerp(rigidbody.rotation, _rotation, deltaTime * rotationSpeed);
         }
 
         public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime)
@@ -163,10 +155,9 @@ namespace Descent.Gameplay.Player.Movement
 
             Vector3 nearestWorldAxis = Math3DUtility.NearestWorldAxis(transform.up);
 
-            Quaternion targetRotation = Quaternion.LookRotation(transform.forward, nearestWorldAxis);
-            rigidbody.MoveRotation(Quaternion.Lerp(rigidbody.rotation, targetRotation, _movementSettings.RollAxisResetSpeed * deltaTime));
+            _rotation = Quaternion.LookRotation(transform.forward, nearestWorldAxis);
 
-            axisStabilized = Quaternion.Angle(rigidbody.rotation, targetRotation) == 0.0f;
+            axisStabilized = Quaternion.Angle(rigidbody.rotation, _rotation) == 0.0f;
         }
 
         public void FreezeMovement()
