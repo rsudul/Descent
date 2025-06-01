@@ -1,3 +1,4 @@
+using Descent.Common.Collisions.Controllers;
 using Descent.Common.Collisions.Parameters;
 using System;
 using UnityEngine;
@@ -7,18 +8,19 @@ namespace Descent.Combat.Projectiles.Common
     [RequireComponent(typeof(Collider))]
     public abstract class ProjectileCollisionsController : MonoBehaviour, ICollisionParametersProvider
     {
-        // move collider to another script?
-        private Collider _collider;
+        public Collider Collider => _collider;
 
+        [SerializeField]
+        private Collider _collider = null;
         [SerializeField, Tooltip("If set to false, the object will pass through other objects.")]
         private bool _actAsSolidBody = false;
+        [SerializeField]
+        private HitController _hitController = null;
 
         public event EventHandler OnCollisionEntered;
 
         public virtual void Initialize()
         {
-            _collider = GetComponent<Collider>();
-
             if (_collider == null)
             {
                 // pass error message
@@ -26,23 +28,16 @@ namespace Descent.Combat.Projectiles.Common
             }
 
             _collider.isTrigger = !_actAsSolidBody;
+
+            if (_hitController != null)
+            {
+                _hitController.OnHit += OnCollided;
+            }
         }
 
-        protected virtual void OnCollisionEnter(Collision collision)
+        protected virtual void OnCollided(object sender, EventArgs args)
         {
-            OnCollided();
-            OnCollisionEntered?.Invoke(this, null);
-        }
-
-        protected virtual void OnTriggerEnter(Collider other)
-        {
-            OnCollided();
-            OnCollisionEntered?.Invoke(this, null);
-        }
-
-        protected virtual void OnCollided()
-        {
-
+            OnCollisionEntered?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual CollisionParameters GetCollisionParameters()

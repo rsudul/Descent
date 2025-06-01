@@ -11,6 +11,10 @@ namespace Descent.Combat.Projectiles.Common
         protected float _travelTimer = 0.0f;
         protected Vector3 _travelStartPosition = Vector3.zero;
 
+        protected Collider _owner = null;
+
+        [SerializeField]
+        private ProjectileCollisionsController _collisionsController;
         [SerializeField]
         protected float _destroyAfterTimeInSeconds = 5.0f;
         [SerializeField]
@@ -57,6 +61,23 @@ namespace Descent.Combat.Projectiles.Common
             _isSetToBeDestroyed = true;
             OnProjectileSetToBeDestroyed?.Invoke(this, null);
             Destroy(gameObject, 0.1f);
+        }
+
+        public void SetOwner(Collider owner)
+        {
+            if (owner == null)
+            {
+                return;
+            }
+
+            _owner = owner;
+
+            if (_collisionsController == null || _collisionsController.Collider == null)
+            {
+                return;
+            }
+
+            Physics.IgnoreCollision(_owner, _collisionsController.Collider);
         }
     }
 }

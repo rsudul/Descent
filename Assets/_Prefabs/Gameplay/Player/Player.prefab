@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &823013766453220978
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 989918918506258580}
-  m_Layer: 0
-  m_Name: PlayerBody
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &989918918506258580
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 823013766453220978}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5175616808587552804}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3834867420989370328
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,8 +33,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 989918918506258580}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3302915846753947387
@@ -80,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0da213b83b72946a29268752cb5295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueID: b0e9329b-9cdd-4624-9436-abf536fa65e1
+  _uniqueID: a2668381-fb0f-4dd2-9bfa-98ed08b3b0f5
 --- !u!114 &6100354459095868790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerBody: {fileID: 5175616808587552804}
-  _playerCameraPivot: {fileID: 0}
+  _playerCameraController: {fileID: 0}
   _hitController: {fileID: 2714429965774611764}
   _rigidbody: {fileID: 509301648802752551}
   _playerMovementController:
@@ -104,8 +72,7 @@ MonoBehaviour:
     _animationsSettings: {fileID: 11400000, guid: bc7f8c320a967c44c97d2781ed7c2150,
       type: 2}
   _playerCollisionsController:
-    _collisionSettings: {fileID: 11400000, guid: c7aa6203f45efa04fb25173e453c4902,
-      type: 2}
+    _collider: {fileID: 5586539351590801712}
 --- !u!114 &2714429965774611764
 MonoBehaviour:
   m_ObjectHideFlags: 0
