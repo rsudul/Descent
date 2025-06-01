@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LookSensitivityX>k__BackingField: 3.5
   <LookSensitivityY>k__BackingField: 3.5
-  <BankingSensitivity>k__BackingField: 1
+  <BankingSensitivity>k__BackingField: 32
   <LookSmoothness>k__BackingField: 8
   <RollAxisResetSpeed>k__BackingField: 1.5
   <MovementSpeed>k__BackingField: 10
