@@ -1,18 +1,18 @@
 using Descent.Common.AI.BehaviourTree.Core;
 using System;
+using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
+    [Serializable]
     public class BehaviourTreeActionNode : BehaviourTreeNode
     {
-        private readonly Func<BehaviourTreeContext, BehaviourTreeStatus> _action;
+        [SerializeReference]
+        public IBehaviourTreeAction Action;
 
-        public BehaviourTreeActionNode(Func<BehaviourTreeContext, BehaviourTreeStatus> action, string name = "Action")
+        public override BehaviourTreeStatus Update(BehaviourTreeContext context)
         {
-            _action = action;
-            Name = name;
+            return Action?.Execute(context) ?? BehaviourTreeStatus.Failure;
         }
-
-        public override BehaviourTreeStatus Update(BehaviourTreeContext context) => _action(context);
     }
 }

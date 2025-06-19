@@ -2,6 +2,7 @@ using Descent.Common.AI.BehaviourTree.Core;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
+    [System.Serializable]
     public class BehaviourTreeSelectorNode : BehaviourTreeCompositeNode
     {
         public override BehaviourTreeStatus Update(BehaviourTreeContext context)

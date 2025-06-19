@@ -1,21 +1,18 @@
 using Descent.Common.AI.BehaviourTree.Core;
 using System;
+using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
+    [Serializable]
     public class BehaviourTreeConditionNode : BehaviourTreeNode
     {
-        private readonly Func<BehaviourTreeContext, bool> _condition;
-
-        public BehaviourTreeConditionNode(Func<BehaviourTreeContext, bool> condition, string name = "Condition")
-        {
-            _condition = condition;
-            Name = name;
-        }
+        [SerializeReference]
+        public IBehaviourTreeCondition Condition;
 
         public override BehaviourTreeStatus Update(BehaviourTreeContext context)
         {
-            return _condition(context) ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure;
+            return Condition?.Check(context) == true ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure;
         }
     }
 }

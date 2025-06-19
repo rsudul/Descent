@@ -1,23 +1,31 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
+    [System.Serializable]
     public abstract class BehaviourTreeCompositeNode : BehaviourTreeNode
     {
+        [SerializeReference]
         protected List<BehaviourTreeNode> _children = new List<BehaviourTreeNode>();
+        public IReadOnlyList<BehaviourTreeNode> Children => _children.AsReadOnly();
 
         public void AddChild(BehaviourTreeNode child)
         {
+            if (child == null || _children.Contains(child))
+            {
+                return;
+            }
+
             _children.Add(child);
             child.Parent = this;
         }
 
-        public void SetChildren(IEnumerable<BehaviourTreeNode> children)
+        public void RemoveChild(BehaviourTreeNode child)
         {
-            _children.Clear();
-            foreach (BehaviourTreeNode child in children)
+            if (_children.Contains(child))
             {
-                AddChild(child);
+                _children.Remove(child);
             }
         }
     }
