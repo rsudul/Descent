@@ -17,6 +17,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
         private readonly Dictionary<BehaviourTreeNode, BehaviourTreeNodeView> _nodeViews = 
             new Dictionary<BehaviourTreeNode, BehaviourTreeNodeView>();
 
+        public IReadOnlyDictionary<BehaviourTreeNode, BehaviourTreeNodeView> NodeViews => _nodeViews;
         public bool IsDirty { get; private set; } = false;
 
         public event EventHandler<BehaviourTreeNode> OnNodeSelected;
@@ -36,8 +37,6 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             grid.StretchToParentSize();
 
             graphViewChanged = OnGraphViewChanged;
-
-            graphViewChanged += (change) => change;
 
             RegisterCallback<KeyDownEvent>(evt =>
             {
@@ -68,22 +67,41 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             _treeAsset = tree;
 
-            if (_treeAsset.Root == null)
-            {
-                _treeAsset.Root = new BehaviourTreeSelectorNode { Name = "Root" };
-                MarkDirty();
-            }
-
-            CreateNodeRecursive(_treeAsset.Root, null, new Vector2(100, 200));
+            LoadExistingTree();
         }
 
-        private void CreateNodeRecursive(BehaviourTreeNode node, BehaviourTreeNodeView parentView, Vector2 position)
+        private void LoadExistingTree()
+        {
+            if (_treeAsset == null)
+            {
+                return;
+            }
+
+            if (_treeAsset.Root == null)
+            {
+                CreateRootNode();
+            }
+
+            CreateNodeRecursive(_treeAsset.Root, null);
+        }
+
+        // this is just for loading existing tree asset
+        private void CreateRootNode()
+        {
+            _treeAsset.Root = ScriptableObject.CreateInstance<BehaviourTreeSelectorNode>();
+            _treeAsset.Root.Name = "Root";
+            AssetDatabase.AddObjectToAsset(_treeAsset.Root, _treeAsset);
+        }
+
+        // same as above
+        private void CreateNodeRecursive(BehaviourTreeNode node, BehaviourTreeNodeView parentView)
         {
             BehaviourTreeNodeView nodeView = new BehaviourTreeNodeView(node);
             AddElement(nodeView);
+            
             _nodeViews[node] = nodeView;
 
-            nodeView.SetPosition(new Rect(position, new Vector2(200, 150)));
+            nodeView.SetPosition(new Rect(node.Position, new Vector2(200, 150)));
 
             if (parentView != null)
             {
@@ -93,11 +111,9 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             if (node is BehaviourTreeCompositeNode composite)
             {
-                float yOffset = 200.0f;
                 for (int i = 0; i < composite.Children.Count; i++)
                 {
-                    Vector2 childPos = position + new Vector2(300.0f, i + yOffset);
-                    CreateNodeRecursive(composite.Children[i], nodeView, childPos);
+                    CreateNodeRecursive(composite.Children[i], nodeView);
                 }
             }
         }
@@ -118,11 +134,13 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             base.BuildContextualMenu(evt);
         }
 
+        // this actually adds a new node
         private void AddNodeToGraph(BehaviourTreeNode node, Vector2 position)
         {
             CreateNodeView(node, position);
 
-            if (_treeAsset.Root is BehaviourTreeCompositeNode rootComposite)
+            if (_treeAsset.Root is BehaviourTreeCompositeNode rootComposite
+                && rootComposite.Children.Count == 0)
             {
                 ConnectNodes(rootComposite, node);
             }
@@ -136,6 +154,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             AddElement(nodeView);
             nodeView.SetPosition(new Rect(position, new Vector2(200.0f, 150.0f)));
             _nodeViews[node] = nodeView;
+            AssetDatabase.AddObjectToAsset(node, _treeAsset);
 
             nodeView.RegisterCallback<MouseDownEvent>(evt =>
             {
@@ -149,6 +168,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             {
                 evt.menu.AppendAction("Delete Node", _ => DeleteNode(nodeView));
             }));
+
+            EditorUtility.SetDirty(node);
 
             return nodeView;
         }
@@ -219,6 +240,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             if (nodeView.Node.Parent is BehaviourTreeCompositeNode parentComposite)
             {
                 parentComposite.RemoveChild(nodeView.Node);
+                AssetDatabase.RemoveObjectFromAsset(nodeView.Node);
                 MarkDirty();
             }
         }
@@ -328,6 +350,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             }
 
             RemoveElement(nodeView);
+            AssetDatabase.RemoveObjectFromAsset(nodeView.Node);
 
             _nodeViews.Remove(node);
 

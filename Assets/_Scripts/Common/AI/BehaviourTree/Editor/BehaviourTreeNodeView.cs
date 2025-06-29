@@ -1,6 +1,8 @@
 using UnityEditor.Experimental.GraphView;
 using Descent.Common.AI.BehaviourTree.Nodes;
 using UnityEngine.UIElements;
+using UnityEditor;
+using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {
@@ -27,6 +29,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 Output.portName = "";
                 outputContainer.Add(Output);
             }
+
+            RegisterCallback<GeometryChangedEvent>(OnMoved);
 
             RefreshExpandedState();
             RefreshPorts();
@@ -56,8 +60,19 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
         public void UpdateTitle()
         {
-            title = string.IsNullOrEmpty(Node.Name) ? Node.GetType().Name : Node.Name;
+            title = Node.Name ?? Node.GetType().Name;
             MarkDirtyRepaint();
+        }
+
+        private void OnMoved(GeometryChangedEvent evt)
+        {
+            Vector2 newPos = GetPosition().position;
+            if (Node.Position != newPos)
+            {
+                Node.Position = newPos;
+                // !!! SAVE ASSETS LATER - WHEN YOU PRESS SAVE BUTTON !!!
+                AssetDatabase.SaveAssets();
+            }
         }
     }
 }

@@ -1,4 +1,7 @@
+using Descent.Common.AI.BehaviourTree.Actions.Movement;
+using Descent.Common.AI.BehaviourTree.Conditions;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
@@ -6,8 +9,44 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
     {
         public static readonly List<NodeCreationMenuItem> NodeTypes = new()
         {
-            new NodeCreationMenuItem("Composite/Selector", () => new BehaviourTreeSelectorNode { Name = "Selector" }),
-            new NodeCreationMenuItem("Composite/Sequence", () => new BehaviourTreeSequenceNode { Name = "Sequence" })
+            new NodeCreationMenuItem("Composite/Selector", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeSelectorNode>();
+                node.Name = "Selector";
+                return node;
+            }),
+            new NodeCreationMenuItem("Composite/Sequence", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeSequenceNode>();
+                node.Name = "Sequence";
+                return node;
+            }),
+            new NodeCreationMenuItem("Composite/Repeat Until Failure", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeRepeatUntilFailureNode>();
+                node.Name = "Repeat Until Failure";
+                return node;
+            }),
+            new NodeCreationMenuItem("Composite/Repeat While Condition", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeRepeatWhileConditionNode>();
+                node.Name = "Repeat While Condition";
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Set Movement Target", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Set Movement Target";
+                node.Action = new SetMovementTargetAction(Vector3.zero);
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Move To Target", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Move To Target";
+                node.Action = new MoveToTargetAction();
+                return node;
+            })
         };
     }
 }
