@@ -1,17 +1,24 @@
+using UnityEngine;
 using Descent.Common.AI.BehaviourTree.Core;
+using Descent.Common.AI.BehaviourTree.Core.Context;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
-    public abstract class BehaviourTreeNode
+    [System.Serializable]
+    public abstract class BehaviourTreeNode : ScriptableObject
     {
-        public string Name { get; set; }
+        [SerializeField]
+        public string Name = "Node";
+        [SerializeField]
         public BehaviourTreeNode Parent { get; set; }
+        [SerializeField]
+        public Vector2 Position { get; set; }
 
         public virtual void Initialize(BehaviourTreeContext context)
         {
 
         }
 
-        public abstract BehaviourTreeStatus Update(BehaviourTreeContext context);
+        public abstract BehaviourTreeStatus Tick(BehaviourTreeContext context);
     }
 }

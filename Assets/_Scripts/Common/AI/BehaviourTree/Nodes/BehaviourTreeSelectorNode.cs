@@ -1,14 +1,17 @@
 using Descent.Common.AI.BehaviourTree.Core;
+using Descent.Common.AI.BehaviourTree.Core.Context;
+using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
+    [System.Serializable]
     public class BehaviourTreeSelectorNode : BehaviourTreeCompositeNode
     {
-        public override BehaviourTreeStatus Update(BehaviourTreeContext context)
+        public override BehaviourTreeStatus Tick(BehaviourTreeContext context)
         {
             foreach (BehaviourTreeNode child in _children)
             {
-                BehaviourTreeStatus status = child.Update(context);
+                BehaviourTreeStatus status = child.Tick(context);
                 if (status != BehaviourTreeStatus.Failure)
                 {
                     return status;

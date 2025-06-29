@@ -1,0 +1,18 @@
+using Descent.Gameplay.Movement;
+using UnityEngine;
+
+namespace Descent.Common.AI.BehaviourTree.Core.Context
+{
+    public class AIMovementContext : BehaviourTreeContext
+    {
+        public Vector3? TargetPosition { get; set; }
+        public IMovementController MovementController { get; set; }
+
+        public bool IsMoving => MovementController?.IsMoving ?? false;
+
+        public AIMovementContext(GameObject owner, IMovementController movementController) : base(owner)
+        {
+            MovementController = movementController;
+        }
+    }
+}
