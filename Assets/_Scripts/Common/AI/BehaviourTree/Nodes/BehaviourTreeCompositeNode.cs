@@ -12,7 +12,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
         public void AddChild(BehaviourTreeNode child)
         {
-            if (child == null || _children.Contains(child))
+            if (child == null || _children.Contains(child) || child.Parent != null)
             {
                 return;
             }
@@ -23,9 +23,15 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
         public void RemoveChild(BehaviourTreeNode child)
         {
-            if (_children.Contains(child))
+            if (!_children.Contains(child))
             {
-                _children.Remove(child);
+                return;
+            }
+            _children.Remove(child);
+
+            if (child.Parent == this)
+            {
+                child.Parent = null;
             }
         }
     }
