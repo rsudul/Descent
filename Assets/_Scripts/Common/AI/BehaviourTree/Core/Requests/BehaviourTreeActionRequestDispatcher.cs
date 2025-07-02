@@ -1,3 +1,4 @@
+using Descent.Common.AI.BehaviourTree.Actions;
 using Descent.Common.AI.BehaviourTree.Actions.Data;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,8 @@ namespace Descent.Common.AI.BehaviourTree.Core.Requests
             _receivers.Remove(agent);
         }
 
-        public BehaviourTreeRequestResult RequestAction(Transform agent, string actionType, IBehaviourTreeActionData data)
+        public BehaviourTreeRequestResult RequestAction(Transform agent,
+            BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
         {
             if (!_receivers.TryGetValue(agent, out var receiver))
             {
