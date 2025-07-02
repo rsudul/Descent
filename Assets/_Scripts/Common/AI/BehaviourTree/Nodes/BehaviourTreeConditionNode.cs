@@ -11,9 +11,9 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         [SerializeField]
         public IBehaviourTreeCondition Condition;
 
-        public override BehaviourTreeStatus Tick(BehaviourTreeContext context)
+        public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            return Condition?.Check(context) == true ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure;
+            return Condition?.Check(contextRegistry) == true ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         [SerializeField]
         public BehaviourTreeNode Child;
 
-        public override BehaviourTreeStatus Tick(BehaviourTreeContext context)
+        public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
             if (Child == null)
             {
@@ -19,7 +19,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
             while (true)
             {
-                BehaviourTreeStatus status = Child.Tick(context);
+                BehaviourTreeStatus status = Child.Tick(contextRegistry);
                 if (status == BehaviourTreeStatus.Failure)
                 {
                     return BehaviourTreeStatus.Failure;

@@ -15,25 +15,28 @@ namespace Descent.Common.AI.BehaviourTree.Conditions
 
         public IsPlayerVisibleCondition() { }
 
-        public bool Check(BehaviourTreeContext context)
+        public bool Check(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (context is not AIMovementContext movementContext)
+            AIMovementContext context = contextRegistry.GetContext(typeof(AIMovementContext)) as AIMovementContext;
+
+            if (context == null)
             {
                 return false;
             }
 
-            if (movementContext.AgentTransform == null)
+            if (context.AgentTransform == null)
             {
                 return false;
             }
 
+            // TEMPORARY
             GameObject player = null;
             if (player == null)
             {
                 return false;
             }
 
-            Vector3 directionToPlayer = player.transform.position - movementContext.AgentTransform.position;
+            Vector3 directionToPlayer = player.transform.position - context.AgentTransform.position;
             float distance = directionToPlayer.magnitude;
 
             if (distance > _viewDistance)
@@ -41,13 +44,13 @@ namespace Descent.Common.AI.BehaviourTree.Conditions
                 return false;
             }
 
-            float angle = Vector3.Angle(movementContext.AgentTransform.forward, directionToPlayer);
+            float angle = Vector3.Angle(context.AgentTransform.forward, directionToPlayer);
             if (angle > _fieldOfView * 0.5f)
             {
                 return false;
             }
 
-            if (Physics.Raycast(movementContext.AgentTransform.position, directionToPlayer.normalized,
+            if (Physics.Raycast(context.AgentTransform.position, directionToPlayer.normalized,
                 out RaycastHit hit, _viewDistance))
             {
                 if (hit.collider.GetComponent<Player>())
