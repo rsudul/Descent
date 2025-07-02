@@ -64,7 +64,10 @@ namespace Descent.Common.AI.BehaviourTree.Conditions
 
         public IBehaviourTreeCondition Clone()
         {
-            return new IsPlayerVisibleCondition();
+            IsPlayerVisibleCondition clone = new IsPlayerVisibleCondition();
+            clone._viewDistance = _viewDistance;
+            clone._fieldOfView = _fieldOfView;
+            return clone;
         }
     }
 }
