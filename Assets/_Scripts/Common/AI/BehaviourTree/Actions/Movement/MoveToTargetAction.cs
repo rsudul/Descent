@@ -8,11 +8,9 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
 {
     public class MoveToTargetAction : IBehaviourTreeAction
     {
-        private readonly float _speed;
-
-        public MoveToTargetAction(float speed = 5.0f)
+        public MoveToTargetAction()
         {
-            _speed = speed;
+
         }
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
@@ -31,7 +29,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
                 return BehaviourTreeStatus.Failure;
             }
 
-            var requestData = new MoveToActionData(context.TargetPosition.Value, 5.0f);
+            var requestData = new MoveToActionData(context.TargetPosition.Value);
             var result = BehaviourTreeActionRequestDispatcher.Instance?.RequestAction(
                 context.AgentTransform,
                 BehaviourTreeActionType.MoveTo,
@@ -48,7 +46,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
 
         public IBehaviourTreeAction Clone()
         {
-            return new MoveToTargetAction(_speed);
+            return new MoveToTargetAction();
         }
     }
 }

@@ -16,12 +16,13 @@ namespace Descent.Gameplay.AI.Movement
     {
         private Rigidbody _rigidbody;
         private Vector3 _targetPosition = Vector3.zero;
-        private float _speed = 4.0f;
         private bool _hasTarget = false;
 
         public Vector3 Velocity { get; private set; }
         public bool IsMoving => _hasTarget;
 
+        [SerializeField]
+        private float _speed = 4.0f;
         [SerializeField]
         private float _acceleration = 8.0f;
         [SerializeField]
@@ -63,10 +64,9 @@ namespace Descent.Gameplay.AI.Movement
             Velocity = newVelocity;
         }
 
-        public void MoveTo(Vector3 targetPosition, float speed)
+        public void MoveTo(Vector3 targetPosition)
         {
             _targetPosition = targetPosition;
-            _speed = speed;
             _hasTarget = true;
         }
 
@@ -89,7 +89,7 @@ namespace Descent.Gameplay.AI.Movement
                 return BehaviourTreeRequestResult.Failure;
             }
 
-            MoveTo(actionData.Target, actionData.Speed);
+            MoveTo(actionData.Target);
             return BehaviourTreeRequestResult.Success;
         }
 
