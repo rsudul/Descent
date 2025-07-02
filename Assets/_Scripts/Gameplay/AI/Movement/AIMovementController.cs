@@ -1,12 +1,17 @@
+using Descent.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Actions.Data;
+using Descent.Common.AI.BehaviourTree.Core.Context;
 using Descent.Common.AI.BehaviourTree.Core.Requests;
 using Descent.Gameplay.Movement;
 using UnityEngine;
+using System;
 
 namespace Descent.Gameplay.AI.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class AIMovementController : MonoBehaviour, IMovementController, IBehaviourTreeRequestReceiver
+    [BehaviourTreeContextProvider(typeof(AIMovementContext))]
+    public class AIMovementController : MonoBehaviour,
+                                        IMovementController, IBehaviourTreeRequestReceiver, IBehaviourTreeContextProvider
     {
         private Rigidbody _rigidbody;
         private Vector3 _targetPosition = Vector3.zero;
@@ -85,6 +90,16 @@ namespace Descent.Gameplay.AI.Movement
 
             MoveTo(actionData.Target, actionData.Speed);
             return BehaviourTreeRequestResult.Success;
+        }
+
+        public BehaviourTreeContext GetBehaviourTreeContext(Type contextType, GameObject agent)
+        {
+            if (contextType == typeof(AIMovementContext))
+            {
+                return new AIMovementContext(agent, this);
+            }
+
+            return null;
         }
     }
 }

@@ -15,23 +15,25 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
             _speed = speed;
         }
 
-        public BehaviourTreeStatus Execute(BehaviourTreeContext context)
+        public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (context is not AIMovementContext movementContext)
+            AIMovementContext context = contextRegistry.GetContext(typeof(AIMovementContext)) as AIMovementContext;
+
+            if (context == null)
             {
-                Debug.LogWarning("MoveToTargetAction: context is not AIMovementContext");
+                Debug.LogWarning("MoveToTargetAction: No AIMovementContext found.");
                 return BehaviourTreeStatus.Failure;
             }
 
-            if (movementContext.Agent == null || movementContext.TargetPosition == null)
+            if (context.Agent == null || context.TargetPosition == null)
             {
                 Debug.LogWarning("MoveToTargetAction: missing agent or target");
                 return BehaviourTreeStatus.Failure;
             }
 
-            var requestData = new MoveToActionData(movementContext.TargetPosition.Value, 5.0f);
+            var requestData = new MoveToActionData(context.TargetPosition.Value, 5.0f);
             var result = BehaviourTreeActionRequestDispatcher.Instance?.RequestAction(
-                movementContext.AgentTransform,
+                context.AgentTransform,
                 "MoveTo",
                 requestData
              );
@@ -41,7 +43,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
                 return BehaviourTreeStatus.Failure;
             }
 
-            return movementContext.IsMoving ? BehaviourTreeStatus.Running : BehaviourTreeStatus.Success;
+            return context.IsMoving ? BehaviourTreeStatus.Running : BehaviourTreeStatus.Success;
         }
 
         public IBehaviourTreeAction Clone()

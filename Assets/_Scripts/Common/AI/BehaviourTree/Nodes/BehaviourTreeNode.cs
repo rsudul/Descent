@@ -14,11 +14,6 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         [SerializeField]
         public Vector2 Position { get; set; }
 
-        public virtual void Initialize(BehaviourTreeContext context)
-        {
-
-        }
-
-        public abstract BehaviourTreeStatus Tick(BehaviourTreeContext context);
+        public abstract BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry);
     }
 }

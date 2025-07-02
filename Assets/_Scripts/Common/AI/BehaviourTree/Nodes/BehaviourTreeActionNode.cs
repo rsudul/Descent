@@ -11,9 +11,9 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         [SerializeReference]
         public IBehaviourTreeAction Action;
 
-        public override BehaviourTreeStatus Tick(BehaviourTreeContext context)
+        public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            return Action?.Execute(context) ?? BehaviourTreeStatus.Failure;
+            return Action?.Execute(contextRegistry) ?? BehaviourTreeStatus.Failure;
         }
     }
 }

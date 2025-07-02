@@ -15,15 +15,17 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
             _targetPosition = target;
         }
 
-        public BehaviourTreeStatus Execute(BehaviourTreeContext context)
+        public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (context is not AIMovementContext movementContext)
+            AIMovementContext context = contextRegistry.GetContext(typeof(AIMovementContext)) as AIMovementContext;
+
+            if (context == null)
             {
-                Debug.LogWarning("SetMovementTargetAction: context is not AIMovementContext.");
+                Debug.LogWarning("SetMovementTargetAction: No AIMovementContext found.");
                 return BehaviourTreeStatus.Failure;
             }
 
-            movementContext.TargetPosition = _targetPosition;
+            context.TargetPosition = _targetPosition;
             return BehaviourTreeStatus.Success;
         }
 

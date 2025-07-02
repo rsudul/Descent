@@ -10,13 +10,13 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         [SerializeReference]
         public IBehaviourTreeCondition Condition;
 
-        public override BehaviourTreeStatus Tick(BehaviourTreeContext context)
+        public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            while (Condition?.Check(context) == true)
+            while (Condition?.Check(contextRegistry) == true)
             {
                 foreach (var child in Children)
                 {
-                    var status = child.Tick(context);
+                    var status = child.Tick(contextRegistry);
                     if (status != BehaviourTreeStatus.Success)
                     {
                         return status;
