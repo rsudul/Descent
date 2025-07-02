@@ -17,14 +17,13 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
                 return BehaviourTreeStatus.Failure;
             }
 
-            while (true)
+            BehaviourTreeStatus status = Child.Tick(contextRegistry);
+            if (status == BehaviourTreeStatus.Failure)
             {
-                BehaviourTreeStatus status = Child.Tick(contextRegistry);
-                if (status == BehaviourTreeStatus.Failure)
-                {
-                    return BehaviourTreeStatus.Failure;
-                }
+                return BehaviourTreeStatus.Failure;
             }
+
+            return BehaviourTreeStatus.Running;
         }
     }
 }

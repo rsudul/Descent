@@ -12,15 +12,17 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            while (Condition?.Check(contextRegistry) == true)
+            if (Condition == null || !Condition.Check(contextRegistry))
             {
-                foreach (var child in Children)
+                return BehaviourTreeStatus.Failure;
+            }
+
+            foreach (BehaviourTreeNode child in Children)
+            {
+                BehaviourTreeStatus status = child.Tick(contextRegistry);
+                if (status != BehaviourTreeStatus.Success)
                 {
-                    var status = child.Tick(contextRegistry);
-                    if (status != BehaviourTreeStatus.Success)
-                    {
-                        return status;
-                    }
+                    return status;
                 }
             }
 
