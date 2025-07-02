@@ -34,7 +34,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
             var requestData = new MoveToActionData(context.TargetPosition.Value, 5.0f);
             var result = BehaviourTreeActionRequestDispatcher.Instance?.RequestAction(
                 context.AgentTransform,
-                "MoveTo",
+                BehaviourTreeActionType.MoveTo,
                 requestData
              );
 

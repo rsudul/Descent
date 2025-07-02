@@ -5,6 +5,7 @@ using Descent.Common.AI.BehaviourTree.Core.Requests;
 using Descent.Gameplay.Movement;
 using UnityEngine;
 using System;
+using Descent.Common.AI.BehaviourTree.Actions;
 
 namespace Descent.Gameplay.AI.Movement
 {
@@ -76,9 +77,9 @@ namespace Descent.Gameplay.AI.Movement
             _rigidbody.velocity = Vector3.zero;
         }
 
-        public BehaviourTreeRequestResult HandleRequest(string actionType, IBehaviourTreeActionData data)
+        public BehaviourTreeRequestResult HandleRequest(BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
         {
-            if (actionType != "MoveTo")
+            if (actionType != BehaviourTreeActionType.MoveTo)
             {
                 return BehaviourTreeRequestResult.Ignored;
             }
