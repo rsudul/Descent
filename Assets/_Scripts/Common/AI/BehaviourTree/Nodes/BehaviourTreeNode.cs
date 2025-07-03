@@ -15,5 +15,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         public Vector2 Position { get; set; }
 
         public abstract BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry);
+
+        public abstract void ResetNode();
     }
 }

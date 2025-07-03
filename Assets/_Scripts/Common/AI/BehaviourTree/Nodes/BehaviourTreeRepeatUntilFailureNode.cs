@@ -7,6 +7,8 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
     [System.Serializable]
     public class BehaviourTreeRepeatUntilFailureNode : BehaviourTreeNode
     {
+        private bool _isChildRunning = false;
+
         [SerializeField]
         public BehaviourTreeNode Child;
 
@@ -18,12 +20,31 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
             }
 
             BehaviourTreeStatus status = Child.Tick(contextRegistry);
+
+            if (status == BehaviourTreeStatus.Running)
+            {
+                _isChildRunning = true;
+                return BehaviourTreeStatus.Running;
+            }
+
             if (status == BehaviourTreeStatus.Failure)
             {
+                ResetNode();
                 return BehaviourTreeStatus.Failure;
             }
 
+            if (_isChildRunning)
+            {
+                ResetNode();
+            }
+
             return BehaviourTreeStatus.Running;
+        }
+
+        public override void ResetNode()
+        {
+            _isChildRunning = false;
+            Child?.ResetNode();
         }
     }
 }
