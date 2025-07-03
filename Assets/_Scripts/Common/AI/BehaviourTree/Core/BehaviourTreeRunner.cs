@@ -1,7 +1,6 @@
 using UnityEngine;
 using Descent.Common.AI.BehaviourTree.Core.Context;
 using Descent.Common.AI.BehaviourTree.Nodes;
-using Descent.Gameplay.AI.Movement;
 using Descent.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Core
@@ -66,6 +65,16 @@ namespace Descent.Common.AI.BehaviourTree.Core
                     _contextRegistry.RegisterContext(attr.ContextType, context);
                 }
             }
+        }
+
+        public void ResetTree()
+        {
+            _rootNodeInstance?.ResetNode();
+        }
+
+        public bool HasTreeAsset(BehaviourTreeAsset asset)
+        {
+            return _treeAsset == asset;
         }
     }
 }

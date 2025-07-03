@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Descent.Common.AI.BehaviourTree.Nodes;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {
@@ -46,6 +47,15 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 {
                     EditorGUIUtility.labelWidth = 80;
                     _editor.OnInspectorGUI();
+
+                    if (Application.isPlaying && GUILayout.Button("Reset subtree (runtime)"))
+                    {
+                        if (_editor.target is BehaviourTreeNode node)
+                        {
+                            node.ResetNode();
+                            Debug.Log($"Subtree for node {node.Name ?? node.GetType().Name} was reset.");
+                        }
+                    }
                 }
             });
             _imgui.style.marginTop = 24;

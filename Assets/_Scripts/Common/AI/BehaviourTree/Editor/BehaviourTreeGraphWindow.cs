@@ -78,6 +78,10 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             Button saveButton = new Button(Save) { text = "Save " };
             saveButton.style.marginBottom = 6;
             toolbar.Add(saveButton);
+
+            Button resetButton = new Button(ResetTree) { text = "Reset BT (runtime)" };
+            resetButton.style.marginBottom = 6;
+            toolbar.Add(resetButton);
         }
 
         private void OnNodeDeleted(object sender, BehaviourTreeNodeView nodeView)
@@ -108,6 +112,38 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             AssetDatabase.Refresh();
 
             _graphView.ClearDirtyFlag();
+        }
+
+        private void ResetTree()
+        {
+            BehaviourTreeRunner runner = FindRunnerForTree(_treeAsset);
+
+            if (runner == null)
+            {
+                Debug.LogWarning("Could not find active BehaviourTreeRunner for this tree.");
+                return;
+            }
+
+            runner.ResetTree();
+            Debug.Log("BehaviourTree was reset successfully.");
+        }
+
+        private BehaviourTreeRunner FindRunnerForTree(BehaviourTreeAsset asset)
+        {
+            if (asset == null)
+            {
+                return null;
+            }
+
+            foreach (BehaviourTreeRunner runner in FindObjectsOfType<BehaviourTreeRunner>())
+            {
+                if (runner.HasTreeAsset(asset))
+                {
+                    return runner;
+                }
+            }
+
+            return null;
         }
     }
 }
