@@ -15,5 +15,10 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         {
             return Action?.Execute(contextRegistry) ?? BehaviourTreeStatus.Failure;
         }
+
+        public override void ResetNode()
+        {
+
+        }
     }
 }
