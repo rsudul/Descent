@@ -11,12 +11,15 @@ namespace Descent.Gameplay.AI.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
     [BehaviourTreeContextProvider(typeof(AIMovementContext))]
+    [RequireComponent(typeof(BehaviourTreeActionRequestDispatcher))]
     public class AIMovementController : MonoBehaviour,
                                         IMovementController, IBehaviourTreeRequestReceiver, IBehaviourTreeContextProvider
     {
         private Rigidbody _rigidbody;
         private Vector3 _targetPosition = Vector3.zero;
         private bool _hasTarget = false;
+
+        private BehaviourTreeActionRequestDispatcher _dispatcher;
 
         public Vector3 Velocity { get; private set; }
         public bool IsMoving => _hasTarget;
@@ -31,12 +34,14 @@ namespace Descent.Gameplay.AI.Movement
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            BehaviourTreeActionRequestDispatcher.Instance?.Register(transform, this);
+            _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
+
+            _dispatcher.Register(transform, this);
         }
 
         private void OnDestroy()
         {
-            BehaviourTreeActionRequestDispatcher.Instance?.Unregister(transform);
+            _dispatcher.Unregister(transform);
         }
 
         private void FixedUpdate()
