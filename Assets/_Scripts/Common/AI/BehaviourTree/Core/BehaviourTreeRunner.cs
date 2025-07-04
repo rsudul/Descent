@@ -9,6 +9,8 @@ namespace Descent.Common.AI.BehaviourTree.Core
     [RequireComponent(typeof(BehaviourTreeActionRequestDispatcher))]
     public class BehaviourTreeRunner : MonoBehaviour
     {
+        private BehaviourTreeActionRequestDispatcher _dispatcher;
+
         private BehaviourTreeNode _rootNodeInstance;
         private BehaviourTreeContextRegistry _contextRegistry;
 
@@ -23,25 +25,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
 
         private void Start()
         {
-            if (_treeAsset == null)
-            {
-                Debug.LogWarning($"{name} has no BehaviourTreeAsset assigned.");
-                enabled = false;
-                return;
-            }
-
-            BuildContextRegistry();
-            _rootNodeInstance = _treeAsset.CloneTree();
-
-            BehaviourTreeActionRequestDispatcher dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
-            if (dispatcher == null)
-            {
-                Debug.LogWarning($"No action request dispatcher found on {gameObject.name}");
-            }
-            else
-            {
-                InjectDispatcherToActions(_rootNodeInstance, dispatcher);
-            }
+            ResetAndRebuildTree();
         }
 
         private void Update()
@@ -56,9 +40,6 @@ namespace Descent.Common.AI.BehaviourTree.Core
             {
                 _rootNodeInstance.Tick(_contextRegistry);
                 _tickTimer = 0.0f;
-            }
-            {
-                
             }
         }
 
@@ -131,6 +112,47 @@ namespace Descent.Common.AI.BehaviourTree.Core
                 {
                     InjectDispatcherToActions(child, dispatcher);
                 }
+            }
+        }
+
+        public void SetBehaviourTreeAsset(BehaviourTreeAsset asset)
+        {
+            if (HasTreeAsset(asset))
+            {
+                return;
+            }
+
+            _treeAsset = asset;
+
+            ResetAndRebuildTree();
+        }
+
+        private void ResetAndRebuildTree()
+        {
+            _rootNodeInstance?.ResetNode();
+            _rootNodeInstance = null;
+            _contextRegistry = null;
+            _tickTimer = 0.0f;
+
+            if (_treeAsset == null)
+            {
+                Debug.LogWarning($"{name} has no BehaviourTreeAsset assigned.");
+                enabled = false;
+                return;
+            }
+
+            BuildContextRegistry();
+
+            _rootNodeInstance = _treeAsset.CloneTree();
+
+            _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
+
+            if (_dispatcher == null)
+            {
+                Debug.LogWarning($"No action request dispatcher found on {gameObject.name}");
+            } else
+            {
+                InjectDispatcherToActions(_rootNodeInstance, _dispatcher);
             }
         }
     }
