@@ -9,12 +9,15 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
     {
         private int _currentChildIndex = 0;
 
+        [SerializeField]
+        private bool _invert = false;
+
         [SerializeReference]
         public IBehaviourTreeCondition Condition;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (Condition == null || !Condition.Check(contextRegistry))
+            if (Condition == null)
             {
                 ResetNode();
                 return BehaviourTreeStatus.Failure;
@@ -23,6 +26,18 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
             if (Children?.Count == 0)
             {
                 return BehaviourTreeStatus.Success;
+            }
+
+            bool cond = Condition.Check(contextRegistry);
+            if (_invert)
+            {
+                cond = !cond;
+            }
+
+            if (!cond)
+            {
+                ResetNode();
+                return BehaviourTreeStatus.Failure;
             }
 
             while (_currentChildIndex < Children.Count)

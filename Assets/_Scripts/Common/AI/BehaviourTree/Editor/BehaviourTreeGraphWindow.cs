@@ -96,13 +96,15 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 return;
             }
 
-            foreach (var node in _graphView.NodeViews.Keys)
+            foreach (BehaviourTreeNode node in _graphView.NodeViews.Keys)
             {
                 if (node == null)
                 {
                     continue;
                 }
 
+                SerializedObject serializedObject = new SerializedObject(node);
+                serializedObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(node);
             }
 
@@ -144,6 +146,17 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             }
 
             return null;
+        }
+
+        public void RefreshNodeInspector(BehaviourTreeNode node)
+        {
+            if (_inspectorOverlay == null)
+            {
+                return;
+            }
+
+            _inspectorOverlay.ClearInspector();
+            _inspectorOverlay.UpdateSelection(this, node);
         }
     }
 }
