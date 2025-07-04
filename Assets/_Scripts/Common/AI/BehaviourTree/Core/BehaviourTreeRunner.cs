@@ -12,8 +12,14 @@ namespace Descent.Common.AI.BehaviourTree.Core
         private BehaviourTreeNode _rootNodeInstance;
         private BehaviourTreeContextRegistry _contextRegistry;
 
+        private float _tickTimer = 0.0f;
+
+        public bool PauseTree = false;
+
         [SerializeField]
         private BehaviourTreeAsset _treeAsset;
+        [SerializeField]
+        private float _tickInterval = 0.1f;
 
         private void Start()
         {
@@ -40,12 +46,20 @@ namespace Descent.Common.AI.BehaviourTree.Core
 
         private void Update()
         {
-            if (_rootNodeInstance == null || _contextRegistry?.Count == 0)
+            if (_rootNodeInstance == null || _contextRegistry?.Count == 0 || PauseTree)
             {
                 return;
             }
 
-            _rootNodeInstance.Tick(_contextRegistry);
+            _tickTimer += Time.deltaTime;
+            if (_tickTimer >= _tickInterval)
+            {
+                _rootNodeInstance.Tick(_contextRegistry);
+                _tickTimer = 0.0f;
+            }
+            {
+                
+            }
         }
 
         private void BuildContextRegistry()
@@ -82,6 +96,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
         public void ResetTree()
         {
             _rootNodeInstance?.ResetNode();
+            _tickTimer = 0.0f;
         }
 
         public bool HasTreeAsset(BehaviourTreeAsset asset)
