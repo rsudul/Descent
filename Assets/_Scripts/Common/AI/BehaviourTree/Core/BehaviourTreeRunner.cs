@@ -3,6 +3,8 @@ using Descent.Common.AI.BehaviourTree.Core.Context;
 using Descent.Common.AI.BehaviourTree.Nodes;
 using Descent.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Core.Requests;
+using Descent.Common.AI.BehaviourTree.Events.Arguments;
+using System;
 
 namespace Descent.Common.AI.BehaviourTree.Core
 {
@@ -18,6 +20,12 @@ namespace Descent.Common.AI.BehaviourTree.Core
 
         public bool PauseTree = false;
 
+        public event EventHandler<EventArgs> OnTreeStarted;
+        public event EventHandler<EventArgs> OnTreeStopped;
+        public event EventHandler<EventArgs> OnTreeReset;
+        public event EventHandler<BehaviourTreeAsset> OnTreeAssetChanged;
+        public event EventHandler<TickEventArgs> OnTreeTick;
+
         [SerializeField]
         private BehaviourTreeAsset _treeAsset;
         [SerializeField]
@@ -26,6 +34,11 @@ namespace Descent.Common.AI.BehaviourTree.Core
         private void Start()
         {
             ResetAndRebuildTree();
+        }
+
+        private void OnDisable()
+        {
+            OnTreeStopped?.Invoke(this, EventArgs.Empty);
         }
 
         private void Update()
@@ -38,7 +51,8 @@ namespace Descent.Common.AI.BehaviourTree.Core
             _tickTimer += Time.deltaTime;
             if (_tickTimer >= _tickInterval)
             {
-                _rootNodeInstance.Tick(_contextRegistry);
+                BehaviourTreeStatus status = _rootNodeInstance.Tick(_contextRegistry);
+                OnTreeTick?.Invoke(this, new TickEventArgs(_tickTimer, status));
                 _tickTimer = 0.0f;
             }
         }
@@ -78,6 +92,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
         {
             _rootNodeInstance?.ResetNode();
             _tickTimer = 0.0f;
+            OnTreeReset?.Invoke(this, EventArgs.Empty);
         }
 
         public bool HasTreeAsset(BehaviourTreeAsset asset)
@@ -124,6 +139,8 @@ namespace Descent.Common.AI.BehaviourTree.Core
 
             _treeAsset = asset;
 
+            OnTreeAssetChanged?.Invoke(this, _treeAsset);
+
             ResetAndRebuildTree();
         }
 
@@ -154,6 +171,8 @@ namespace Descent.Common.AI.BehaviourTree.Core
             {
                 InjectDispatcherToActions(_rootNodeInstance, _dispatcher);
             }
+
+            OnTreeStarted?.Invoke(this, EventArgs.Empty);
         }
     }
 }
