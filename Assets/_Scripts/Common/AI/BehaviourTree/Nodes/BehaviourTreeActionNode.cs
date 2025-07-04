@@ -18,7 +18,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
         public override void ResetNode()
         {
-
+            Action?.ResetAction();
         }
     }
 }

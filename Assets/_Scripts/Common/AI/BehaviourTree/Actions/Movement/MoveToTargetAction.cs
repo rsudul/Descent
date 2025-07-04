@@ -51,6 +51,11 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
             return new MoveToTargetAction();
         }
 
+        public void ResetAction()
+        {
+
+        }
+
         public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
         {
             _dispatcher = dispatcher;

@@ -7,6 +7,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
     {
         BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry);
         IBehaviourTreeAction Clone();
+        void ResetAction();
         void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher);
     }
 }
