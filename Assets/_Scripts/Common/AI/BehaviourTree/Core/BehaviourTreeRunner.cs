@@ -52,6 +52,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
             if (_tickTimer >= _tickInterval)
             {
                 BehaviourTreeStatus status = _rootNodeInstance.Tick(_contextRegistry);
+                LogNodeStatus(status);
                 OnTreeTick?.Invoke(this, new TickEventArgs(_tickTimer, status));
                 _tickTimer = 0.0f;
             }
@@ -173,6 +174,11 @@ namespace Descent.Common.AI.BehaviourTree.Core
             }
 
             OnTreeStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void LogNodeStatus(BehaviourTreeStatus status)
+        {
+            Debug.Log($"[BT][{gameObject.name}] Tick: Root node status = {status}");
         }
     }
 }
