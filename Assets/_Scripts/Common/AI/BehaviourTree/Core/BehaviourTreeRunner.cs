@@ -2,9 +2,11 @@ using UnityEngine;
 using Descent.Common.AI.BehaviourTree.Core.Context;
 using Descent.Common.AI.BehaviourTree.Nodes;
 using Descent.Attributes.AI;
+using Descent.Common.AI.BehaviourTree.Core.Requests;
 
 namespace Descent.Common.AI.BehaviourTree.Core
 {
+    [RequireComponent(typeof(BehaviourTreeActionRequestDispatcher))]
     public class BehaviourTreeRunner : MonoBehaviour
     {
         private BehaviourTreeNode _rootNodeInstance;
@@ -24,6 +26,16 @@ namespace Descent.Common.AI.BehaviourTree.Core
 
             BuildContextRegistry();
             _rootNodeInstance = _treeAsset.CloneTree();
+
+            BehaviourTreeActionRequestDispatcher dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
+            if (dispatcher == null)
+            {
+                Debug.LogWarning($"No action request dispatcher found on {gameObject.name}");
+            }
+            else
+            {
+                InjectDispatcherToActions(_rootNodeInstance, dispatcher);
+            }
         }
 
         private void Update()
@@ -75,6 +87,36 @@ namespace Descent.Common.AI.BehaviourTree.Core
         public bool HasTreeAsset(BehaviourTreeAsset asset)
         {
             return _treeAsset == asset;
+        }
+
+        private void InjectDispatcherToActions(BehaviourTreeNode node, BehaviourTreeActionRequestDispatcher dispatcher)
+        {
+            if (node is BehaviourTreeActionNode actionNode && actionNode.Action != null)
+            {
+                actionNode.Action.InjectDispatcher(dispatcher);
+            }
+
+            if (node is BehaviourTreeCompositeNode compositeNode)
+            {
+                foreach (BehaviourTreeNode child in compositeNode.Children)
+                {
+                    InjectDispatcherToActions(child, dispatcher);
+                }
+            }
+            else if (node is BehaviourTreeRepeatUntilFailureNode repeatUntilFailureNode)
+            {
+                if (repeatUntilFailureNode.Child != null)
+                {
+                    InjectDispatcherToActions(repeatUntilFailureNode.Child, dispatcher);
+                }
+            }
+            else if (node is BehaviourTreeRepeatWhileConditionNode repeatWhileConditionNode)
+            {
+                foreach (BehaviourTreeNode child in repeatWhileConditionNode.Children)
+                {
+                    InjectDispatcherToActions(child, dispatcher);
+                }
+            }
         }
     }
 }

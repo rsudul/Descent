@@ -7,21 +7,8 @@ namespace Descent.Common.AI.BehaviourTree.Core.Requests
 {
     public class BehaviourTreeActionRequestDispatcher : MonoBehaviour
     {
-        public static BehaviourTreeActionRequestDispatcher Instance { get; private set; }
-
         private readonly Dictionary<Transform, IBehaviourTreeRequestReceiver> _receivers =
             new Dictionary<Transform, IBehaviourTreeRequestReceiver>();
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-
-            Instance = this;
-        }
 
         public void Register(Transform agent, IBehaviourTreeRequestReceiver receiver)
         {

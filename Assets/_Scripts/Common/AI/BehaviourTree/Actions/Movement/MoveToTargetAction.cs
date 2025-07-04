@@ -8,13 +8,16 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
 {
     public class MoveToTargetAction : IBehaviourTreeAction
     {
-        public MoveToTargetAction()
-        {
-
-        }
+        private BehaviourTreeActionRequestDispatcher _dispatcher;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
+            if (_dispatcher == null)
+            {
+                Debug.LogError("MoveToTargetAction does not reference a valid action request dispatcher.");
+                return BehaviourTreeStatus.Failure;
+            }
+
             AIMovementContext context = contextRegistry.GetContext(typeof(AIMovementContext)) as AIMovementContext;
 
             if (context == null)
@@ -30,11 +33,10 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
             }
 
             var requestData = new MoveToActionData(context.TargetPosition.Value);
-            var result = BehaviourTreeActionRequestDispatcher.Instance?.RequestAction(
-                context.AgentTransform,
+
+            BehaviourTreeRequestResult result = _dispatcher.RequestAction(context.AgentTransform,
                 BehaviourTreeActionType.MoveTo,
-                requestData
-             );
+                requestData);
 
             if (result == BehaviourTreeRequestResult.Failure)
             {
@@ -47,6 +49,11 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
         public IBehaviourTreeAction Clone()
         {
             return new MoveToTargetAction();
+        }
+
+        public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
         }
     }
 }
