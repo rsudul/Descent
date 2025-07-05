@@ -1,4 +1,4 @@
-﻿using Descent.Common.AI.BehaviourTree.Core;
+﻿using Descent.Common.AI.BehaviourTree.Conditions;
 using System;
 using System.Linq;
 using UnityEditor;
@@ -33,19 +33,19 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             EditorGUI.BeginProperty(position, label, property);
 
             float lh = EditorGUIUtility.singleLineHeight;
-            var foldRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, lh);
-            var popupRect = new Rect(position.x + EditorGUIUtility.labelWidth,
+            Rect foldRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, lh);
+            Rect popupRect = new Rect(position.x + EditorGUIUtility.labelWidth,
             position.y,
             position.width - EditorGUIUtility.labelWidth,
             lh);
 
             property.isExpanded = EditorGUI.Foldout(foldRect, property.isExpanded, label, true);
 
-            var display = new string[_names.Length + 1];
+            string[] display = new string[_names.Length + 1];
             display[0] = "<None>";
             Array.Copy(_names, 0, display, 1, _names.Length);
 
-            var curType = property.managedReferenceValue?.GetType();
+            Type curType = property.managedReferenceValue?.GetType();
             int curIndex = curType == null
                 ? 0
                 : Array.FindIndex(_types, t => t == curType) + 1;
@@ -62,7 +62,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             if (property.isExpanded && property.managedReferenceValue != null)
             {
-                var childPos = new Rect(position.x,
+                Rect childPos = new Rect(position.x,
                                         position.y + lh + EditorGUIUtility.standardVerticalSpacing,
                                         position.width,
                                         GetPropertyHeight(property, label) - lh);

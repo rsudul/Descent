@@ -3,7 +3,7 @@ using Descent.Common.AI.BehaviourTree.Actions.Data;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Descent.Common.AI.BehaviourTree.Core.Requests
+namespace Descent.Common.AI.BehaviourTree.Requests
 {
     public class BehaviourTreeActionRequestDispatcher : MonoBehaviour
     {
@@ -23,7 +23,7 @@ namespace Descent.Common.AI.BehaviourTree.Core.Requests
         public BehaviourTreeRequestResult RequestAction(Transform agent,
             BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
         {
-            if (!_receivers.TryGetValue(agent, out var receiver))
+            if (!_receivers.TryGetValue(agent, out IBehaviourTreeRequestReceiver receiver))
             {
                 return BehaviourTreeRequestResult.Failure;
             }

@@ -1,4 +1,4 @@
-namespace Descent.Common.AI.BehaviourTree.Core.Requests
+namespace Descent.Common.AI.BehaviourTree.Requests
 {
     public enum BehaviourTreeRequestResult
     {

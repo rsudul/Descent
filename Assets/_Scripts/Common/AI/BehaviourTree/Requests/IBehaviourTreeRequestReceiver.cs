@@ -1,7 +1,7 @@
 using Descent.Common.AI.BehaviourTree.Actions;
 using Descent.Common.AI.BehaviourTree.Actions.Data;
 
-namespace Descent.Common.AI.BehaviourTree.Core.Requests
+namespace Descent.Common.AI.BehaviourTree.Requests
 {
     public interface IBehaviourTreeRequestReceiver
     {

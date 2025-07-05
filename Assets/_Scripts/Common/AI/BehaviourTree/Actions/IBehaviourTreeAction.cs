@@ -1,5 +1,5 @@
-using Descent.Common.AI.BehaviourTree.Core.Context;
-using Descent.Common.AI.BehaviourTree.Core.Requests;
+using Descent.Common.AI.BehaviourTree.Context;
+using Descent.Common.AI.BehaviourTree.Requests;
 
 namespace Descent.Common.AI.BehaviourTree.Core
 {

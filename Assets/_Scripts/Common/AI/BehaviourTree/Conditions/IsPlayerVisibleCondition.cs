@@ -1,5 +1,4 @@
-using Descent.Common.AI.BehaviourTree.Core;
-using Descent.Common.AI.BehaviourTree.Core.Context;
+using Descent.Common.AI.BehaviourTree.Context;
 using Descent.Gameplay.Player;
 using UnityEngine;
 

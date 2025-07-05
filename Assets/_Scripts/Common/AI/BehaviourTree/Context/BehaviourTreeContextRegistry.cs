@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Descent.Common.AI.BehaviourTree.Core.Context
+namespace Descent.Common.AI.BehaviourTree.Context
 {
     public class BehaviourTreeContextRegistry
     {
@@ -16,7 +16,7 @@ namespace Descent.Common.AI.BehaviourTree.Core.Context
 
         public BehaviourTreeContext GetContext(Type contextType)
         {
-            if (!_contexts.TryGetValue(contextType, out var context))
+            if (!_contexts.TryGetValue(contextType, out BehaviourTreeContext context))
             {
                 return null;
             }
