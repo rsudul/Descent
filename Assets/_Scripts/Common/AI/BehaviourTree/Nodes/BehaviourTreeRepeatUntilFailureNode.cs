@@ -1,6 +1,6 @@
 using Descent.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Core;
-using Descent.Common.AI.BehaviourTree.Core.Context;
+using Descent.Common.AI.BehaviourTree.Context;
 using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes

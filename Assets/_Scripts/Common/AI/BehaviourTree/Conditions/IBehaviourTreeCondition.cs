@@ -1,6 +1,6 @@
-using Descent.Common.AI.BehaviourTree.Core.Context;
+using Descent.Common.AI.BehaviourTree.Context;
 
-namespace Descent.Common.AI.BehaviourTree.Core
+namespace Descent.Common.AI.BehaviourTree.Conditions
 {
     public interface IBehaviourTreeCondition
     {

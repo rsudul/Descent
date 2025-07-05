@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Descent.Common.AI.BehaviourTree.Core.Context
+namespace Descent.Common.AI.BehaviourTree.Context
 {
     public class BehaviourTreeContext
     {

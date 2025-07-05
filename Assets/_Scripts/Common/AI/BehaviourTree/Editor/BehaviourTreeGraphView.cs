@@ -107,7 +107,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             if (parentView != null)
             {
-                var edge = parentView.Output.ConnectTo(nodeView.Input);
+                Edge edge = parentView.Output.ConnectTo(nodeView.Input);
                 AddElement(edge);
             }
 
@@ -218,7 +218,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
         private void RemoveElements(GraphViewChange change)
         {
-            foreach (var element in change.elementsToRemove)
+            foreach (GraphElement element in change.elementsToRemove)
             {
                 if (element is Edge edge)
                 {
@@ -362,8 +362,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
         private void ClearGraph()
         {
-            var elements = graphElements.ToList();
-            foreach (var element in elements)
+            List<GraphElement> elements = graphElements.ToList();
+            foreach (GraphElement element in elements)
             {
                 RemoveElement(element);
             }

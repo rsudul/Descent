@@ -12,7 +12,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
 
         public BehaviourTreeNode CloneTree()
         {
-            var cloneMap = new Dictionary<BehaviourTreeNode, BehaviourTreeNode>();
+            Dictionary<BehaviourTreeNode, BehaviourTreeNode> cloneMap = new Dictionary<BehaviourTreeNode, BehaviourTreeNode>();
             return CloneNodeRecursive(Root, cloneMap);
         }
 
@@ -23,7 +23,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
                 return null;
             }
 
-            if (map.TryGetValue(original, out var existingClone))
+            if (map.TryGetValue(original, out BehaviourTreeNode existingClone))
             {
                 return existingClone;
             }
@@ -36,7 +36,7 @@ namespace Descent.Common.AI.BehaviourTree.Core
             {
                 foreach (BehaviourTreeNode child in compositeSource.Children)
                 {
-                    var childClone = CloneNodeRecursive(child, map);
+                    BehaviourTreeNode childClone = CloneNodeRecursive(child, map);
                     compositeOriginal.AddChild(childClone);
                 }
             }

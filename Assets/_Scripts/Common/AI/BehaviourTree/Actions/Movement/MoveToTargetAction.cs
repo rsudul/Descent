@@ -1,7 +1,7 @@
 using Descent.Common.AI.BehaviourTree.Actions.Data;
 using Descent.Common.AI.BehaviourTree.Core;
-using Descent.Common.AI.BehaviourTree.Core.Context;
-using Descent.Common.AI.BehaviourTree.Core.Requests;
+using Descent.Common.AI.BehaviourTree.Context;
+using Descent.Common.AI.BehaviourTree.Requests;
 using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Actions.Movement
@@ -32,7 +32,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
                 return BehaviourTreeStatus.Failure;
             }
 
-            var requestData = new MoveToActionData(context.TargetPosition.Value);
+            MoveToActionData requestData = new MoveToActionData(context.TargetPosition.Value);
 
             BehaviourTreeRequestResult result = _dispatcher.RequestAction(context.AgentTransform,
                 BehaviourTreeActionType.MoveTo,

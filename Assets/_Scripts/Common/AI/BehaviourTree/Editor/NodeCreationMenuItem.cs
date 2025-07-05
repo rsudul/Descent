@@ -1,6 +1,7 @@
 using System;
+using Descent.Common.AI.BehaviourTree.Nodes;
 
-namespace Descent.Common.AI.BehaviourTree.Nodes
+namespace Descent.Common.AI.BehaviourTree.Editor
 {
     public class NodeCreationMenuItem
     {

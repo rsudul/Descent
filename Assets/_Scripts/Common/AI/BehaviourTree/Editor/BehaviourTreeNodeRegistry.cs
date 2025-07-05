@@ -1,8 +1,9 @@
 using Descent.Common.AI.BehaviourTree.Actions.Movement;
 using System.Collections.Generic;
 using UnityEngine;
+using Descent.Common.AI.BehaviourTree.Nodes;
 
-namespace Descent.Common.AI.BehaviourTree.Nodes
+namespace Descent.Common.AI.BehaviourTree.Editor
 {
     public static class BehaviourTreeNodeRegistry
     {

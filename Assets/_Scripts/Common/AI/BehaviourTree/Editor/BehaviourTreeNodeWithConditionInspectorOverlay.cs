@@ -1,5 +1,6 @@
 using Descent.Common.AI.BehaviourTree.Nodes;
 using Descent.Common.AI.BehaviourTree.Core;
+using Descent.Common.AI.BehaviourTree.Conditions;
 using System;
 using System.Collections.Generic;
 using UnityEditor.UIElements;

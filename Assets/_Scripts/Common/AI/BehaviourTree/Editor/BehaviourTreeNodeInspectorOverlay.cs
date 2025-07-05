@@ -46,7 +46,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             };
             headerRow.Add(spacer);
 
-            var closeBtn = new Button(() => visible = false)
+            Button closeBtn = new Button(() => visible = false)
             {
                 text = "✕",
                 style =
@@ -126,8 +126,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             foreach (var pair in fields)
             {
-                var field = pair.Field;
-                var attr = pair.Attr;
+                FieldInfo field = pair.Field;
+                ShowInNodeInspectorAttribute attr = pair.Attr;
                 string label = attr.Label ?? ObjectNames.NicifyVariableName(field.Name);
 
                 bool isNodeName = field.GetCustomAttribute<NodeNameFieldAttribute>() != null;
