@@ -1,6 +1,7 @@
 using UnityEngine;
 using Descent.Common.AI.BehaviourTree.Core;
 using Descent.Common.AI.BehaviourTree.Core.Context;
+using Descent.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
@@ -8,6 +9,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
     public abstract class BehaviourTreeNode : ScriptableObject
     {
         [SerializeField]
+        [ShowInNodeInspector("Name", 1000)]
         public string Name = "Node";
         [SerializeField]
         public BehaviourTreeNode Parent { get; set; }

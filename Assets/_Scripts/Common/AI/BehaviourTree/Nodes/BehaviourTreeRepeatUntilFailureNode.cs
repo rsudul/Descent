@@ -1,3 +1,4 @@
+using Descent.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Core;
 using Descent.Common.AI.BehaviourTree.Core.Context;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
     [System.Serializable]
+    [NodeInspectorLabel("Repeat Until Failure")]
     public class BehaviourTreeRepeatUntilFailureNode : BehaviourTreeNode
     {
         private bool _isChildRunning = false;

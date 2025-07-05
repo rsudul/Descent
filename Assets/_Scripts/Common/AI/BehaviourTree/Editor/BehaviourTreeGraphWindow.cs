@@ -4,7 +4,9 @@ using UnityEngine.UIElements;
 using Descent.Common.AI.BehaviourTree.Core;
 using UnityEditor.UIElements;
 using System;
+using System.Reflection;
 using Descent.Common.AI.BehaviourTree.Nodes;
+using Descent.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {
@@ -36,8 +38,12 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             Save();
 
-            _graphView.OnNodeSelected -= _inspectorOverlay.UpdateSelection;
-            _graphView.OnNodeDeleted -= OnNodeDeleted;
+            if (_inspectorOverlay != null)
+            {
+                _graphView.OnNodeSelected -= _inspectorOverlay.UpdateSelection;
+                _graphView.OnNodeDeleted -= OnNodeDeleted;
+            }
+
             rootVisualElement.Remove(_graphView);
         }
 
@@ -50,10 +56,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             _graphView.StretchToParentSize();
             rootVisualElement.Add(_graphView);
 
-            _inspectorOverlay = new BehaviourTreeNodeInspectorOverlay();
-            rootVisualElement.Add(_inspectorOverlay);
-
-            _graphView.OnNodeSelected += _inspectorOverlay.UpdateSelection;
+            _graphView.OnNodeSelected += (sender, node) => RefreshNodeInspector(node);
             _graphView.OnNodeDeleted += OnNodeDeleted;
         }
 
@@ -96,13 +99,15 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 return;
             }
 
-            foreach (var node in _graphView.NodeViews.Keys)
+            foreach (BehaviourTreeNode node in _graphView.NodeViews.Keys)
             {
                 if (node == null)
                 {
                     continue;
                 }
 
+                SerializedObject serializedObject = new SerializedObject(node);
+                serializedObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(node);
             }
 
@@ -144,6 +149,49 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             }
 
             return null;
+        }
+
+        public void RefreshNodeInspector(BehaviourTreeNode node)
+        {
+            NodeInspectorOverlayType overlayType = NodeInspectorOverlayType.Default;
+
+            if (node != null)
+            {
+                NodeInspectorOverlayAttribute attr = node.GetType().GetCustomAttribute<NodeInspectorOverlayAttribute>();
+                if (attr != null)
+                {
+                    overlayType = attr.OverlayType;
+                }
+            }
+
+            Type overlayClassType = typeof(BehaviourTreeNodeInspectorOverlay);
+
+            switch (overlayType)
+            {
+                case NodeInspectorOverlayType.WithCondition:
+                    overlayClassType = typeof(BehaviourTreeNodeWithConditionInspectorOverlay);
+                    break;
+
+                case NodeInspectorOverlayType.Default:
+                default:
+                    overlayClassType = typeof(BehaviourTreeNodeInspectorOverlay);
+                    break;
+            }
+
+            bool overlayIsWrongType = (_inspectorOverlay == null) || (_inspectorOverlay.GetType() != overlayClassType);
+
+            if (overlayIsWrongType)
+            {
+                if (_inspectorOverlay != null)
+                {
+                    rootVisualElement.Remove(_inspectorOverlay);
+                }
+
+                _inspectorOverlay = (BehaviourTreeNodeInspectorOverlay)Activator.CreateInstance(overlayClassType);
+                rootVisualElement.Add(_inspectorOverlay);
+            }
+
+            _inspectorOverlay.UpdateSelection(this, node);
         }
     }
 }

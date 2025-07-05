@@ -1,3 +1,4 @@
+using Descent.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Core;
 using Descent.Common.AI.BehaviourTree.Core.Context;
 using UnityEngine;
@@ -5,16 +6,23 @@ using UnityEngine;
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
     [System.Serializable]
+    [NodeInspectorOverlay(NodeInspectorOverlayType.WithCondition)]
+    [NodeInspectorLabel("Repeat While Condition")]
     public class BehaviourTreeRepeatWhileConditionNode : BehaviourTreeCompositeNode
     {
         private int _currentChildIndex = 0;
 
+        [SerializeField]
+        [ConditionInvertField]
+        private bool _invert = false;
+
         [SerializeReference]
+        [ShowInNodeInspector("Condition")]
         public IBehaviourTreeCondition Condition;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (Condition == null || !Condition.Check(contextRegistry))
+            if (Condition == null)
             {
                 ResetNode();
                 return BehaviourTreeStatus.Failure;
@@ -23,6 +31,18 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
             if (Children?.Count == 0)
             {
                 return BehaviourTreeStatus.Success;
+            }
+
+            bool cond = Condition.Check(contextRegistry);
+            if (_invert)
+            {
+                cond = !cond;
+            }
+
+            if (!cond)
+            {
+                ResetNode();
+                return BehaviourTreeStatus.Failure;
             }
 
             while (_currentChildIndex < Children.Count)
