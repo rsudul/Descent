@@ -15,21 +15,36 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
         public BehaviourTreeNodeInspectorOverlay()
         {
-            style.position = Position.Absolute;
-            style.width = 360;
-            style.backgroundColor = new StyleColor(new Color(0f, 0f, 0f, 0.7f));
-            style.borderBottomLeftRadius = 10;
-            style.borderBottomRightRadius = 10;
-            style.borderTopLeftRadius = 10;
-            style.borderTopRightRadius = 10;
-            style.paddingLeft = 18;
-            style.paddingRight = 18;
-            style.paddingTop = 18;
-            style.paddingBottom = 12;
-            style.marginTop = 16;
-            style.marginRight = 16;
-            style.flexDirection = FlexDirection.Column;
-            style.alignItems = Align.FlexStart;
+            StyleOverlay();
+
+            VisualElement headerRow = new VisualElement()
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    alignItems = Align.Center,
+                    marginBottom = -4
+                }
+            };
+
+            Label nameLabel = new Label("Node")
+            {
+                style =
+                {
+                    unityFontStyleAndWeight = FontStyle.Bold,
+                    fontSize = 14
+                }
+            };
+            headerRow.Add(nameLabel);
+
+            VisualElement spacer = new VisualElement()
+            {
+                style =
+                {
+                    flexGrow = 1
+                }
+            };
+            headerRow.Add(spacer);
 
             var closeBtn = new Button(() => visible = false)
             {
@@ -38,16 +53,20 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 {
                     alignSelf = Align.FlexEnd,
                     unityFontStyleAndWeight = FontStyle.Bold,
-                    fontSize = 12,
-                    color = new StyleColor(Color.gray),
+                    fontSize = 10,
+                    color = new StyleColor(Color.white),
                     marginBottom = 4,
-                    marginTop = -6
+                    marginTop = -6,
+                    width = 20,
+                    height = 20
                 }
             };
-            Add(closeBtn);
+            headerRow.Add(closeBtn);
+
+            Add(headerRow);
 
             _customInspector = new VisualElement();
-            _customInspector.style.marginTop = 12;
+            _customInspector.style.marginTop = 8;
             Add(_customInspector);
 
             visible = false;
@@ -71,16 +90,12 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 return;
             }
 
-            Label nameLabel = new Label(node.Name ?? node.GetType().Name)
+            VisualElement headerRow = ElementAt(0);
+            Label nameLabel = headerRow?.ElementAt(0) as Label;
+            if (nameLabel != null)
             {
-                style =
-                {
-                    unityFontStyleAndWeight = FontStyle.Bold,
-                    fontSize = 18,
-                    marginBottom = 2
-                }
-            };
-            _customInspector.Add(nameLabel);
+                nameLabel.text = node.Name ?? node.GetType().Name;
+            }
 
             string nodeType = GetNodeType(node);
             Label typeLabel = new Label(nodeType)
@@ -92,6 +107,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                     marginBottom = 10
                 }
             };
+
             _customInspector.Add(typeLabel);
 
             SerializedObject serializedObject = new SerializedObject(node);
@@ -133,6 +149,27 @@ namespace Descent.Common.AI.BehaviourTree.Editor
         {
             string customName = node.GetType().GetCustomAttribute<NodeInspectorLabelAttribute>()?.Label;
             return customName ?? node.GetType().Name;
+        }
+
+        protected virtual void StyleOverlay()
+        {
+            style.position = Position.Absolute;
+            style.top = 0;
+            style.right = 0;
+
+            style.maxWidth = 320;
+            style.minWidth = 270;
+
+            style.marginTop = 40;
+            style.marginRight = 16;
+            style.paddingTop = 16;
+            style.paddingLeft = 16;
+            style.paddingRight = 16;
+            style.paddingBottom = 12;
+
+            style.backgroundColor = new StyleColor(new Color(0.0f, 0.0f, 0.0f, 0.25f));
+
+            style.flexDirection = FlexDirection.Column;
         }
     }
 }

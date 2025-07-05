@@ -32,8 +32,10 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 style =
                 {
                     flexDirection = FlexDirection.Row,
-                    alignItems = Align.Center,
-                    marginBottom = 8
+                    marginLeft = 4,
+                    marginBottom = 4,
+                    minWidth = 238,
+                    maxWidth = 288
                 }
             };
 
@@ -64,9 +66,9 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             {
                 style =
                 {
-                    minWidth = 120,
-                    maxWidth = 180,
-                    marginRight = 8
+                    minWidth = 160,
+                    maxWidth = 160,
+                    marginRight = 4
                 }
             };
             dropdown.RegisterValueChangedCallback(evt =>
@@ -87,22 +89,15 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             };
             conditionRow.Add(isLabel);
 
-            if (conditionProperty.managedReferenceValue != null)
+            NodeInspectorOverlayAttribute attr = node.GetType().GetCustomAttribute<NodeInspectorOverlayAttribute>();
+            if (attr != null && attr.OverlayType == NodeInspectorOverlayType.WithCondition)
             {
-                PropertyField conditionField = new PropertyField(conditionProperty, "")
-                {
-                    style =
-                    {
-                        minWidth = 100,
-                        marginRight = 8
-                    }
-                };
-                conditionRow.Add(conditionField);
-            }
+                FieldInfo invertField = node.GetType()
+                    .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .FirstOrDefault(f => f.GetCustomAttribute<ConditionInvertFieldAttribute>() != null);
 
-            if (node.GetType().Name == "BehaviourTreeRepeatWhileConditionNode")
-            {
-                SerializedProperty invertProp = serializedObject.FindProperty("_invert");
+                SerializedProperty invertProp = serializedObject.FindProperty(invertField.Name);
+
                 if (invertProp != null)
                 {
                     PopupField<string> tfDropdown = new PopupField<string>(new List<string> { "TRUE", "FALSE" },
@@ -112,7 +107,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                         invertProp.boolValue = evt.newValue == "FALSE";
                         serializedObject.ApplyModifiedProperties();
                     });
-                    tfDropdown.style.minWidth = 64;
+                    tfDropdown.style.minWidth = 68;
+                    tfDropdown.style.maxWidth = 68;
                     conditionRow.Add(tfDropdown);
                 }
             }
@@ -150,16 +146,12 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 return;
             }
 
-            Label nameLabel = new Label(node.Name ?? node.GetType().Name)
+            VisualElement headerRow = ElementAt(0);
+            Label nameLabel = headerRow?.ElementAt(0) as Label;
+            if (nameLabel != null)
             {
-                style =
-                {
-                    unityFontStyleAndWeight = FontStyle.Bold,
-                    fontSize = 18,
-                    marginBottom = 2
-                }
-            };
-            _customInspector.Add(nameLabel);
+                nameLabel.text = node.Name ?? node.GetType().Name;
+            }
 
             string nodeType = GetNodeType(node);
             Label typeLabel = new Label(nodeType)
@@ -177,19 +169,29 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             if (_pendingConditionSelection.HasValue)
             {
-                SerializedProperty condProp = serializedObject.FindProperty("Condition");
-                int index = _pendingConditionSelection.Value;
-                if (index == 0)
+                string conditionFieldName = node.GetType()
+                    .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .FirstOrDefault(f => typeof(IBehaviourTreeCondition).IsAssignableFrom(f.FieldType) &&
+                    f.GetCustomAttribute<ShowInNodeInspectorAttribute>() != null)
+                    ?.Name;
+
+                if (!string.IsNullOrEmpty(conditionFieldName))
                 {
-                    condProp.managedReferenceValue = null;
-                } else if (index > 0)
-                {
-                    condProp.managedReferenceValue = Activator.CreateInstance(_availableConditions[index - 1]);
+                    SerializedProperty condProp = serializedObject.FindProperty("Condition");
+                    int index = _pendingConditionSelection.Value;
+                    if (index == 0)
+                    {
+                        condProp.managedReferenceValue = null;
+                    }
+                    else if (index > 0)
+                    {
+                        condProp.managedReferenceValue = Activator.CreateInstance(_availableConditions[index - 1]);
+                    }
+                    serializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(node);
+                    serializedObject.Update();
+                    _pendingConditionSelection = null;
                 }
-                serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(node);
-                serializedObject.Update();
-                _pendingConditionSelection = null;
             }
 
             var fields = node.GetType()
@@ -225,6 +227,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 }
 
                 PropertyField fieldElement = new PropertyField(property, label);
+                fieldElement.style.marginBottom = 4;
                 fieldElement.Bind(serializedObject);
                 _customInspector.Add(fieldElement);
             }

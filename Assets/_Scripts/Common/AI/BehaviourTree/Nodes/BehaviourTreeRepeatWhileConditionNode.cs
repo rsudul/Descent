@@ -13,6 +13,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         private int _currentChildIndex = 0;
 
         [SerializeField]
+        [ConditionInvertField]
         private bool _invert = false;
 
         [SerializeReference]
