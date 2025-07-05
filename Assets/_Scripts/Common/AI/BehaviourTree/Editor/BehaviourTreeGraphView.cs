@@ -90,6 +90,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
         {
             _treeAsset.Root = ScriptableObject.CreateInstance<BehaviourTreeSelectorNode>();
             _treeAsset.Root.Name = "Root";
+            float horizontalCenter = contentViewContainer.layout.size.x * 0.5f;
+            _treeAsset.Root.Position = new Vector2(horizontalCenter, 100.0f);
             AssetDatabase.AddObjectToAsset(_treeAsset.Root, _treeAsset);
         }
 
