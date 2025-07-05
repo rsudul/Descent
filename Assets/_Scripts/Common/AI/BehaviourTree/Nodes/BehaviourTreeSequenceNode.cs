@@ -1,10 +1,11 @@
+using Descent.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Core;
 using Descent.Common.AI.BehaviourTree.Core.Context;
-using UnityEngine;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
     [System.Serializable]
+    [NodeInspectorLabel("Sequence")]
     public class BehaviourTreeSequenceNode : BehaviourTreeCompositeNode
     {
         private int _currentChildIndex = 0;

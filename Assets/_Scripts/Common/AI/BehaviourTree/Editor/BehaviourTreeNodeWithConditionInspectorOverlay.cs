@@ -161,7 +161,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             };
             _customInspector.Add(nameLabel);
 
-            Label typeLabel = new Label(node.GetType().Name)
+            string nodeType = GetNodeType(node);
+            Label typeLabel = new Label(nodeType)
             {
                 style =
                 {

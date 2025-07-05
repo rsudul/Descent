@@ -82,7 +82,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             };
             _customInspector.Add(nameLabel);
 
-            Label typeLabel = new Label(node.GetType().Name)
+            string nodeType = GetNodeType(node);
+            Label typeLabel = new Label(nodeType)
             {
                 style =
                 {
@@ -126,6 +127,12 @@ namespace Descent.Common.AI.BehaviourTree.Editor
         public virtual void ClearInspector()
         {
             _customInspector.Clear();
+        }
+
+        protected string GetNodeType(BehaviourTreeNode node)
+        {
+            string customName = node.GetType().GetCustomAttribute<NodeInspectorLabelAttribute>()?.Label;
+            return customName ?? node.GetType().Name;
         }
     }
 }

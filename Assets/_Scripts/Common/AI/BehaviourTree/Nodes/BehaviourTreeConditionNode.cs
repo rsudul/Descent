@@ -8,6 +8,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 {
     [Serializable]
     [NodeInspectorOverlay(NodeInspectorOverlayType.WithCondition)]
+    [NodeInspectorLabel("Conditional")]
     public class BehaviourTreeConditionNode : BehaviourTreeNode
     {
         [SerializeField]

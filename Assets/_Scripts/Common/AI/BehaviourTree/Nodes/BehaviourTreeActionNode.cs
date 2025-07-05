@@ -7,6 +7,7 @@ using Descent.Attributes.AI;
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
     [Serializable]
+    [NodeInspectorLabel("Action")]
     public class BehaviourTreeActionNode : BehaviourTreeNode
     {
         [SerializeReference]
