@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Descent.Common.AI.BehaviourTree.Nodes;
 using UnityEditor.UIElements;
+using System.Reflection;
+using System.Linq;
+using Descent.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {
@@ -92,19 +95,31 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             SerializedObject serializedObject = new SerializedObject(node);
 
-            SerializedProperty property = serializedObject.GetIterator();
-            property.NextVisible(true);
+            var fields = node.GetType()
+                .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Select(f => new
+                {
+                    Field = f,
+                    Attr = f.GetCustomAttribute<ShowInNodeInspectorAttribute>()
+                })
+                .Where(x => x.Attr != null)
+                .OrderByDescending(x => x.Attr.Priority);
 
-            while (property.NextVisible(false))
+            foreach (var pair in fields)
             {
-                if (property.name is "m_Script" or "Parent" or "Children")
+                var field = pair.Field;
+                var attr = pair.Attr;
+                string label = attr.Label ?? ObjectNames.NicifyVariableName(field.Name);
+
+                SerializedProperty property = serializedObject.FindProperty(field.Name);
+                if (property == null)
                 {
                     continue;
                 }
 
-                PropertyField field = new PropertyField(property, ObjectNames.NicifyVariableName(property.name));
-                field.Bind(serializedObject);
-                _customInspector.Add(field);
+                PropertyField fieldElement = new PropertyField(property, label);
+                fieldElement.Bind(serializedObject);
+                _customInspector.Add(fieldElement);
             }
         }
 

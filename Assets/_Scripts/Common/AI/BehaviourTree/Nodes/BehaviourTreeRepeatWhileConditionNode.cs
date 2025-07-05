@@ -1,3 +1,4 @@
+using Descent.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Core;
 using Descent.Common.AI.BehaviourTree.Core.Context;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         private bool _invert = false;
 
         [SerializeReference]
+        [ShowInNodeInspector("Condition")]
         public IBehaviourTreeCondition Condition;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)

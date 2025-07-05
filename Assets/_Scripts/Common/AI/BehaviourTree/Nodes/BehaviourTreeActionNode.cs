@@ -2,6 +2,7 @@ using Descent.Common.AI.BehaviourTree.Core;
 using System;
 using UnityEngine;
 using Descent.Common.AI.BehaviourTree.Core.Context;
+using Descent.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
@@ -9,6 +10,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
     public class BehaviourTreeActionNode : BehaviourTreeNode
     {
         [SerializeReference]
+        [ShowInNodeInspector("Action")]
         public IBehaviourTreeAction Action;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)

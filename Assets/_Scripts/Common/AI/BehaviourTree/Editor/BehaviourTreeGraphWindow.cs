@@ -36,8 +36,12 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             Save();
 
-            _graphView.OnNodeSelected -= _inspectorOverlay.UpdateSelection;
-            _graphView.OnNodeDeleted -= OnNodeDeleted;
+            if (_inspectorOverlay != null)
+            {
+                _graphView.OnNodeSelected -= _inspectorOverlay.UpdateSelection;
+                _graphView.OnNodeDeleted -= OnNodeDeleted;
+            }
+
             rootVisualElement.Remove(_graphView);
         }
 

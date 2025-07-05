@@ -7,6 +7,8 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using System.Linq;
 using UnityEngine;
+using System.Reflection;
+using Descent.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {
@@ -189,25 +191,41 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 _pendingConditionSelection = null;
             }
 
-            SerializedProperty property = serializedObject.GetIterator();
-            property.NextVisible(true);
+            var fields = node.GetType()
+                .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Select(f => new
+                {
+                    Field = f,
+                    Attr = f.GetCustomAttribute<ShowInNodeInspectorAttribute>()
+                })
+                .Where(x => x.Attr != null)
+                .OrderByDescending(x => x.Attr.Priority);
 
-            while (property.NextVisible(false))
+            foreach (var pair in fields)
             {
-                if (property.name is "m_Script" or "Parent" or "Children")
+                FieldInfo field = pair.Field;
+                ShowInNodeInspectorAttribute attr = pair.Attr;
+                string label = attr.Label ?? ObjectNames.NicifyVariableName(field.Name);
+
+                if (typeof(IBehaviourTreeCondition).IsAssignableFrom(field.FieldType))
+                {
+                    SerializedProperty condProp = serializedObject.FindProperty(field.Name);
+                    if (condProp != null)
+                    {
+                        DrawConditionField(_customInspector, condProp, node, serializedObject);
+                    }
+                    continue;
+                }
+
+                SerializedProperty property = serializedObject.FindProperty(field.Name);
+                if (property == null)
                 {
                     continue;
                 }
 
-                if (property.name == "Condition")
-                {
-                    DrawConditionField(_customInspector, property, node, serializedObject);
-                    continue;
-                }
-
-                PropertyField field = new PropertyField(property, ObjectNames.NicifyVariableName(property.name));
-                field.Bind(serializedObject);
-                _customInspector.Add(field);
+                PropertyField fieldElement = new PropertyField(property, label);
+                fieldElement.Bind(serializedObject);
+                _customInspector.Add(fieldElement);
             }
         }
     }
