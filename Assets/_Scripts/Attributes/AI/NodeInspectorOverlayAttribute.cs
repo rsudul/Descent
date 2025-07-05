@@ -1,0 +1,16 @@
+using Descent.Common.AI.BehaviourTree.Core;
+using System;
+
+namespace Descent.Attributes.AI
+{
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public class NodeInspectorOverlayAttribute : Attribute
+    {
+        public NodeInspectorOverlayType OverlayType { get; }
+
+        public NodeInspectorOverlayAttribute(NodeInspectorOverlayType overlayType)
+        {
+            OverlayType = overlayType;
+        }
+    }
+}

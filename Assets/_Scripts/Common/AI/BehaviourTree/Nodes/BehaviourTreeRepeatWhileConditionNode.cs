@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
     [System.Serializable]
+    [NodeInspectorOverlay(NodeInspectorOverlayType.WithCondition)]
     public class BehaviourTreeRepeatWhileConditionNode : BehaviourTreeCompositeNode
     {
         private int _currentChildIndex = 0;

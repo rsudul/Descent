@@ -4,7 +4,9 @@ using UnityEngine.UIElements;
 using Descent.Common.AI.BehaviourTree.Core;
 using UnityEditor.UIElements;
 using System;
+using System.Reflection;
 using Descent.Common.AI.BehaviourTree.Nodes;
+using Descent.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {
@@ -151,11 +153,32 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
         public void RefreshNodeInspector(BehaviourTreeNode node)
         {
-            bool needsCondition = node != null && node.GetType().GetField("Condition") != null;
+            NodeInspectorOverlayType overlayType = NodeInspectorOverlayType.Default;
 
-            bool overlayIsWrongType = (_inspectorOverlay == null) ||
-                (needsCondition && (_inspectorOverlay is not BehaviourTreeNodeWithConditionInspectorOverlay)) ||
-                (!needsCondition && (_inspectorOverlay is not BehaviourTreeNodeInspectorOverlay));
+            if (node != null)
+            {
+                NodeInspectorOverlayAttribute attr = node.GetType().GetCustomAttribute<NodeInspectorOverlayAttribute>();
+                if (attr != null)
+                {
+                    overlayType = attr.OverlayType;
+                }
+            }
+
+            Type overlayClassType = typeof(BehaviourTreeNodeInspectorOverlay);
+
+            switch (overlayType)
+            {
+                case NodeInspectorOverlayType.WithCondition:
+                    overlayClassType = typeof(BehaviourTreeNodeWithConditionInspectorOverlay);
+                    break;
+
+                case NodeInspectorOverlayType.Default:
+                default:
+                    overlayClassType = typeof(BehaviourTreeNodeInspectorOverlay);
+                    break;
+            }
+
+            bool overlayIsWrongType = (_inspectorOverlay == null) || (_inspectorOverlay.GetType() != overlayClassType);
 
             if (overlayIsWrongType)
             {
@@ -164,10 +187,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                     rootVisualElement.Remove(_inspectorOverlay);
                 }
 
-                _inspectorOverlay = needsCondition
-                    ? new BehaviourTreeNodeWithConditionInspectorOverlay()
-                    : new BehaviourTreeNodeInspectorOverlay();
-
+                _inspectorOverlay = (BehaviourTreeNodeInspectorOverlay)Activator.CreateInstance(overlayClassType);
                 rootVisualElement.Add(_inspectorOverlay);
             }
 

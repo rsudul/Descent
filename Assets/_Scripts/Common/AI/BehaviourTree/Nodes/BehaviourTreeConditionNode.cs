@@ -7,6 +7,7 @@ using Descent.Attributes.AI;
 namespace Descent.Common.AI.BehaviourTree.Nodes
 {
     [Serializable]
+    [NodeInspectorOverlay(NodeInspectorOverlayType.WithCondition)]
     public class BehaviourTreeConditionNode : BehaviourTreeNode
     {
         [SerializeField]
