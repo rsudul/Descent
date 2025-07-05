@@ -50,10 +50,7 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             _graphView.StretchToParentSize();
             rootVisualElement.Add(_graphView);
 
-            _inspectorOverlay = new BehaviourTreeNodeInspectorOverlay();
-            rootVisualElement.Add(_inspectorOverlay);
-
-            _graphView.OnNodeSelected += _inspectorOverlay.UpdateSelection;
+            _graphView.OnNodeSelected += (sender, node) => RefreshNodeInspector(node);
             _graphView.OnNodeDeleted += OnNodeDeleted;
         }
 
@@ -150,12 +147,26 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
         public void RefreshNodeInspector(BehaviourTreeNode node)
         {
-            if (_inspectorOverlay == null)
+            bool needsCondition = node != null && node.GetType().GetField("Condition") != null;
+
+            bool overlayIsWrongType = (_inspectorOverlay == null) ||
+                (needsCondition && (_inspectorOverlay is not BehaviourTreeNodeWithConditionInspectorOverlay)) ||
+                (!needsCondition && (_inspectorOverlay is not BehaviourTreeNodeInspectorOverlay));
+
+            if (overlayIsWrongType)
             {
-                return;
+                if (_inspectorOverlay != null)
+                {
+                    rootVisualElement.Remove(_inspectorOverlay);
+                }
+
+                _inspectorOverlay = needsCondition
+                    ? new BehaviourTreeNodeWithConditionInspectorOverlay()
+                    : new BehaviourTreeNodeInspectorOverlay();
+
+                rootVisualElement.Add(_inspectorOverlay);
             }
 
-            _inspectorOverlay.ClearInspector();
             _inspectorOverlay.UpdateSelection(this, node);
         }
     }
