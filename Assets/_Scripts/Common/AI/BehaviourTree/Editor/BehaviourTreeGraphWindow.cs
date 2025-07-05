@@ -23,6 +23,14 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             window.titleContent = new GUIContent("Behaviour Tree Graph");
         }
 
+        private void OnInspectorUpdate()
+        {
+            if (Application.isPlaying && _graphView != null)
+            {
+                _graphView.RefreshNodeStatuses();
+            }
+        }
+
         private void OnEnable()
         {
             ConstructGraphView();

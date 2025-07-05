@@ -25,11 +25,13 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
             if (Condition == null)
             {
                 ResetNode();
+                Status = BehaviourTreeStatus.Failure;
                 return BehaviourTreeStatus.Failure;
             }
 
             if (Children?.Count == 0)
             {
+                Status = BehaviourTreeStatus.Success;
                 return BehaviourTreeStatus.Success;
             }
 
@@ -42,6 +44,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
             if (!cond)
             {
                 ResetNode();
+                Status = BehaviourTreeStatus.Failure;
                 return BehaviourTreeStatus.Failure;
             }
 
@@ -51,12 +54,14 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
                 if (status == BehaviourTreeStatus.Running)
                 {
+                    Status = BehaviourTreeStatus.Running;
                     return BehaviourTreeStatus.Running;
                 }
 
                 if (status == BehaviourTreeStatus.Failure)
                 {
                     ResetNode();
+                    Status = BehaviourTreeStatus.Failure;
                     return BehaviourTreeStatus.Failure;
                 }
 
@@ -65,6 +70,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
             ResetNode();
 
+            Status = BehaviourTreeStatus.Running;
             return BehaviourTreeStatus.Running;
         }
 

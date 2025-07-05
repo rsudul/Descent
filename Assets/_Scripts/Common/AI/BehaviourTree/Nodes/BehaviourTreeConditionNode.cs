@@ -17,7 +17,10 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            return Condition?.Check(contextRegistry) == true ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure;
+            BehaviourTreeStatus status = Condition?.Check(contextRegistry) == true
+                ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure;
+            Status = status;
+            return status;
         }
 
         public override void ResetNode()
