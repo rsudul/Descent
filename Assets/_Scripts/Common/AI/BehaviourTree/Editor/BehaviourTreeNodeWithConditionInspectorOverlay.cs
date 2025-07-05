@@ -204,6 +204,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 .Where(x => x.Attr != null)
                 .OrderByDescending(x => x.Attr.Priority);
 
+            FieldInfo nameField = null;
+
             foreach (var pair in fields)
             {
                 FieldInfo field = pair.Field;
@@ -220,6 +222,12 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                     continue;
                 }
 
+                bool isNodeName = field.GetCustomAttribute<NodeNameFieldAttribute>() != null;
+                if (isNodeName)
+                {
+                    nameField = field;
+                }
+
                 SerializedProperty property = serializedObject.FindProperty(field.Name);
                 if (property == null)
                 {
@@ -227,7 +235,18 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 }
 
                 PropertyField fieldElement = new PropertyField(property, label);
-                fieldElement.style.marginBottom = 4;
+
+                if (isNodeName)
+                {
+                    fieldElement.RegisterValueChangeCallback(evt =>
+                    {
+                        if (node is BehaviourTreeNode btNode)
+                        {
+                            btNode.Name = evt.changedProperty.stringValue;
+                        }
+                    });
+                }
+
                 fieldElement.Bind(serializedObject);
                 _customInspector.Add(fieldElement);
             }

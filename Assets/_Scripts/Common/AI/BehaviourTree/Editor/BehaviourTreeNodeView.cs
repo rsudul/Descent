@@ -18,6 +18,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
             Node = node;
             title = Node.Name ?? Node.GetType().Name;
 
+            Node.OnPropertyChanged += OnNodePropertyChanged;
+
             SetStyles(node);
 
             Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
@@ -35,6 +37,11 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             RefreshExpandedState();
             RefreshPorts();
+        }
+
+        public void CleanUp()
+        {
+            Node.OnPropertyChanged -= OnNodePropertyChanged;
         }
 
         private void SetStyles(BehaviourTreeNode node)
@@ -95,6 +102,14 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 default:
                     titleContainer.style.backgroundColor = new Color(0.2f, 0.2f, 0.2f, 0.2f);
                     break;
+            }
+        }
+
+        private void OnNodePropertyChanged(object sender, string propertyName)
+        {
+            if (propertyName == nameof(BehaviourTreeNode.Name))
+            {
+                UpdateTitle();
             }
         }
     }
