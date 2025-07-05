@@ -15,6 +15,7 @@ namespace Descent.Common.AI.BehaviourTree.Nodes
         public BehaviourTreeNode Parent { get; set; }
         [SerializeField]
         public Vector2 Position { get; set; }
+        public BehaviourTreeStatus Status { get; protected set; }
 
         public abstract BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry);
 

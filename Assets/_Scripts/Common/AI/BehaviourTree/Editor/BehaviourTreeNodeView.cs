@@ -3,6 +3,7 @@ using Descent.Common.AI.BehaviourTree.Nodes;
 using UnityEngine.UIElements;
 using UnityEditor;
 using UnityEngine;
+using Descent.Common.AI.BehaviourTree.Core;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {
@@ -72,6 +73,28 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 Node.Position = newPos;
                 // !!! SAVE ASSETS LATER - WHEN YOU PRESS SAVE BUTTON !!!
                 AssetDatabase.SaveAssets();
+            }
+        }
+
+        public void SetStatus(BehaviourTreeStatus status)
+        {
+            switch (status)
+            {
+                case BehaviourTreeStatus.Running:
+                    titleContainer.style.backgroundColor = new Color(0.4f, 0.6f, 1.0f, 0.9f);
+                    break;
+
+                case BehaviourTreeStatus.Success:
+                    titleContainer.style.backgroundColor = new Color(0.4f, 1.0f, 0.4f, 0.8f);
+                    break;
+
+                case BehaviourTreeStatus.Failure:
+                    titleContainer.style.backgroundColor = new Color(1.0f, 0.4f, 0.4f, 0.8f);
+                    break;
+
+                default:
+                    titleContainer.style.backgroundColor = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+                    break;
             }
         }
     }

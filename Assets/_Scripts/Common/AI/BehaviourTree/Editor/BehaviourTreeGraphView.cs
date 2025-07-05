@@ -384,5 +384,15 @@ namespace Descent.Common.AI.BehaviourTree.Editor
         {
             IsDirty = false;
         }
+
+        public void RefreshNodeStatuses()
+        {
+            foreach (var nodePair in _nodeViews)
+            {
+                BehaviourTreeNode node = nodePair.Key;
+                BehaviourTreeNodeView nodeView = nodePair.Value;
+                nodeView.SetStatus(node.Status);
+            }
+        }
     }
 }
