@@ -237,6 +237,8 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 _nodeViews.Remove(nodeView.Node);
             }
 
+            nodeView.CleanUp();
+
             if (nodeView.Node.Parent is BehaviourTreeCompositeNode parentComposite)
             {
                 parentComposite.RemoveChild(nodeView.Node);
@@ -315,14 +317,6 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 endPort.direction != startPort.direction &&
                 endPort.node != startPort.node
             ).ToList();
-        }
-
-        public void RefreshNodeTitle(BehaviourTreeNode node)
-        {
-            if (_nodeViews.TryGetValue(node, out BehaviourTreeNodeView nodeView))
-            {
-                nodeView.UpdateTitle();
-            }
         }
 
         public void DeleteNode(BehaviourTreeNodeView nodeView)
