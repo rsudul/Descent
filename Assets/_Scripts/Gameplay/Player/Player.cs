@@ -3,10 +3,12 @@ using Descent.Common;
 using Descent.Common.Collisions.Controllers;
 using Descent.Common.Events.Arguments;
 using Descent.Common.Input;
+using Descent.Gameplay.Health;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
 using Descent.Gameplay.Player.Collisions;
 using Descent.Gameplay.Player.Combat;
+using Descent.Gameplay.Player.Health;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
 using UnityEngine;
@@ -24,21 +26,25 @@ namespace Descent.Gameplay.Player
         private Vector2 _moveInput = Vector2.zero;
         private bool _shootInput = false;
 
-        [SerializeField]
-        private Transform _playerBody = null;
+        [Header("Controllers")]
         [SerializeField]
         private PlayerCameraController _playerCameraController = null;
         [SerializeField]
         private HitController _hitController = null;
-
         [SerializeField]
-        private Rigidbody _rigidbody = null;
+        private PlayerDamageController _playerDamageController = null;
         [SerializeField]
         private PlayerMovementController _playerMovementController = new PlayerMovementController();
         [SerializeField]
         private PlayerAnimationsController _playerAnimationsController = new PlayerAnimationsController();
         [SerializeField]
         private PlayerCollisionsController _playerCollisionsController = new PlayerCollisionsController();
+
+        [Header("References")]
+        [SerializeField]
+        private Rigidbody _rigidbody = null;
+        [SerializeField]
+        private Transform _playerBody = null;
 
         private void Awake()
         {
@@ -138,6 +144,8 @@ namespace Descent.Gameplay.Player
             _playerMovementController.Bounce(_rigidbody, args.CollisionNormal);
             _playerCameraController.Shake(shakeStrength);
             _playerMovementController.FreezeMovement();
+
+            _playerDamageController?.TakeDamage(Random.Range(0.0f, 20.0f), args.CollisionPoint);
         }
     }
 }
