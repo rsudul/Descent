@@ -65,9 +65,28 @@ namespace Descent.Common.AI.BehaviourTree.Editor
 
             Add(headerRow);
 
-            _customInspector = new VisualElement();
-            _customInspector.style.marginTop = 8;
-            Add(_customInspector);
+            ScrollView inspectorScrollView = new ScrollView(ScrollViewMode.VerticalAndHorizontal)
+            {
+                style =
+                {
+                    marginTop = 8,
+                    minWidth = 270,
+                    maxWidth = 320,
+                    minHeight = 60,
+                    maxHeight = 380
+                }
+            };
+
+            _customInspector = new VisualElement()
+            {
+                style =
+                {
+                    marginTop = 8
+                }
+            };
+            inspectorScrollView.Add(_customInspector);
+
+            Add(inspectorScrollView);
 
             visible = false;
         }
