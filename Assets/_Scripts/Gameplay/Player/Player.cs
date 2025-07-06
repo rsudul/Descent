@@ -1,3 +1,4 @@
+using Descent.Attributes.Gameplay.Player;
 using Descent.Common;
 using Descent.Common.Collisions.Controllers;
 using Descent.Common.Events.Arguments;
@@ -12,6 +13,7 @@ using UnityEngine;
 
 namespace Descent.Gameplay.Player
 {
+    [IsPlayerObject]
     public class Player : Actor
     {
         private IInputController _inputController;

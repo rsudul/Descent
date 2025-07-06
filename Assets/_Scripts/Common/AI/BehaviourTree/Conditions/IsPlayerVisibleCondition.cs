@@ -1,4 +1,5 @@
 using Descent.Common.AI.BehaviourTree.Context;
+using Descent.Gameplay.Game;
 using Descent.Gameplay.Player;
 using UnityEngine;
 
@@ -28,9 +29,7 @@ namespace Descent.Common.AI.BehaviourTree.Conditions
                 return false;
             }
 
-            // TEMPORARY
-            GameObject player = null;
-            if (player == null)
+            if (!GameController.Instance.GetPlayer(out GameObject player))
             {
                 return false;
             }
