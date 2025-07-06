@@ -14,8 +14,13 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
         private int _currentTargetIndex = -1;
         private MoveToTargetAction _moveToTarget = null;
 
+        private bool _isWaiting = false;
+        private float _waitUntilTime = 0.0f;
+
         [SerializeField]
         private List<Vector3> _patrolPoints = new List<Vector3>();
+        [SerializeField]
+        private float _waitTimeOnPoint = 2.0f;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
@@ -30,6 +35,16 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
             {
                 Debug.LogWarning("Patrol Action: No AIMovementContext found.");
                 return BehaviourTreeStatus.Failure;
+            }
+
+            if (_isWaiting)
+            {
+                if (Time.time < _waitUntilTime)
+                {
+                    return BehaviourTreeStatus.Running;
+                }
+
+                _isWaiting = false;
             }
 
             if (_moveToTarget == null)
@@ -51,6 +66,9 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
             {
                 Debug.Log("Arrived at point" + _patrolPoints[_currentTargetIndex]);
                 _moveToTarget = null;
+
+                _isWaiting = true;
+                _waitUntilTime = Time.time + _waitTimeOnPoint;
             }
 
             return BehaviourTreeStatus.Running;
