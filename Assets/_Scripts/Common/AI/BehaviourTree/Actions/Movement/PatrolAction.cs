@@ -1,3 +1,4 @@
+using Descent.Common.AI.BehaviourTree.Actions.Data;
 using Descent.Common.AI.BehaviourTree.Context;
 using Descent.Common.AI.BehaviourTree.Core;
 using Descent.Common.AI.BehaviourTree.Requests;
@@ -17,12 +18,14 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
         private bool _isWaiting = false;
         private float _waitUntilTime = 0.0f;
 
+        private int _direction = 1;
+
         [SerializeField]
         private List<Vector3> _patrolPoints = new List<Vector3>();
         [SerializeField]
         private float _waitTimeOnPoint = 2.0f;
         [SerializeField]
-        private bool _randomPatrol = false;
+        private PatrolMode _patrolMode = PatrolMode.Default;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
@@ -51,20 +54,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
 
             if (_moveToTarget == null)
             {
-                if (_randomPatrol && _patrolPoints.Count > 1)
-                {
-                    int newIndex;
-                    do
-                    {
-                        newIndex = Random.Range(0, _patrolPoints.Count);
-                    } while (newIndex == _currentTargetIndex);
-                    _currentTargetIndex = newIndex;
-                }
-                else
-                {
-                    _currentTargetIndex = (_currentTargetIndex + 1) % _patrolPoints.Count;
-                }
-
+                ChooseNextPatrolTarget();
                 Vector3 nextTarget = _patrolPoints[_currentTargetIndex];
 
                 SetMovementTargetAction setTarget = new SetMovementTargetAction(nextTarget);
@@ -102,6 +92,45 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
         public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
         {
             _dispatcher = dispatcher;
+        }
+
+        private void ChooseNextPatrolTarget()
+        {
+            if (_patrolPoints.Count <= 1)
+            {
+                _currentTargetIndex = 0;
+                return;
+            }
+
+            switch (_patrolMode)
+            {
+                case PatrolMode.PingPong:
+                    _currentTargetIndex += _direction;
+                    if (_currentTargetIndex >= _patrolPoints.Count)
+                    {
+                        _currentTargetIndex = _patrolPoints.Count - 2;
+                        _direction = -1;
+                    } else if (_currentTargetIndex < 0)
+                    {
+                        _currentTargetIndex = 1;
+                        _direction = 1;
+                    }
+                    break;
+
+                case PatrolMode.Random:
+                    int newIndex;
+                    do
+                    {
+                        newIndex = Random.Range(0, _patrolPoints.Count);
+                    } while (_patrolPoints.Count > 1 && newIndex == _currentTargetIndex);
+                    _currentTargetIndex = newIndex;
+                    break;
+
+                case PatrolMode.Default:
+                default:
+                    _currentTargetIndex = (_currentTargetIndex + 1) % _patrolPoints.Count;
+                    break;
+            }
         }
     }
 }
