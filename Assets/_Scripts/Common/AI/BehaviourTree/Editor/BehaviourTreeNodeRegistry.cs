@@ -46,6 +46,13 @@ namespace Descent.Common.AI.BehaviourTree.Editor
                 node.Name = "Move To Target";
                 node.Action = new MoveToTargetAction();
                 return node;
+            }),
+            new NodeCreationMenuItem("Action/Patrol", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Patrol";
+                node.Action = new PatrolAction();
+                return node;
             })
         };
     }

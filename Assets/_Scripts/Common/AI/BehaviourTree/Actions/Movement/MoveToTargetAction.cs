@@ -9,6 +9,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
     public class MoveToTargetAction : IBehaviourTreeAction
     {
         private BehaviourTreeActionRequestDispatcher _dispatcher;
+        private bool _requestedMove = false;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
@@ -32,15 +33,20 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
                 return BehaviourTreeStatus.Failure;
             }
 
-            MoveToActionData requestData = new MoveToActionData(context.TargetPosition.Value);
-
-            BehaviourTreeRequestResult result = _dispatcher.RequestAction(context.AgentTransform,
-                BehaviourTreeActionType.MoveTo,
-                requestData);
-
-            if (result == BehaviourTreeRequestResult.Failure)
+            if (!context.IsMoving && !_requestedMove)
             {
-                return BehaviourTreeStatus.Failure;
+                MoveToActionData requestData = new MoveToActionData(context.TargetPosition.Value);
+
+                BehaviourTreeRequestResult result = _dispatcher.RequestAction(context.AgentTransform,
+                    BehaviourTreeActionType.MoveTo,
+                    requestData);
+
+                if (result == BehaviourTreeRequestResult.Failure)
+                {
+                    return BehaviourTreeStatus.Failure;
+                }
+
+                _requestedMove = true;
             }
 
             return context.IsMoving ? BehaviourTreeStatus.Running : BehaviourTreeStatus.Success;
@@ -53,7 +59,7 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
 
         public void ResetAction()
         {
-
+            _requestedMove = false;
         }
 
         public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
