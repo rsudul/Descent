@@ -55,7 +55,7 @@ namespace Descent.Gameplay.AI.Movement
             Vector3 direction = _targetPosition - _rigidbody.position;
             float distance = direction.magnitude;
 
-            if (distance < _stoppingThreshold)
+            if (distance < _stoppingThreshold && IsMoving)
             {
                 Stop();
                 return;
