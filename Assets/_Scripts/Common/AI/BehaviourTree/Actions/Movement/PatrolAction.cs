@@ -21,6 +21,8 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
         private List<Vector3> _patrolPoints = new List<Vector3>();
         [SerializeField]
         private float _waitTimeOnPoint = 2.0f;
+        [SerializeField]
+        private bool _randomPatrol = false;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
@@ -49,7 +51,20 @@ namespace Descent.Common.AI.BehaviourTree.Actions.Movement
 
             if (_moveToTarget == null)
             {
-                _currentTargetIndex = (_currentTargetIndex + 1) % _patrolPoints.Count;
+                if (_randomPatrol && _patrolPoints.Count > 1)
+                {
+                    int newIndex;
+                    do
+                    {
+                        newIndex = Random.Range(0, _patrolPoints.Count);
+                    } while (newIndex == _currentTargetIndex);
+                    _currentTargetIndex = newIndex;
+                }
+                else
+                {
+                    _currentTargetIndex = (_currentTargetIndex + 1) % _patrolPoints.Count;
+                }
+
                 Vector3 nextTarget = _patrolPoints[_currentTargetIndex];
 
                 SetMovementTargetAction setTarget = new SetMovementTargetAction(nextTarget);
