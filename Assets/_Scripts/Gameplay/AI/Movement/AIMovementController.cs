@@ -13,7 +13,7 @@ namespace Descent.Gameplay.AI.Movement
     [BehaviourTreeContextProvider(typeof(AIMovementContext))]
     [RequireComponent(typeof(BehaviourTreeActionRequestDispatcher))]
     public class AIMovementController : MonoBehaviour,
-                                        IMovementController, IBehaviourTreeRequestReceiver, IBehaviourTreeContextProvider
+                                        IAIMovementController, IBehaviourTreeRequestReceiver, IBehaviourTreeContextProvider
     {
         private Rigidbody _rigidbody;
         private Vector3 _targetPosition = Vector3.zero;
