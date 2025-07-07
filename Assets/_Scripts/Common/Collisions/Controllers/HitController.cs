@@ -20,7 +20,7 @@ namespace Descent.Common.Collisions.Controllers
             }
 
             CollisionEventArguments eventArgs = new CollisionEventArguments(collision.transform, collision.contacts[0].point,
-                collision.contacts[0].normal, collisionParameters);
+                collision.contacts[0].normal, collisionParameters, false);
 
             OnHit?.Invoke(this, eventArgs);
         }
@@ -36,7 +36,7 @@ namespace Descent.Common.Collisions.Controllers
             }
 
             CollisionEventArguments eventArgs = new CollisionEventArguments(other.transform, Vector3.zero, Vector3.zero,
-                collisionParameters);
+                collisionParameters, true);
 
             OnHit?.Invoke(this, eventArgs);
         }
