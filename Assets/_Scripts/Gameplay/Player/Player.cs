@@ -3,18 +3,18 @@ using Descent.Common;
 using Descent.Common.Collisions.Controllers;
 using Descent.Common.Events.Arguments;
 using Descent.Common.Input;
-using Descent.Gameplay.Health;
+using Descent.Gameplay.Systems.Health;
 using Descent.Gameplay.Movement;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
 using Descent.Gameplay.Player.Collisions;
 using Descent.Gameplay.Player.Combat;
-using Descent.Gameplay.Player.Health;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
 using Descent.Gameplay.Player.Settings.Movement;
 using Descent.Gameplay.Systems.Hostility.Data;
 using UnityEngine;
+using Descent.Gameplay.Systems.Health.Settings;
 
 namespace Descent.Gameplay.Player
 {
@@ -24,6 +24,7 @@ namespace Descent.Gameplay.Player
         private IInputController _inputController;
         private PlayerShootingController _playerShootingController;
         private IPlayerMovementController _playerMovementController;
+        private IHealthController _healthController;
 
         private Vector2 _lookInput = Vector2.zero;
         private float _bankInput = 0.0f;
@@ -35,8 +36,6 @@ namespace Descent.Gameplay.Player
         private PlayerCameraController _playerCameraController = null;
         [SerializeField]
         private HitController _hitController = null;
-        [SerializeField]
-        private PlayerDamageController _playerDamageController = null;
         [SerializeField]
         private PlayerAnimationsController _playerAnimationsController = new PlayerAnimationsController();
         [SerializeField]
@@ -53,6 +52,8 @@ namespace Descent.Gameplay.Player
         private PlayerMovementSettings _playerMovementSettings = null;
         [SerializeField]
         private Faction _faction = null;
+        [SerializeField]
+        private HealthSettings _healthSettings = null;
 
         private void Awake()
         {
@@ -73,6 +74,7 @@ namespace Descent.Gameplay.Player
             _inputController = new PlayerInputController();
             _playerShootingController = new PlayerShootingController();
             _playerMovementController = new PlayerMovementController();
+            _healthController = new HealthController(_healthSettings);
 
             PlayerMovementController playerMovementController = _playerMovementController as PlayerMovementController;
 
@@ -162,17 +164,17 @@ namespace Descent.Gameplay.Player
             _playerCameraController.Shake(shakeStrength);
             _playerMovementController.FreezeMovement();
 
-            _playerDamageController?.TakeDamage(Random.Range(0.0f, 20.0f), args.CollisionPoint);
+            _healthController?.TakeDamage(Random.Range(0.0f, 20.0f), args.CollisionPoint);
         }
 
         public void RepairFull()
         {
-
+            _healthController?.RestoreToFullHealth();
         }
 
         public void RepairPartial(float amount)
         {
-
+            _healthController.Heal(amount);
         }
 
         public override Faction GetFaction()
