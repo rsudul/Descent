@@ -73,6 +73,7 @@ MonoBehaviour:
   _playerBody: {fileID: 5175616808587552804}
   _playerMovementSettings: {fileID: 11400000, guid: f714b7dc86c0d4643939772c8ee38f58,
     type: 2}
+  _faction: {fileID: 11400000, guid: 00a957c5cd3d30a408b82955da59d645, type: 2}
 --- !u!114 &2714429965774611764
 MonoBehaviour:
   m_ObjectHideFlags: 0

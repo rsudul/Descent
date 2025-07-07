@@ -317,3 +317,4 @@ MonoBehaviour:
   _damageablesController:
     _armorDamageableGameObject: {fileID: 5892867977644429158}
     _coreDamageableGameObject: {fileID: 7395823234040072813}
+  _faction: {fileID: 11400000, guid: d647e537caac37e49b406522ef1678d7, type: 2}
