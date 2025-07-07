@@ -1,7 +1,10 @@
 using Descent.Attributes.Gameplay.Player;
+using Descent.Gameplay.Game.Initialization;
 using Descent.Common.Input;
 using Descent.Gameplay.Game.Input;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Descent.Gameplay.Game
@@ -29,7 +32,26 @@ namespace Descent.Gameplay.Game
                 return;
             }
 
+            InitializeGame();
             InitializeControllers();
+        }
+
+        private void InitializeGame()
+        {
+            List<IInitializable> initializables = FindObjectsOfType<MonoBehaviour>(false)
+                .OfType<IInitializable>()
+                .OrderByDescending(i => i.InitializationPriority)
+                .ToList();
+
+            foreach (IInitializable initializable in initializables)
+            {
+                initializable.Initialize();
+            }
+
+            foreach (IInitializable initializable in initializables)
+            {
+                initializable.LateInitialize();
+            }
         }
 
         private void InitializeControllers()
