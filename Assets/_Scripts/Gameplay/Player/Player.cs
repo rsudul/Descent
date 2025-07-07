@@ -3,7 +3,7 @@ using Descent.Common;
 using Descent.Common.Collisions.Controllers;
 using Descent.Common.Events.Arguments;
 using Descent.Common.Input;
-using Descent.Gameplay.Health;
+using Descent.Gameplay.Movement;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
 using Descent.Gameplay.Player.Collisions;
@@ -11,6 +11,7 @@ using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Health;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
+using Descent.Gameplay.Player.Settings.Movement;
 using UnityEngine;
 
 namespace Descent.Gameplay.Player
@@ -20,6 +21,7 @@ namespace Descent.Gameplay.Player
     {
         private IInputController _inputController;
         private PlayerShootingController _playerShootingController;
+        private IPlayerMovementController _playerMovementController;
 
         private Vector2 _lookInput = Vector2.zero;
         private float _bankInput = 0.0f;
@@ -34,8 +36,6 @@ namespace Descent.Gameplay.Player
         [SerializeField]
         private PlayerDamageController _playerDamageController = null;
         [SerializeField]
-        private PlayerMovementController _playerMovementController = new PlayerMovementController();
-        [SerializeField]
         private PlayerAnimationsController _playerAnimationsController = new PlayerAnimationsController();
         [SerializeField]
         private PlayerCollisionsController _playerCollisionsController = new PlayerCollisionsController();
@@ -45,6 +45,10 @@ namespace Descent.Gameplay.Player
         private Rigidbody _rigidbody = null;
         [SerializeField]
         private Transform _playerBody = null;
+
+        [Header("Settings")]
+        [SerializeField]
+        private PlayerMovementSettings _playerMovementSettings = null;
 
         private void Awake()
         {
@@ -64,8 +68,11 @@ namespace Descent.Gameplay.Player
         {
             _inputController = new PlayerInputController();
             _playerShootingController = new PlayerShootingController();
+            _playerMovementController = new PlayerMovementController();
 
-            _playerMovementController.Initialize(_playerBody, _rigidbody);
+            PlayerMovementController playerMovementController = _playerMovementController as PlayerMovementController;
+
+            playerMovementController.Initialize(_playerBody, _rigidbody, _playerMovementSettings);
             _playerAnimationsController.Initialize(_playerCameraController.CameraTransform);
             _playerCollisionsController.Initialize(_hitController, _rigidbody);
 
@@ -113,8 +120,9 @@ namespace Descent.Gameplay.Player
 
         private void FeedInputToControllers()
         {
-            _playerMovementController.SetPitchYawAndRoll(_lookInput.x, _lookInput.y, _bankInput);
-            _playerMovementController.SetMovementFactors(_moveInput.x, _moveInput.y);
+            PlayerMovementController playerMovementController = _playerMovementController as PlayerMovementController;
+            playerMovementController.SetPitchYawAndRoll(_lookInput.x, _lookInput.y, _bankInput);
+            playerMovementController.SetMovementFactors(_moveInput.x, _moveInput.y);
             _playerAnimationsController.SetMovementVelocity(new Vector3(_moveInput.x, 0.0f, _moveInput.y));
         }
 
@@ -138,7 +146,7 @@ namespace Descent.Gameplay.Player
 
         private void OnCollision(object sender, CollisionEventArguments args)
         {
-            Vector3 impactVelocity = _playerMovementController.LastVelocity;
+            Vector3 impactVelocity = _playerMovementController.Velocity;
             float shakeStrength = impactVelocity.magnitude;
 
             _playerMovementController.Bounce(_rigidbody, args.CollisionNormal);

@@ -1,11 +1,12 @@
 using Descent.Extensions.Math;
+using Descent.Gameplay.Movement;
 using Descent.Gameplay.Player.Settings.Movement;
 using UnityEngine;
 
 namespace Descent.Gameplay.Player.Movement
 {
     [System.Serializable]
-    public class PlayerMovementController
+    public class PlayerMovementController : IPlayerMovementController
     {
         private float _pitchRotation = 0.0f;
         private float _yawRotation = 0.0f;
@@ -18,18 +19,22 @@ namespace Descent.Gameplay.Player.Movement
         private Vector3 _movementDirection = Vector3.zero;
         private Vector3 _lastVelocity = Vector3.zero;
 
+        private bool _isMoving = false;
+
         private float _movementFreezeTimer = 0.0f;
         private float _bounceRotationFreezeTimer = 0.0f;
 
-        public Vector3 LastVelocity => _lastVelocity;
+        private const float movementThreshold = 0.001f;
 
-        [Header("Settings")]
-        [SerializeField]
+        public Vector3 Velocity => _lastVelocity;
+        public bool IsMoving => _isMoving;
+
         private PlayerMovementSettings _movementSettings;
 
-        public void Initialize(Transform transform, Rigidbody rigidbody)
+        public void Initialize(Transform transform, Rigidbody rigidbody, PlayerMovementSettings movementSettings)
         {
             _rotation = transform.rotation;
+            _movementSettings = movementSettings;
             InitializeRigidbody(rigidbody);
         }
 
@@ -93,6 +98,7 @@ namespace Descent.Gameplay.Player.Movement
             Vector3 currentVelocity = rigidbody.velocity;
 
             _lastVelocity = currentVelocity;
+            _isMoving = currentVelocity.sqrMagnitude > movementThreshold;
 
             Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
 

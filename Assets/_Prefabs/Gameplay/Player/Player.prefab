@@ -61,18 +61,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19af9cc8dc847048816813ae5543681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerBody: {fileID: 5175616808587552804}
   _playerCameraController: {fileID: 0}
   _hitController: {fileID: 2714429965774611764}
-  _rigidbody: {fileID: 509301648802752551}
-  _playerMovementController:
-    _movementSettings: {fileID: 11400000, guid: f714b7dc86c0d4643939772c8ee38f58,
-      type: 2}
+  _playerDamageController: {fileID: 0}
   _playerAnimationsController:
     _animationsSettings: {fileID: 11400000, guid: bc7f8c320a967c44c97d2781ed7c2150,
       type: 2}
   _playerCollisionsController:
     _collider: {fileID: 5586539351590801712}
+  _rigidbody: {fileID: 509301648802752551}
+  _playerBody: {fileID: 5175616808587552804}
+  _playerMovementSettings: {fileID: 11400000, guid: f714b7dc86c0d4643939772c8ee38f58,
+    type: 2}
 --- !u!114 &2714429965774611764
 MonoBehaviour:
   m_ObjectHideFlags: 0
