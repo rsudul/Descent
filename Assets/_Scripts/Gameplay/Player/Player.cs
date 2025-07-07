@@ -13,6 +13,7 @@ using Descent.Gameplay.Player.Health;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
 using Descent.Gameplay.Player.Settings.Movement;
+using Descent.Gameplay.Systems.Hostility.Data;
 using UnityEngine;
 
 namespace Descent.Gameplay.Player
@@ -50,6 +51,8 @@ namespace Descent.Gameplay.Player
         [Header("Settings")]
         [SerializeField]
         private PlayerMovementSettings _playerMovementSettings = null;
+        [SerializeField]
+        private Faction _faction = null;
 
         private void Awake()
         {
@@ -170,6 +173,22 @@ namespace Descent.Gameplay.Player
         public void RepairPartial(float amount)
         {
 
+        }
+
+        public override Faction GetFaction()
+        {
+            return _faction;
+        }
+
+        public override void SetFaction(Faction faction)
+        {
+            if (_faction == faction)
+            {
+                return;
+            }
+
+            _faction = faction;
+            InvokeFactionChanged(_faction);
         }
     }
 }

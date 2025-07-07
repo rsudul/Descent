@@ -1,4 +1,5 @@
 using Descent.Gameplay.Enemies.BasicEnemy.Damageables;
+using Descent.Gameplay.Systems.Hostility.Data;
 using System;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace Descent.Gameplay.Enemies.BasicEnemy
     {
         [SerializeField]
         private BasicEnemyDamageablesController _damageablesController = new BasicEnemyDamageablesController();
+        [SerializeField]
+        private Faction _faction = null;
 
         protected void Awake()
         {
@@ -29,6 +32,22 @@ namespace Descent.Gameplay.Enemies.BasicEnemy
         private void OnDied(object sender, EventArgs args)
         {
             gameObject.SetActive(false);
+        }
+
+        public override Faction GetFaction()
+        {
+            return _faction;
+        }
+
+        public override void SetFaction(Faction faction)
+        {
+            if (_faction == faction)
+            {
+                return;
+            }
+
+            _faction = faction;
+            InvokeFactionChanged(_faction);
         }
     }
 }
