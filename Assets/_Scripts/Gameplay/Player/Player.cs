@@ -31,6 +31,8 @@ namespace Descent.Gameplay.Player
         private Vector2 _moveInput = Vector2.zero;
         private bool _shootInput = false;
 
+        public IHealthController HealthController => _healthController;
+
         [Header("Controllers")]
         [SerializeField]
         private PlayerCameraController _playerCameraController = null;
@@ -164,7 +166,7 @@ namespace Descent.Gameplay.Player
             _playerCameraController.Shake(shakeStrength);
             _playerMovementController.FreezeMovement();
 
-            _healthController?.TakeDamage(Random.Range(0.0f, 20.0f), args.CollisionPoint);
+            _healthController?.TakeDamage(Random.Range(10.0f, 20.0f), args.CollisionPoint);
         }
 
         public void RepairFull()
