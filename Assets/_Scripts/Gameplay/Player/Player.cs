@@ -3,6 +3,7 @@ using Descent.Common;
 using Descent.Common.Collisions.Controllers;
 using Descent.Common.Events.Arguments;
 using Descent.Common.Input;
+using Descent.Gameplay.Health;
 using Descent.Gameplay.Movement;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
@@ -17,7 +18,7 @@ using UnityEngine;
 namespace Descent.Gameplay.Player
 {
     [IsPlayerObject]
-    public class Player : Actor
+    public class Player : Actor, IRepairable
     {
         private IInputController _inputController;
         private PlayerShootingController _playerShootingController;
@@ -146,6 +147,11 @@ namespace Descent.Gameplay.Player
 
         private void OnCollision(object sender, CollisionEventArguments args)
         {
+            if (args.IsTrigger)
+            {
+                return;
+            }
+
             Vector3 impactVelocity = _playerMovementController.Velocity;
             float shakeStrength = impactVelocity.magnitude;
 
@@ -154,6 +160,16 @@ namespace Descent.Gameplay.Player
             _playerMovementController.FreezeMovement();
 
             _playerDamageController?.TakeDamage(Random.Range(0.0f, 20.0f), args.CollisionPoint);
+        }
+
+        public void RepairFull()
+        {
+
+        }
+
+        public void RepairPartial(float amount)
+        {
+
         }
     }
 }
