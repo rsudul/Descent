@@ -2,7 +2,7 @@ using Descent.Common.Attributes.Gameplay.Player;
 using Descent.Gameplay.Entities;
 using Descent.Gameplay.Collisions;
 using Descent.Gameplay.Events.Arguments;
-using Descent.Common.Input;
+using Descent.Gameplay.Input;
 using Descent.Gameplay.Systems.Durability.Health;
 using Descent.Gameplay.Systems.Durability.Repair;
 using Descent.Gameplay.Movement;

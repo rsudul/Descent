@@ -1,6 +1,6 @@
 using Descent.Common.Attributes.Gameplay.Player;
 using Descent.Gameplay.Game.Interfaces;
-using Descent.Common.Input;
+using Descent.Gameplay.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;

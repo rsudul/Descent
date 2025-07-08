@@ -1,4 +1,4 @@
-using Descent.Common.Input;
+using Descent.Gameplay.Input;
 using Descent.Constants;
 
 namespace Descent.Gameplay.Game.Controllers

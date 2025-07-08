@@ -1,4 +1,4 @@
-namespace Descent.Common.Input
+namespace Descent.Gameplay.Input
 {
     public interface IInputController
     {
