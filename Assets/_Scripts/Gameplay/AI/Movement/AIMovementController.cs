@@ -1,11 +1,12 @@
 using Descent.Common.Attributes.AI;
-using Descent.Common.AI.BehaviourTree.Actions.Data;
-using Descent.Common.AI.BehaviourTree.Context;
-using Descent.Common.AI.BehaviourTree.Requests;
+using Descent.Gameplay.AI.BehaviourTree.Actions.Data;
+using Descent.Gameplay.AI.BehaviourTree.Context;
+using Descent.AI.BehaviourTree.Requests;
 using Descent.Gameplay.Movement;
 using UnityEngine;
 using System;
-using Descent.Common.AI.BehaviourTree.Actions;
+using Descent.AI.BehaviourTree.Actions;
+using Descent.AI.BehaviourTree.Context;
 
 namespace Descent.Gameplay.AI.Movement
 {

@@ -1,4 +1,4 @@
-using Descent.Common.AI.BehaviourTree.Core;
+using Descent.AI.BehaviourTree.Core;
 using System;
 
 namespace Descent.Common.Attributes.AI
