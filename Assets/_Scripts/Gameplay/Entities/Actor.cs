@@ -1,6 +1,5 @@
 using Descent.Gameplay.Game.Interfaces;
 using Descent.Gameplay.Systems.Hostility;
-using Descent.Gameplay.Systems.Hostility.Data;
 using System;
 
 namespace Descent.Gameplay.Entities

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Descent.Gameplay.DamageableObjects
+namespace Descent.Gameplay.Systems.Durability.Damage
 {
     public class DamageableObject : MonoBehaviour, IDamageable
     {

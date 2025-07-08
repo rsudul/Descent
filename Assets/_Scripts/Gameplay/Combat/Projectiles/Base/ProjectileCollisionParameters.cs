@@ -1,4 +1,4 @@
-using Descent.Gameplay.DamageableObjects;
+using Descent.Gameplay.Systems.Durability.Damage;
 using Descent.Gameplay.Collisions;
 
 namespace Descent.Gameplay.Combat.Projectiles.Base

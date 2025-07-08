@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Descent.Gameplay.Systems.Hostility.Data
+namespace Descent.Gameplay.Systems.Hostility
 {
     [CreateAssetMenu(menuName = "Descent/Game/Faction", fileName = "Faction")]
     public class Faction : ScriptableObject

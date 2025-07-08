@@ -1,7 +1,7 @@
 using Descent.Gameplay.Events.Arguments;
 using System;
 
-namespace Descent.Gameplay.Systems.Health
+namespace Descent.Gameplay.Systems.Durability.Health
 {
     public interface IHealthController
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Descent.Gameplay.Systems.Health.Settings
+namespace Descent.Gameplay.Systems.Durability.Health
 {
     [CreateAssetMenu(fileName = "HealthSettings", menuName = "Descent/Health/Settings")]
     public class HealthSettings : ScriptableObject

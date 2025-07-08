@@ -2,7 +2,7 @@ using Descent.Gameplay.Collisions;
 using Descent.Gameplay.Events.Arguments;
 using UnityEngine;
 
-namespace Descent.Gameplay.Systems.Health.RepairStation
+namespace Descent.Gameplay.Systems.Durability.Repair
 {
     public class RepairStation : MonoBehaviour
     {

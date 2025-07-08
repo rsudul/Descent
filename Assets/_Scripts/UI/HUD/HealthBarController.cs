@@ -1,5 +1,5 @@
 using Descent.Gameplay.Events.Arguments;
-using Descent.Gameplay.Systems.Health;
+using Descent.Gameplay.Systems.Durability.Health;
 using UnityEngine;
 using UnityEngine.UI;
 

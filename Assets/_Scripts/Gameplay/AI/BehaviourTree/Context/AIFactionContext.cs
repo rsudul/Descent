@@ -1,4 +1,4 @@
-using Descent.Gameplay.Systems.Hostility.Data;
+using Descent.Gameplay.Systems.Hostility;
 using Descent.AI.BehaviourTree.Context;
 using UnityEngine;
 

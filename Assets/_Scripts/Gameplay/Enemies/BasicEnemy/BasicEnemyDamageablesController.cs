@@ -1,4 +1,4 @@
-using Descent.Gameplay.DamageableObjects;
+using Descent.Gameplay.Systems.Durability.Damage;
 using System;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-namespace Descent.Gameplay.Systems.Hostility.Data
+namespace Descent.Gameplay.Systems.Hostility
 {
     [System.Serializable]
     public class FactionRelation

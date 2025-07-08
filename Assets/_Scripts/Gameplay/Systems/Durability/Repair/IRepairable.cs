@@ -1,4 +1,4 @@
-namespace Descent.Gameplay.Systems.Health
+namespace Descent.Gameplay.Systems.Durability.Repair
 {
     public interface IRepairable
     {

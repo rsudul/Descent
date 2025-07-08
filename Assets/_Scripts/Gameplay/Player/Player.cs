@@ -3,7 +3,8 @@ using Descent.Gameplay.Entities;
 using Descent.Gameplay.Collisions;
 using Descent.Gameplay.Events.Arguments;
 using Descent.Common.Input;
-using Descent.Gameplay.Systems.Health;
+using Descent.Gameplay.Systems.Durability.Health;
+using Descent.Gameplay.Systems.Durability.Repair;
 using Descent.Gameplay.Movement;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
@@ -11,9 +12,8 @@ using Descent.Gameplay.Player.Collisions;
 using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
-using Descent.Gameplay.Systems.Hostility.Data;
+using Descent.Gameplay.Systems.Hostility;
 using UnityEngine;
-using Descent.Gameplay.Systems.Health.Settings;
 
 namespace Descent.Gameplay.Player
 {

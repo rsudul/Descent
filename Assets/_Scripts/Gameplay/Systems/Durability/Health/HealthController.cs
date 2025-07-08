@@ -1,9 +1,8 @@
 using Descent.Gameplay.Events.Arguments;
-using Descent.Gameplay.Systems.Health.Settings;
 using System;
 using UnityEngine;
 
-namespace Descent.Gameplay.Systems.Health
+namespace Descent.Gameplay.Systems.Durability.Health
 {
     public class HealthController : IHealthController
     {

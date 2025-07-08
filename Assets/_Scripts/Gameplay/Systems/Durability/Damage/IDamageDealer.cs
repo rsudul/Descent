@@ -1,4 +1,4 @@
-namespace Descent.Gameplay.DamageableObjects
+namespace Descent.Gameplay.Systems.Durability.Damage
 {
     public interface IDamageDealer
     {
