@@ -2,9 +2,9 @@ using Descent.Gameplay.Collisions;
 using System;
 using UnityEngine;
 
-namespace Descent.Common.Events.Arguments
+namespace Descent.Gameplay.Events.Arguments
 {
-    public class CollisionEventArguments : EventArgs
+    public class CollisionEventArgs : EventArgs
     {
         public Transform Transform { get; private set; } = null;
         public Vector3 CollisionPoint { get; private set; } = Vector3.zero;
@@ -12,7 +12,7 @@ namespace Descent.Common.Events.Arguments
         public CollisionParameters CollisionParameters { get; private set; } = null;
         public bool IsTrigger { get; private set; } = false;
 
-        public CollisionEventArguments(Transform transform, Vector3 collisionPoint, Vector3 collisionNormal,
+        public CollisionEventArgs(Transform transform, Vector3 collisionPoint, Vector3 collisionNormal,
             CollisionParameters collisionParameters, bool isTrigger)
         {
             Transform = transform;

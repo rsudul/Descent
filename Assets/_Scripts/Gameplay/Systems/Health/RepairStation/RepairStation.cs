@@ -1,5 +1,5 @@
 using Descent.Gameplay.Collisions;
-using Descent.Common.Events.Arguments;
+using Descent.Gameplay.Events.Arguments;
 using UnityEngine;
 
 namespace Descent.Gameplay.Systems.Health.RepairStation
@@ -14,7 +14,7 @@ namespace Descent.Gameplay.Systems.Health.RepairStation
             _hitController.OnHit += OnHit;
         }
 
-        private void OnHit(object sender, CollisionEventArguments args)
+        private void OnHit(object sender, CollisionEventArgs args)
         {
             if (!args.Transform.TryGetComponent<IRepairable>(out IRepairable repairable))
             {

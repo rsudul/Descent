@@ -1,4 +1,4 @@
-using Descent.Common.Events.Arguments;
+using Descent.Gameplay.Events.Arguments;
 using Descent.Gameplay.Game;
 using Descent.Gameplay.Player;
 using Descent.Gameplay.DamageableObjects;

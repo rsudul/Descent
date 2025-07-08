@@ -1,5 +1,5 @@
 using Descent.Gameplay.Collisions;
-using Descent.Common.Events.Arguments;
+using Descent.Gameplay.Events.Arguments;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +26,7 @@ namespace Descent.Gameplay.DamageableObjects
             }
         }
 
-        private void TakeDamage(object sender, CollisionEventArguments args)
+        private void TakeDamage(object sender, CollisionEventArgs args)
         {
             IDamageDealer damageDealer = args.CollisionParameters as IDamageDealer;
             if (damageDealer == null)

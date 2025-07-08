@@ -1,7 +1,7 @@
 using Descent.Common.Attributes.Gameplay.Player;
 using Descent.Common;
 using Descent.Gameplay.Collisions;
-using Descent.Common.Events.Arguments;
+using Descent.Gameplay.Events.Arguments;
 using Descent.Common.Input;
 using Descent.Gameplay.Systems.Health;
 using Descent.Gameplay.Movement;
@@ -151,7 +151,7 @@ namespace Descent.Gameplay.Player
             _playerMovementController.UpdateMovement(transform, _rigidbody, deltaTime);
         }
 
-        private void OnCollision(object sender, CollisionEventArguments args)
+        private void OnCollision(object sender, CollisionEventArgs args)
         {
             if (args.IsTrigger)
             {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Descent.Common.Events.Arguments
+namespace Descent.Gameplay.Events.Arguments
 {
     public class DamageEventArgs : EventArgs
     {

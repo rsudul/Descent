@@ -1,6 +1,6 @@
 using System;
 
-namespace Descent.Common.Events.Arguments
+namespace Descent.Gameplay.Events.Arguments
 {
     public class HealthChangedEventArgs : EventArgs
     {

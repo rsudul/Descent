@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
-using Descent.Common.Events.Arguments;
+using Descent.Gameplay.Events.Arguments;
 
 namespace Descent.Gameplay.Collisions
 {
     [RequireComponent(typeof(Collider))]
     public class HitController : MonoBehaviour
     {
-        public event EventHandler<CollisionEventArguments> OnHit;
+        public event EventHandler<CollisionEventArgs> OnHit;
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -18,7 +18,7 @@ namespace Descent.Gameplay.Collisions
                 collisionParameters = collisionParametersProvider.GetCollisionParameters();
             }
 
-            CollisionEventArguments eventArgs = new CollisionEventArguments(collision.transform, collision.contacts[0].point,
+            CollisionEventArgs eventArgs = new CollisionEventArgs(collision.transform, collision.contacts[0].point,
                 collision.contacts[0].normal, collisionParameters, false);
 
             OnHit?.Invoke(this, eventArgs);
@@ -34,7 +34,7 @@ namespace Descent.Gameplay.Collisions
                 collisionParameters = collisionParametersProvider.GetCollisionParameters();
             }
 
-            CollisionEventArguments eventArgs = new CollisionEventArguments(other.transform, Vector3.zero, Vector3.zero,
+            CollisionEventArgs eventArgs = new CollisionEventArgs(other.transform, Vector3.zero, Vector3.zero,
                 collisionParameters, true);
 
             OnHit?.Invoke(this, eventArgs);

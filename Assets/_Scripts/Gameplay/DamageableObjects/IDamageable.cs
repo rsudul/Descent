@@ -1,4 +1,4 @@
-using Descent.Common.Events.Arguments;
+using Descent.Gameplay.Events.Arguments;
 using System;
 using UnityEngine;
 
