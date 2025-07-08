@@ -14,7 +14,7 @@ namespace Descent.Gameplay.Systems.Health
         public bool IsAlive {  get; private set; }
 
         public event EventHandler<DamageEventArgs> OnDamaged;
-        public event EventHandler<RestoreHealthEventArguments> OnRestoredHealth;
+        public event EventHandler<HealthChangedEventArgs> OnHealthChanged;
         public event EventHandler OnDied;
 
         public HealthController(HealthSettings settings)
@@ -33,8 +33,8 @@ namespace Descent.Gameplay.Systems.Health
             }
 
             Health = MathF.Min(Health + amount, MaxHealth);
-            RestoreHealthEventArguments args = new RestoreHealthEventArguments();
-            OnRestoredHealth?.Invoke(this, args);
+            HealthChangedEventArgs args = new HealthChangedEventArgs();
+            OnHealthChanged?.Invoke(this, args);
         }
 
         public void RestoreToFullHealth()
@@ -45,8 +45,8 @@ namespace Descent.Gameplay.Systems.Health
             }
 
             Health = MaxHealth;
-            RestoreHealthEventArguments args = new RestoreHealthEventArguments();
-            OnRestoredHealth?.Invoke(this, args);
+            HealthChangedEventArgs args = new HealthChangedEventArgs();
+            OnHealthChanged?.Invoke(this, args);
         }
 
         public void TakeDamage(float amount, Vector3 sourcePosition)

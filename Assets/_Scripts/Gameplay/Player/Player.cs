@@ -165,7 +165,8 @@ namespace Descent.Gameplay.Player
             _playerCameraController.Shake(shakeStrength);
             _playerMovementController.FreezeMovement();
 
-            _healthController?.TakeDamage(Random.Range(10.0f, 20.0f), args.CollisionPoint);
+            // instead, have IDamageable component on Player, healthcontroller will subscribe to idamageable event
+            //_healthController?.TakeDamage(Random.Range(10.0f, 20.0f), args.CollisionPoint);
         }
 
         public void RepairFull()
