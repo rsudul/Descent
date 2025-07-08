@@ -1,5 +1,5 @@
 using Descent.Gameplay.Combat.Projectiles.BasicProjectile;
-using Descent.Common.ObjectSpawning;
+using Descent.Gameplay.Systems.ObjectSpawning;
 
 using UnityEngine;
 

@@ -1,8 +1,7 @@
-using Descent.Common.ObjectSpawning.Settings;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Descent.Common.ObjectSpawning
+namespace Descent.Gameplay.Systems.ObjectSpawning
 {
     public class ObjectSpawner : MonoBehaviour
     {

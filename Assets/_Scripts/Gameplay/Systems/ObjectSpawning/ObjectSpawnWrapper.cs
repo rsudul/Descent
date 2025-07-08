@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Descent.Common.ObjectSpawning
+namespace Descent.Gameplay.Systems.ObjectSpawning
 {
     [System.Serializable]
     public struct ObjectSpawnWrapper

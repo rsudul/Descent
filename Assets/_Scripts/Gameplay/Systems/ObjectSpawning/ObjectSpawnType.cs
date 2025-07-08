@@ -1,4 +1,4 @@
-namespace Descent.Common.ObjectSpawning
+namespace Descent.Gameplay.Systems.ObjectSpawning
 {
     public enum ObjectSpawnType
     {
