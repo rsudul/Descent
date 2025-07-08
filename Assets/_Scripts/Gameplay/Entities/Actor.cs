@@ -3,7 +3,7 @@ using Descent.Gameplay.Systems.Hostility;
 using Descent.Gameplay.Systems.Hostility.Data;
 using System;
 
-namespace Descent.Common
+namespace Descent.Gameplay.Entities
 {
     public abstract class Actor : Entity, IFactionMember, IInitializable
     {

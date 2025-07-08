@@ -1,5 +1,5 @@
 using Descent.Common.Attributes.Gameplay.Player;
-using Descent.Common;
+using Descent.Gameplay.Entities;
 using Descent.Gameplay.Collisions;
 using Descent.Gameplay.Events.Arguments;
 using Descent.Common.Input;

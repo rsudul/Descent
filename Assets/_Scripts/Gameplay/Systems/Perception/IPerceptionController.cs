@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Descent.Common;
+using Descent.Gameplay.Entities;
 
 namespace Descent.Gameplay.Systems.Perception
 {

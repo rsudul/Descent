@@ -3,7 +3,7 @@ using Descent.AI.BehaviourTree.Conditions;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.Gameplay.Systems.Hostility;
 using Descent.Gameplay.Systems.Hostility.Data;
-using Descent.Common;
+using Descent.Gameplay.Entities;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
