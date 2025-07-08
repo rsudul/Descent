@@ -21,7 +21,6 @@ namespace Descent.Gameplay.Player.Movement
         private bool _isMoving = false;
 
         private float _movementFreezeTimer = 0.0f;
-        private float _bounceRotationFreezeTimer = 0.0f;
 
         private const float movementThreshold = 0.001f;
 

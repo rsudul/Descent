@@ -12,29 +12,30 @@ namespace Descent.Common.PersistentGUID
             do
             {
                 newUniqueID = Guid.NewGuid().ToString();
-            } while (!UniqueIDGenerator.IsUnique(newUniqueID));
+            } while (!IsUnique(newUniqueID));
 
             return newUniqueID;
-#endif
-
+#else
             return string.Empty;
+#endif
         }
 
-        public static bool IsUnique(GeneratedUniqueID generatedUniqueIDToCheck)
+        public static bool IsUnique(GeneratedUniqueID idToCheck)
         {
 #if UNITY_EDITOR
-            if (generatedUniqueIDToCheck == null || string.IsNullOrEmpty(generatedUniqueIDToCheck.UniqueID))
+            if (idToCheck == null || string.IsNullOrEmpty(idToCheck.UniqueID))
             {
                 return false;
             }
 
-            GeneratedUniqueID registryObject = GeneratedUniqueIDRegistry.Get(generatedUniqueIDToCheck.UniqueID);
+            GeneratedUniqueID existingObject = GeneratedUniqueIDRegistry.Get(idToCheck.UniqueID);
 
-            return registryObject == null || registryObject == generatedUniqueIDToCheck;
-#endif
-
+            return existingObject == null || existingObject == idToCheck;
+#else
             return true;
+#endif
         }
+
         public static bool IsUnique(string uniqueIDToCheck)
         {
 #if UNITY_EDITOR
@@ -43,12 +44,12 @@ namespace Descent.Common.PersistentGUID
                 return false;
             }
 
-            GeneratedUniqueID registryObject = GeneratedUniqueIDRegistry.Get(uniqueIDToCheck);
+            GeneratedUniqueID existingObject = GeneratedUniqueIDRegistry.Get(uniqueIDToCheck);
 
-            return registryObject == null;
-#endif
-
+            return existingObject == null;
+#else
             return true;
+#endif
         }
     }
 }

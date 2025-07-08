@@ -8,7 +8,6 @@ namespace Descent.Gameplay.Effects.Camera
         private Vector3 _originalLocalPosition = Vector3.zero;
         private float _magnitude = 0.0f;
         private float _duration = 0.0f;
-        private float _frequency = 0.0f;
         private bool _isPlaying = false;
 
         [SerializeField]
