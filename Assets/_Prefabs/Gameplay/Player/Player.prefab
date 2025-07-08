@@ -63,7 +63,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCameraController: {fileID: 0}
   _hitController: {fileID: 2714429965774611764}
-  _playerDamageController: {fileID: 0}
   _playerAnimationsController:
     _animationsSettings: {fileID: 11400000, guid: bc7f8c320a967c44c97d2781ed7c2150,
       type: 2}
@@ -74,6 +73,7 @@ MonoBehaviour:
   _playerMovementSettings: {fileID: 11400000, guid: f714b7dc86c0d4643939772c8ee38f58,
     type: 2}
   _faction: {fileID: 11400000, guid: 00a957c5cd3d30a408b82955da59d645, type: 2}
+  _healthSettings: {fileID: 11400000, guid: 2246dd6134ebd9a49b3801443bda3abb, type: 2}
 --- !u!114 &2714429965774611764
 MonoBehaviour:
   m_ObjectHideFlags: 0

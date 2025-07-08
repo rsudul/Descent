@@ -59,16 +59,15 @@ namespace Descent.Gameplay.Player
 
         private void Awake()
         {
-            Initialize();
-            InitializeControllers();
-
             // this should be put somewhere else
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        protected override void Initialize()
+        public override void Initialize()
         {
-            base.Initialize();
+            InvokeOnBeforeInitialize();
+            InitializeControllers();
+            InvokeOnAfterInitialize();
         }
 
         private void InitializeControllers()
