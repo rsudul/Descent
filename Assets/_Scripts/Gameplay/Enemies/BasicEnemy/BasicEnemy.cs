@@ -12,14 +12,11 @@ namespace Descent.Gameplay.Enemies.BasicEnemy
         [SerializeField]
         private Faction _faction = null;
 
-        protected void Awake()
+        public override void Initialize()
         {
-            Initialize();
-        }
-
-        protected override void Initialize()
-        {
+            InvokeOnBeforeInitialize();
             InitializeControllers();
+            InvokeOnAfterInitialize();
         }
 
         private void InitializeControllers()
