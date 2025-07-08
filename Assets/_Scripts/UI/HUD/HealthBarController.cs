@@ -20,9 +20,6 @@ namespace Descent.UI.HUD
             {
                 return;
             }
-
-            _healthController.OnDamaged += Damage;
-            _healthController.OnRestoredHealth += Restore;
         }
 
         private void OnDestroy()
@@ -31,9 +28,6 @@ namespace Descent.UI.HUD
             {
                 return;
             }
-
-            _healthController.OnDamaged -= Damage;
-            _healthController.OnRestoredHealth -= Restore;
         }
 
         private void Damage(object sender, DamageEventArgs args)
@@ -41,7 +35,7 @@ namespace Descent.UI.HUD
             SetHealth();
         }
 
-        private void Restore(object sender, RestoreHealthEventArguments args)
+        private void Restore(object sender, HealthChangedEventArgs args)
         {
             SetHealth();
         }

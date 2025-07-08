@@ -1,5 +1,4 @@
 using Descent.Common.Collisions.Controllers;
-using Descent.Common.Collisions.Parameters;
 using Descent.Common.Events.Arguments;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ namespace Descent.Gameplay.DamageableObjects
 {
     public class DamageableObject : MonoBehaviour, IDamageable
     {
-        public event EventHandler OnDamageTaken;
+        public event EventHandler<DamageEventArgs> OnDamageTaken;
         public event EventHandler OnDied;
 
         public GameObject GameObject { get { return gameObject; } }
@@ -35,8 +34,10 @@ namespace Descent.Gameplay.DamageableObjects
                 return;
             }
 
+            DamageEventArgs damageArgs = new DamageEventArgs(damageDealer.Damage, args.CollisionPoint);
+
             TakeDamage(damageDealer.Damage);
-            OnDamageTaken?.Invoke(this, args);
+            OnDamageTaken?.Invoke(this, damageArgs);
         }
 
         public void TakeDamage(int damage)

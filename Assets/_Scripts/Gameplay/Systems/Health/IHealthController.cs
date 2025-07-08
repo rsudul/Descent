@@ -1,6 +1,5 @@
 using Descent.Common.Events.Arguments;
 using System;
-using UnityEngine;
 
 namespace Descent.Gameplay.Systems.Health
 {
@@ -11,12 +10,10 @@ namespace Descent.Gameplay.Systems.Health
 
         bool IsAlive { get; }
 
-        event EventHandler<DamageEventArgs> OnDamaged;
-        event EventHandler<RestoreHealthEventArguments> OnRestoredHealth;
+        event EventHandler<HealthChangedEventArgs> OnHealthChanged;
         event EventHandler OnDied;
 
         void Heal(float amount);
         void RestoreToFullHealth();
-        void TakeDamage(float amount, Vector3 sourcePosition);
     }
 }

@@ -1,7 +1,7 @@
 using Descent.Common.Events.Arguments;
 using Descent.Gameplay.Game;
 using Descent.Gameplay.Player;
-using Descent.Gameplay.Systems.Health;
+using Descent.Gameplay.DamageableObjects;
 using UnityEngine;
 
 namespace Descent.UI.HUD
@@ -9,7 +9,7 @@ namespace Descent.UI.HUD
     public class UIDamageIndicatorController : MonoBehaviour
     {
         private Player _player;
-        private IHealthController _healthController;
+        private IDamageable _damageable;
 
         [SerializeField]
         private GameObject _indicatorPrefab;
@@ -28,19 +28,19 @@ namespace Descent.UI.HUD
                 return;
             }
 
-            if (!_player.TryGetComponent<IHealthController>(out _healthController))
+            if (!_player.TryGetComponent<IDamageable>(out _damageable))
             {
                 return;
             }
 
-            _healthController.OnDamaged += OnPlayerDamaged;
+            _damageable.OnDamageTaken += OnPlayerDamaged;
         }
 
         private void OnDestroy()
         {
-            if (_healthController != null)
+            if (_damageable != null)
             {
-                _healthController.OnDamaged -= OnPlayerDamaged;
+                _damageable.OnDamageTaken -= OnPlayerDamaged;
             }
         }
 
