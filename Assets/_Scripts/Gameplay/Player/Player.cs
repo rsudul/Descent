@@ -1,6 +1,6 @@
 using Descent.Common.Attributes.Gameplay.Player;
 using Descent.Common;
-using Descent.Common.Collisions.Controllers;
+using Descent.Gameplay.Collisions;
 using Descent.Common.Events.Arguments;
 using Descent.Common.Input;
 using Descent.Gameplay.Systems.Health;

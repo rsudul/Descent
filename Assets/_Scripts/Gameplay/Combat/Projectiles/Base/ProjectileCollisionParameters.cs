@@ -1,6 +1,7 @@
 using Descent.Gameplay.DamageableObjects;
+using Descent.Gameplay.Collisions;
 
-namespace Descent.Common.Collisions.Parameters
+namespace Descent.Gameplay.Combat.Projectiles.Base
 {
     public class ProjectileCollisionParameters : CollisionParameters, IDamageDealer
     {

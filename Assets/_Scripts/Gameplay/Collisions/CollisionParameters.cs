@@ -1,6 +1,4 @@
-using System;
-
-namespace Descent.Common.Collisions.Parameters
+namespace Descent.Gameplay.Collisions
 {
     public abstract class CollisionParameters
     {

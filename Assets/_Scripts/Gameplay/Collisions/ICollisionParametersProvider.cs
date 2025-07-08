@@ -1,4 +1,4 @@
-namespace Descent.Common.Collisions.Parameters
+namespace Descent.Gameplay.Collisions
 {
     public interface ICollisionParametersProvider
     {

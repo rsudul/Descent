@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
-using Descent.Common.Collisions.Parameters;
 using Descent.Common.Events.Arguments;
 
-namespace Descent.Common.Collisions.Controllers
+namespace Descent.Gameplay.Collisions
 {
     [RequireComponent(typeof(Collider))]
     public class HitController : MonoBehaviour

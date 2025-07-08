@@ -1,5 +1,4 @@
-using Descent.Common.Collisions.Controllers;
-using Descent.Common.Collisions.Parameters;
+using Descent.Gameplay.Collisions;
 using Descent.Common.Events.Arguments;
 using System;
 using UnityEngine;

@@ -1,4 +1,4 @@
-using Descent.Common.Collisions.Parameters;
+using Descent.Gameplay.Collisions;
 using Descent.Gameplay.Combat.Projectiles.Base;
 using System;
 
