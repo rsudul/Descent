@@ -1,7 +1,6 @@
-using Descent.Combat.Projectiles.BasicProjectile.Settings.Movement;
 using UnityEngine;
 
-namespace Descent.Combat.Projectiles.BasicProjectile.Movement
+namespace Descent.Gameplay.Combat.Projectiles.BasicProjectile
 {
     public class BasicProjectileMovementController
     {

@@ -1,4 +1,4 @@
-using Descent.Attributes.Gameplay.Player;
+using Descent.Common.Attributes.Gameplay.Player;
 using Descent.Gameplay.Game.Initialization;
 using Descent.Common.Input;
 using Descent.Gameplay.Game.Input;

@@ -3,7 +3,7 @@ using Descent.Common.Collisions.Parameters;
 using System;
 using UnityEngine;
 
-namespace Descent.Combat.Projectiles.Common
+namespace Descent.Gameplay.Combat.Projectiles.Base
 {
     [RequireComponent(typeof(Collider))]
     public abstract class ProjectileCollisionsController : MonoBehaviour, ICollisionParametersProvider

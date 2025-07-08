@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Descent.Combat.Projectiles.BasicProjectile.Settings.Movement
+namespace Descent.Gameplay.Combat.Projectiles.BasicProjectile
 {
     [CreateAssetMenu(fileName = "BasicProjectileMovementSettings", menuName = "Descent/Combat/Projectiles/BasicProjectile/Settings/Movement")]
     public class BasicProjectileMovementSettings : ScriptableObject

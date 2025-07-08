@@ -2,7 +2,7 @@ using Descent.Common.AI.BehaviourTree.Core;
 using System;
 using UnityEngine;
 using Descent.Common.AI.BehaviourTree.Context;
-using Descent.Attributes.AI;
+using Descent.Common.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Conditions;
 
 namespace Descent.Common.AI.BehaviourTree.Nodes

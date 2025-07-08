@@ -1,9 +1,8 @@
-using Descent.Combat.Projectiles.Common;
 using Descent.Common.Collisions.Parameters;
+using Descent.Gameplay.Combat.Projectiles.Base;
 using System;
-using UnityEngine;
 
-namespace Descent.Combat.Projectiles.BasicProjectile.Collisions
+namespace Descent.Gameplay.Combat.Projectiles.BasicProjectile
 {
     public class BasicProjectileCollisionsController : ProjectileCollisionsController
     {

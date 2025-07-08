@@ -1,7 +1,7 @@
 using UnityEngine;
 using Descent.Common.AI.BehaviourTree.Context;
 using Descent.Common.AI.BehaviourTree.Nodes;
-using Descent.Attributes.AI;
+using Descent.Common.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Requests;
 using Descent.Common.AI.BehaviourTree.Events.Arguments;
 using System;

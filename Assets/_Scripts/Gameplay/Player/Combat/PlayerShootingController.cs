@@ -1,4 +1,4 @@
-using Descent.Combat.Projectiles.BasicProjectile;
+using Descent.Gameplay.Combat.Projectiles.BasicProjectile;
 using Descent.Common.ObjectSpawning;
 
 using UnityEngine;

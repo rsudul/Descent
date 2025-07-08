@@ -1,4 +1,4 @@
-using Descent.Attributes.Gameplay.Player;
+using Descent.Common.Attributes.Gameplay.Player;
 using Descent.Common;
 using Descent.Common.Collisions.Controllers;
 using Descent.Common.Events.Arguments;

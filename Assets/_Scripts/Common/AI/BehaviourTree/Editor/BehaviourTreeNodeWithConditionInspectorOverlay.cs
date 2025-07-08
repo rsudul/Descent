@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 using System.Linq;
 using UnityEngine;
 using System.Reflection;
-using Descent.Attributes.AI;
+using Descent.Common.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {

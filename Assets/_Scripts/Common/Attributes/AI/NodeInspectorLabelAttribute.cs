@@ -1,6 +1,6 @@
 using System;
 
-namespace Descent.Attributes.AI
+namespace Descent.Common.Attributes.AI
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class NodeInspectorLabelAttribute : Attribute

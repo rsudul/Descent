@@ -1,6 +1,6 @@
 using System;
 
-namespace Descent.Attributes.AI
+namespace Descent.Common.Attributes.AI
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public class BehaviourTreeContextProviderAttribute : Attribute

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Descent.Combat.Projectiles.Common
+namespace Descent.Gameplay.Combat.Projectiles.Base
 {
     public abstract class Projectile : MonoBehaviour
     {

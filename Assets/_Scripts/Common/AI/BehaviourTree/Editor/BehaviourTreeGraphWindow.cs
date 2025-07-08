@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using System;
 using System.Reflection;
 using Descent.Common.AI.BehaviourTree.Nodes;
-using Descent.Attributes.AI;
+using Descent.Common.Attributes.AI;
 
 namespace Descent.Common.AI.BehaviourTree.Editor
 {

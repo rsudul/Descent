@@ -1,4 +1,4 @@
-using Descent.Attributes.AI;
+using Descent.Common.Attributes.AI;
 using Descent.Common.AI.BehaviourTree.Core;
 using Descent.Common.AI.BehaviourTree.Context;
 
