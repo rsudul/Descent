@@ -1,6 +1,5 @@
 using Descent.Extensions.Math;
 using Descent.Gameplay.Movement;
-using Descent.Gameplay.Player.Settings.Movement;
 using UnityEngine;
 
 namespace Descent.Gameplay.Player.Movement

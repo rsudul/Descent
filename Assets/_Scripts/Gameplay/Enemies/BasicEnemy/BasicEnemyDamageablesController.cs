@@ -2,7 +2,7 @@ using Descent.Gameplay.DamageableObjects;
 using System;
 using UnityEngine;
 
-namespace Descent.Gameplay.Enemies.BasicEnemy.Damageables
+namespace Descent.Gameplay.Enemies.BasicEnemy
 {
     [Serializable]
     public class BasicEnemyDamageablesController

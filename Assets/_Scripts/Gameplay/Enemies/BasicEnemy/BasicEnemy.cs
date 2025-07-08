@@ -1,4 +1,3 @@
-using Descent.Gameplay.Enemies.BasicEnemy.Damageables;
 using Descent.Gameplay.Systems.Hostility.Data;
 using System;
 using UnityEngine;

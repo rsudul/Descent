@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Descent.Gameplay.Player.Settings.Animations
+namespace Descent.Gameplay.Player.Animations
 {
     [CreateAssetMenu(fileName = "PlayerAnimationsSettings", menuName = "Descent/Player/Settings/Animations")]
     public class PlayerAnimationsSettings : ScriptableObject

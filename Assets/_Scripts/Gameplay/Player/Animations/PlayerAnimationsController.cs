@@ -1,4 +1,3 @@
-using Descent.Gameplay.Player.Settings.Animations;
 using UnityEngine;
 
 namespace Descent.Gameplay.Player.Animations

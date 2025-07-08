@@ -1,13 +1,12 @@
 using Descent.Common.Attributes.Gameplay.Player;
-using Descent.Gameplay.Game.Initialization;
+using Descent.Gameplay.Game.Interfaces;
 using Descent.Common.Input;
-using Descent.Gameplay.Game.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Descent.Gameplay.Game
+namespace Descent.Gameplay.Game.Controllers
 {
     using SaveSystem = SaveSystem.SaveSystem;
 

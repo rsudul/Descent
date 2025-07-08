@@ -1,6 +1,6 @@
 using System;
 
-namespace Descent.Gameplay.Game.Initialization
+namespace Descent.Gameplay.Game.Interfaces
 {
     public interface IInitializable
     {

@@ -1,7 +1,7 @@
 using Descent.Common.Input;
 using Descent.Constants;
 
-namespace Descent.Gameplay.Game.Input
+namespace Descent.Gameplay.Game.Controllers
 {
     using Input = UnityEngine.Input;
 

@@ -11,7 +11,6 @@ using Descent.Gameplay.Player.Collisions;
 using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
-using Descent.Gameplay.Player.Settings.Movement;
 using Descent.Gameplay.Systems.Hostility.Data;
 using UnityEngine;
 using Descent.Gameplay.Systems.Health.Settings;
