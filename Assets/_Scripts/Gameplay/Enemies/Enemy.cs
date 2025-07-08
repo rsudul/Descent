@@ -1,4 +1,4 @@
-using Descent.Common;
+using Descent.Gameplay.Entities;
 
 namespace Descent.Gameplay.Enemies
 {

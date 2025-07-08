@@ -1,4 +1,3 @@
-using Descent.Gameplay.Systems.Hostility.Data;
 using System;
 
 namespace Descent.Gameplay.Systems.Hostility

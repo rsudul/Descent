@@ -1,6 +1,5 @@
-using Descent.Common.Collisions.Controllers;
-using Descent.Common.Collisions.Parameters;
-using Descent.Common.Events.Arguments;
+using Descent.Gameplay.Collisions;
+using Descent.Gameplay.Events.Arguments;
 using System;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ namespace Descent.Gameplay.Player.Collisions
         [SerializeField]
         private Collider _collider = null;
 
-        public event EventHandler<CollisionEventArguments> OnCollision;
+        public event EventHandler<CollisionEventArgs> OnCollision;
 
         ~PlayerCollisionsController()
         {
@@ -35,7 +34,7 @@ namespace Descent.Gameplay.Player.Collisions
             _hitController.OnHit += OnHit;
         }
 
-        private void OnHit(object sender, CollisionEventArguments args)
+        private void OnHit(object sender, CollisionEventArgs args)
         {
             OnCollision?.Invoke(this, args);
         }
