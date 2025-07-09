@@ -21,7 +21,6 @@ namespace Descent.Gameplay.Player
     public class Player : Actor, IRepairable
     {
         private IInputController _inputController;
-        private PlayerShootingController _playerShootingController;
         private IPlayerMovementController _playerMovementController;
         private IHealthController _healthController;
 
@@ -72,7 +71,6 @@ namespace Descent.Gameplay.Player
         private void InitializeControllers()
         {
             _inputController = new PlayerInputController();
-            _playerShootingController = new PlayerShootingController();
             _playerMovementController = new PlayerMovementController();
             _healthController = new HealthController(_healthSettings);
 
@@ -136,13 +134,6 @@ namespace Descent.Gameplay.Player
         {
             _playerMovementController.UpdateLook(_playerBody, _rigidbody, Time.deltaTime);
             _playerAnimationsController.UpdateAnimations(deltaTime);
-
-            if (_shootInput)
-            {
-                // store projectile spawn position somewhere else
-                _playerShootingController.Shoot(transform.forward,
-                    transform.position + transform.forward * 0.5f, deltaTime, _playerCollisionsController.Collider);
-            }
         }
 
         private void UpdateControllersPhysics(float deltaTime)
