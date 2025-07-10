@@ -25,12 +25,12 @@
                 },
                 {
                     "name": "Banking",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "376fcf51-c4f3-4598-a91a-4d080ff2ca6d",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Fire",
@@ -123,7 +123,7 @@
                 {
                     "name": "negative",
                     "id": "19fe0f98-fbf0-495c-bfae-895a26a23da6",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -134,7 +134,7 @@
                 {
                     "name": "positive",
                     "id": "78dd0344-c33d-4c3b-b746-2796f8b7cabb",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

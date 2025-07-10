@@ -1,5 +1,5 @@
 using Descent.Gameplay.Events.Arguments;
-using Descent.Gameplay.Game.Controllers;
+using Descent.Gameplay.Game;
 using Descent.Gameplay.Player;
 using Descent.Gameplay.Systems.Durability.Damage;
 using UnityEngine;
