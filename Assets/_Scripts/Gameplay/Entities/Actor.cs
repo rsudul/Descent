@@ -1,4 +1,4 @@
-using Descent.Gameplay.Game.Interfaces;
+using Descent.Gameplay.Game;
 using Descent.Gameplay.Systems.Hostility;
 using System;
 

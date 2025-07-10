@@ -1,46 +1,60 @@
 using Descent.Gameplay.Input;
-using Descent.Constants;
+using System;
+using UnityEngine;
 
 namespace Descent.Gameplay.Player.Input
 {
-    using Input = UnityEngine.Input;
-
-    public class PlayerInputController : IInputController
+    public class PlayerInputController : IDisposable
     {
-        private float _lookX = 0.0f;
-        private float _lookY = 0.0f;
-        private float _banking = 0.0f;
+        public Vector2 MoveInput { get; private set; }
+        public Vector2 LookInput { get; private set; }
+        public float BankingInput { get; private set; }
+        public bool FireInput { get; private set; }
 
-        private float _moveX = 0.0f;
-        private float _moveY = 0.0f;
+        public event EventHandler OnFirePressed;
 
-        private bool _shoot = false;
-
-        private bool _saveGame = false;
-        private bool _loadGame = false;
-
-        public float LookX { get { return _lookX; } }
-        public float LookY { get { return _lookY; } }
-        public float Banking { get { return _banking; } }
-
-        public float MoveX { get { return _moveX; } }
-        public float MoveY { get { return _moveY; } }
-
-        public bool Shoot { get { return _shoot; } }
-
-        public bool SaveGame { get { return _saveGame; } }
-        public bool LoadGame { get { return _loadGame; } }
-
-        public void Refresh()
+        public PlayerInputController()
         {
-            _lookX = Input.GetAxis(InputConstants.LookHorizontal);
-            _lookY = Input.GetAxis(InputConstants.LookVertical);
-            _banking = Input.GetAxis(InputConstants.Banking);
+            InputManager.Instance.OnMoveChanged += OnMoveChanged;
+            InputManager.Instance.OnLookChanged += OnLookChanged;
+            InputManager.Instance.OnBankingChanged += OnBankingChanged;
+            InputManager.Instance.OnFirePressed += HandleFirePressed;
+            InputManager.Instance.OnFireReleased += OnFireReleased;
+        }
 
-            _moveX = Input.GetAxis(InputConstants.MoveHorizontal);
-            _moveY = Input.GetAxis(InputConstants.MoveForward);
+        public void Dispose()
+        {
+            InputManager.Instance.OnMoveChanged -= OnMoveChanged;
+            InputManager.Instance.OnLookChanged -= OnLookChanged;
+            InputManager.Instance.OnBankingChanged -= OnBankingChanged;
+            InputManager.Instance.OnFirePressed -= HandleFirePressed;
+            InputManager.Instance.OnFireReleased -= OnFireReleased;
+        }
 
-            _shoot = Input.GetButtonDown(InputConstants.Shoot);
+        private void OnMoveChanged(object sender, Vector2 value)
+        {
+            MoveInput = value;
+        }
+
+        private void OnLookChanged(object sender, Vector2 value)
+        {
+            LookInput = value;
+        }
+
+        private void OnBankingChanged(object sender, float value)
+        {
+            BankingInput = value;
+        }
+
+        private void HandleFirePressed(object sender, EventArgs args)
+        {
+            FireInput = true;
+            OnFirePressed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnFireReleased(object sender, EventArgs args)
+        {
+            FireInput = false;
         }
     }
 }

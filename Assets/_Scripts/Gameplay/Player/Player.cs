@@ -2,10 +2,8 @@ using Descent.Common.Attributes.Gameplay.Player;
 using Descent.Gameplay.Entities;
 using Descent.Gameplay.Collisions;
 using Descent.Gameplay.Events.Arguments;
-using Descent.Gameplay.Input;
 using Descent.Gameplay.Systems.Durability.Health;
 using Descent.Gameplay.Systems.Durability.Repair;
-using Descent.Gameplay.Movement;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
 using Descent.Gameplay.Player.Collisions;
@@ -15,21 +13,17 @@ using Descent.Gameplay.Systems.Hostility;
 using UnityEngine;
 using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Systems.WeaponSystem;
+using System;
 
 namespace Descent.Gameplay.Player
 {
     [IsPlayerObject]
     public class Player : Actor, IRepairable
     {
-        private IInputController _inputController;
-        private IPlayerMovementController _playerMovementController;
+        private PlayerInputController _inputController;
+        private PlayerMovementController _playerMovementController;
         private IHealthController _healthController;
         private PlayerWeaponSystemController _playerWeaponSystemController;
-
-        private Vector2 _lookInput = Vector2.zero;
-        private float _bankInput = 0.0f;
-        private Vector2 _moveInput = Vector2.zero;
-        private bool _shootInput = false;
 
         public IHealthController HealthController => _healthController;
 
@@ -65,6 +59,11 @@ namespace Descent.Gameplay.Player
             Cursor.lockState = CursorLockMode.Locked;
         }
 
+        private void OnDestroy()
+        {
+            _inputController?.Dispose();
+        }
+
         public override void Initialize()
         {
             InvokeOnBeforeInitialize();
@@ -88,6 +87,7 @@ namespace Descent.Gameplay.Player
 
             _playerWeaponSystemController.EquipWeapon(_playerWeaponSystemController.PlayerWeapons[0]);
 
+            _inputController.OnFirePressed += OnFirePressed;
             _playerCollisionsController.OnCollision += OnCollision;
         }
 
@@ -95,7 +95,6 @@ namespace Descent.Gameplay.Player
         {
             float deltaTime = GetDeltaTime();
 
-            GetInput();
             FeedInputToControllers();
             UpdateControllers(deltaTime);
         }
@@ -117,30 +116,19 @@ namespace Descent.Gameplay.Player
             return Time.fixedDeltaTime;
         }
 
-        private void GetInput()
-        {
-            _inputController.Refresh();
-
-            _lookInput = new Vector2(_inputController.LookX, _inputController.LookY);
-            _bankInput = _inputController.Banking;
-
-            _moveInput = new Vector2(_inputController.MoveX, _inputController.MoveY);
-            _moveInput = _moveInput.normalized;
-
-            _shootInput = _inputController.Shoot;
-        }
-
         private void FeedInputToControllers()
         {
-            PlayerMovementController playerMovementController = _playerMovementController as PlayerMovementController;
-            playerMovementController.SetPitchYawAndRoll(_lookInput.x, _lookInput.y, _bankInput);
-            playerMovementController.SetMovementFactors(_moveInput.x, _moveInput.y);
-            _playerAnimationsController.SetMovementVelocity(new Vector3(_moveInput.x, 0.0f, _moveInput.y));
+            _playerMovementController.SetPitchYawAndRoll(_inputController.LookInput.x,
+                _inputController.LookInput.y,
+                _inputController.BankingInput);
+            Vector2 moveInput = new Vector2(_inputController.MoveInput.x, _inputController.MoveInput.y);
+            _playerMovementController.SetMovementFactors(moveInput.x, moveInput.y);
 
-            if (_shootInput)
-            {
-                _playerWeaponSystemController.Fire();
-            }
+            _playerAnimationsController.SetMovementVelocity(new Vector3(
+                _inputController.MoveInput.x,
+                0.0f,
+                _inputController.MoveInput.y
+                ));
         }
 
         private void UpdateControllers(float deltaTime)
@@ -196,6 +184,11 @@ namespace Descent.Gameplay.Player
 
             _faction = faction;
             InvokeFactionChanged(_faction);
+        }
+
+        private void OnFirePressed(object sender, EventArgs args)
+        {
+            _playerWeaponSystemController.Fire();
         }
     }
 }
