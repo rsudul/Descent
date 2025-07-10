@@ -6,7 +6,11 @@ namespace Descent.Gameplay.Player.Input
 {
     public class PlayerInputController : IDisposable
     {
+        private bool _moveUp = false;
+        private bool _moveDown = false;
+
         public Vector2 MoveInput { get; private set; }
+        public float MoveVerticalInput { get; private set; }
         public Vector2 LookInput { get; private set; }
         public float BankingInput { get; private set; }
         public bool FireInput { get; private set; }
@@ -15,33 +19,49 @@ namespace Descent.Gameplay.Player.Input
 
         public PlayerInputController()
         {
-            InputManager.Instance.OnMoveChanged += OnMoveChanged;
-            InputManager.Instance.OnLookChanged += OnLookChanged;
-            InputManager.Instance.OnBankingChanged += OnBankingChanged;
+            InputManager.Instance.OnMoveChanged += HandleMoveChanged;
+            InputManager.Instance.OnMoveUpChanged += HandleMoveUpChanged;
+            InputManager.Instance.OnMoveDownChanged += HandleMoveDownChanged;
+            InputManager.Instance.OnLookChanged += HandleLookChanged;
+            InputManager.Instance.OnBankingChanged += HandleBankingChanged;
             InputManager.Instance.OnFirePressed += HandleFirePressed;
-            InputManager.Instance.OnFireReleased += OnFireReleased;
+            InputManager.Instance.OnFireReleased += HandleFireReleased;
         }
 
         public void Dispose()
         {
-            InputManager.Instance.OnMoveChanged -= OnMoveChanged;
-            InputManager.Instance.OnLookChanged -= OnLookChanged;
-            InputManager.Instance.OnBankingChanged -= OnBankingChanged;
+            InputManager.Instance.OnMoveChanged -= HandleMoveChanged;
+            InputManager.Instance.OnMoveUpChanged -= HandleMoveUpChanged;
+            InputManager.Instance.OnMoveDownChanged -= HandleMoveDownChanged;
+            InputManager.Instance.OnLookChanged -= HandleLookChanged;
+            InputManager.Instance.OnBankingChanged -= HandleBankingChanged;
             InputManager.Instance.OnFirePressed -= HandleFirePressed;
-            InputManager.Instance.OnFireReleased -= OnFireReleased;
+            InputManager.Instance.OnFireReleased -= HandleFireReleased;
         }
 
-        private void OnMoveChanged(object sender, Vector2 value)
+        private void HandleMoveChanged(object sender, Vector2 value)
         {
             MoveInput = value;
         }
 
-        private void OnLookChanged(object sender, Vector2 value)
+        private void HandleMoveUpChanged(object sender, float value)
+        {
+            _moveUp = Mathf.Abs(value) > 0.01f ? true : false;
+            MoveVerticalInput = _moveDown ? 0.0f : value;
+        }
+
+        private void HandleMoveDownChanged(object sender, float value)
+        {
+            _moveDown = Mathf.Abs(value) > 0.01f ? true : false;
+            MoveVerticalInput = _moveUp ? 0.0f : value;
+        }
+
+        private void HandleLookChanged(object sender, Vector2 value)
         {
             LookInput = value;
         }
 
-        private void OnBankingChanged(object sender, float value)
+        private void HandleBankingChanged(object sender, float value)
         {
             BankingInput = value;
         }
@@ -52,7 +72,7 @@ namespace Descent.Gameplay.Player.Input
             OnFirePressed?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnFireReleased(object sender, EventArgs args)
+        private void HandleFireReleased(object sender, EventArgs args)
         {
             FireInput = false;
         }

@@ -148,9 +148,10 @@ namespace Descent.Gameplay.Player.Movement
             _rollRotation = roll * _movementSettings.BankingSensitivity;
         }
 
-        public void SetMovementFactors(float moveHorizontal, float moveForward)
+        public void SetMovementFactors(float moveHorizontal, float moveForward, float moveVertical)
         {
-            _movementDirection = new Vector3(moveHorizontal, 0.0f, moveForward);
+            _movementDirection = new Vector3(moveHorizontal, moveVertical,
+                Mathf.Abs(moveVertical) > 0.01f ? 0.0f : moveForward);
         }
 
         private void StabilizeRollAxis(Transform transform, Rigidbody rigidbody, float deltaTime, out bool axisStabilized)
