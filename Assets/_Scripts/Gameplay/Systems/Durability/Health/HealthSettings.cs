@@ -10,7 +10,7 @@ namespace Descent.Gameplay.Systems.Durability.Health
 
         public HealthSettings Clone()
         {
-            HealthSettings clone = new HealthSettings();
+            HealthSettings clone = CreateInstance<HealthSettings>();
             clone.Health = Health;
             clone.MaxHealth = MaxHealth;
             return clone;

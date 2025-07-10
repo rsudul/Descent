@@ -9,11 +9,12 @@ using Descent.Gameplay.Movement;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
 using Descent.Gameplay.Player.Collisions;
-using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
 using Descent.Gameplay.Systems.Hostility;
 using UnityEngine;
+using Descent.Gameplay.Player.Combat;
+using Descent.Gameplay.Systems.WeaponSystem;
 
 namespace Descent.Gameplay.Player
 {
@@ -23,6 +24,7 @@ namespace Descent.Gameplay.Player
         private IInputController _inputController;
         private IPlayerMovementController _playerMovementController;
         private IHealthController _healthController;
+        private PlayerWeaponSystemController _playerWeaponSystemController;
 
         private Vector2 _lookInput = Vector2.zero;
         private float _bankInput = 0.0f;
@@ -54,6 +56,8 @@ namespace Descent.Gameplay.Player
         private Faction _faction = null;
         [SerializeField]
         private HealthSettings _healthSettings = null;
+        [SerializeField]
+        private WeaponsConfig _weaponsConfig = null;
 
         private void Awake()
         {
@@ -73,12 +77,16 @@ namespace Descent.Gameplay.Player
             _inputController = new PlayerInputController();
             _playerMovementController = new PlayerMovementController();
             _healthController = new HealthController(_healthSettings);
+            _playerWeaponSystemController = new PlayerWeaponSystemController();
 
             PlayerMovementController playerMovementController = _playerMovementController as PlayerMovementController;
 
             playerMovementController.Initialize(_playerBody, _rigidbody, _playerMovementSettings);
             _playerAnimationsController.Initialize(_playerCameraController.CameraTransform);
             _playerCollisionsController.Initialize(_hitController, _rigidbody);
+            _playerWeaponSystemController.Initialize(_weaponsConfig);
+
+            _playerWeaponSystemController.EquipWeapon(_playerWeaponSystemController.PlayerWeapons[0]);
 
             _playerCollisionsController.OnCollision += OnCollision;
         }
@@ -128,6 +136,11 @@ namespace Descent.Gameplay.Player
             playerMovementController.SetPitchYawAndRoll(_lookInput.x, _lookInput.y, _bankInput);
             playerMovementController.SetMovementFactors(_moveInput.x, _moveInput.y);
             _playerAnimationsController.SetMovementVelocity(new Vector3(_moveInput.x, 0.0f, _moveInput.y));
+
+            if (_shootInput)
+            {
+                _playerWeaponSystemController.Fire();
+            }
         }
 
         private void UpdateControllers(float deltaTime)
