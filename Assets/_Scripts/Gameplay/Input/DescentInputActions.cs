@@ -39,6 +39,15 @@ namespace Descent.Gameplay.Input
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""MoveVertical"",
+                    ""type"": ""Value"",
+                    ""id"": ""2cc02acc-cd69-43f7-be5f-a031087f6995"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""00d0c908-4298-4aed-a6e7-dd4e4fcf2469"",
@@ -176,6 +185,72 @@ namespace Descent.Gameplay.Input
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""85ceb934-f452-4308-a651-a9b4608078fa"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveVertical"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""33eab8ad-8b75-4ca8-89db-3c203102206e"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""116c6ed6-f495-4d94-b0c9-35a5317bb825"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""74f20b0e-d69c-4f78-be6d-78ec0a9fb17d"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveVertical"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""77ea8df5-2677-4476-9b19-e612d2d2d9e2"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""053b47d1-b1ec-4647-abaf-e5f48536a008"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -185,6 +260,7 @@ namespace Descent.Gameplay.Input
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
+            m_Gameplay_MoveVertical = m_Gameplay.FindAction("MoveVertical", throwIfNotFound: true);
             m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
             m_Gameplay_Banking = m_Gameplay.FindAction("Banking", throwIfNotFound: true);
             m_Gameplay_Fire = m_Gameplay.FindAction("Fire", throwIfNotFound: true);
@@ -250,6 +326,7 @@ namespace Descent.Gameplay.Input
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_Move;
+        private readonly InputAction m_Gameplay_MoveVertical;
         private readonly InputAction m_Gameplay_Look;
         private readonly InputAction m_Gameplay_Banking;
         private readonly InputAction m_Gameplay_Fire;
@@ -258,6 +335,7 @@ namespace Descent.Gameplay.Input
             private @DescentInputActions m_Wrapper;
             public GameplayActions(@DescentInputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
+            public InputAction @MoveVertical => m_Wrapper.m_Gameplay_MoveVertical;
             public InputAction @Look => m_Wrapper.m_Gameplay_Look;
             public InputAction @Banking => m_Wrapper.m_Gameplay_Banking;
             public InputAction @Fire => m_Wrapper.m_Gameplay_Fire;
@@ -273,6 +351,9 @@ namespace Descent.Gameplay.Input
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @MoveVertical.started += instance.OnMoveVertical;
+                @MoveVertical.performed += instance.OnMoveVertical;
+                @MoveVertical.canceled += instance.OnMoveVertical;
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
@@ -289,6 +370,9 @@ namespace Descent.Gameplay.Input
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
+                @MoveVertical.started -= instance.OnMoveVertical;
+                @MoveVertical.performed -= instance.OnMoveVertical;
+                @MoveVertical.canceled -= instance.OnMoveVertical;
                 @Look.started -= instance.OnLook;
                 @Look.performed -= instance.OnLook;
                 @Look.canceled -= instance.OnLook;
@@ -318,6 +402,7 @@ namespace Descent.Gameplay.Input
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
+            void OnMoveVertical(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnBanking(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);
