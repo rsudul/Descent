@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Descent.Gameplay.Systems.WeaponSystem.Core
 {

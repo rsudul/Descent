@@ -74,6 +74,7 @@ MonoBehaviour:
     type: 2}
   _faction: {fileID: 11400000, guid: 00a957c5cd3d30a408b82955da59d645, type: 2}
   _healthSettings: {fileID: 11400000, guid: 2246dd6134ebd9a49b3801443bda3abb, type: 2}
+  _weaponsConfig: {fileID: 11400000, guid: 95a0fcb3ba4724745901c68a7cac39eb, type: 2}
 --- !u!114 &2714429965774611764
 MonoBehaviour:
   m_ObjectHideFlags: 0
