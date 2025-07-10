@@ -12,6 +12,8 @@ namespace Descent.Gameplay.Input
         private DescentInputActions _inputActions;
 
         public Vector2 Move { get; private set; }
+        public float MoveUp {  get; private set; }
+        public float MoveDown { get; private set; }
         public Vector2 Look { get; private set; }
         public float Banking { get; private set; }
         public float FirePressed { get; private set; }
@@ -22,6 +24,8 @@ namespace Descent.Gameplay.Input
         public event EventHandler OnAfterInitialize;
 
         public event EventHandler<Vector2> OnMoveChanged;
+        public event EventHandler<float> OnMoveUpChanged;
+        public event EventHandler<float> OnMoveDownChanged;
         public event EventHandler<Vector2> OnLookChanged;
         public event EventHandler<float> OnBankingChanged;
         public event EventHandler OnFirePressed;
@@ -49,6 +53,14 @@ namespace Descent.Gameplay.Input
             BindAction<Vector2>(_inputActions.Gameplay.Move,
                 value => { Move = value; OnMoveChanged?.Invoke(this, value); },
                 value => { Move = Vector2.zero; OnMoveChanged?.Invoke(this, Vector2.zero); });
+
+            BindAction<float>(_inputActions.Gameplay.MoveUp,
+                value => { MoveUp = value; OnMoveUpChanged?.Invoke(this, value); },
+                value => { MoveUp = 0.0f; OnMoveUpChanged?.Invoke(this, 0.0f); });
+
+            BindAction<float>(_inputActions.Gameplay.MoveDown,
+                value => { MoveDown = value; OnMoveDownChanged?.Invoke(this, value); },
+                value => { MoveDown = 0.0f; OnMoveDownChanged?.Invoke(this, 0.0f); });
 
             BindAction<Vector2>(_inputActions.Gameplay.Look,
                 value => { Look = value; OnLookChanged?.Invoke(this, value); },

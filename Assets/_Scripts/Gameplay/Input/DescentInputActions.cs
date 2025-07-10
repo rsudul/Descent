@@ -39,13 +39,22 @@ namespace Descent.Gameplay.Input
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""MoveVertical"",
-                    ""type"": ""Value"",
-                    ""id"": ""2cc02acc-cd69-43f7-be5f-a031087f6995"",
-                    ""expectedControlType"": ""Axis"",
+                    ""name"": ""MoveUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""1ee3a330-ffc2-4a46-baad-88f3ee21e36a"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""b22cd01f-16ff-4c6b-8fb2-97414768f8a6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Look"",
@@ -187,68 +196,68 @@ namespace Descent.Gameplay.Input
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Up"",
-                    ""id"": ""85ceb934-f452-4308-a651-a9b4608078fa"",
+                    ""name"": ""One Modifier"",
+                    ""id"": ""2470d85a-9db5-48d1-baad-1a559245de75"",
                     ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveVertical"",
+                    ""action"": ""MoveUp"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""modifier"",
-                    ""id"": ""33eab8ad-8b75-4ca8-89db-3c203102206e"",
+                    ""id"": ""bd726ac7-1222-4735-bb0a-24103a5cb7c2"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveVertical"",
+                    ""action"": ""MoveUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""binding"",
-                    ""id"": ""116c6ed6-f495-4d94-b0c9-35a5317bb825"",
+                    ""id"": ""b03b56ed-6aa5-4bbe-98b0-acb84e3a7c21"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveVertical"",
+                    ""action"": ""MoveUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Down"",
-                    ""id"": ""74f20b0e-d69c-4f78-be6d-78ec0a9fb17d"",
+                    ""name"": ""One Modifier"",
+                    ""id"": ""23c4a96a-d5d5-4583-9938-34b9b65885a7"",
                     ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveVertical"",
+                    ""action"": ""MoveDown"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""modifier"",
-                    ""id"": ""77ea8df5-2677-4476-9b19-e612d2d2d9e2"",
+                    ""id"": ""2f6b96d3-348f-46a0-9820-7ae1496f7663"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveVertical"",
+                    ""action"": ""MoveDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""binding"",
-                    ""id"": ""053b47d1-b1ec-4647-abaf-e5f48536a008"",
+                    ""id"": ""cd8f57a0-8ed6-46b3-9ab1-913ade13e1f9"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Invert"",
                     ""groups"": """",
-                    ""action"": ""MoveVertical"",
+                    ""action"": ""MoveDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -260,7 +269,8 @@ namespace Descent.Gameplay.Input
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-            m_Gameplay_MoveVertical = m_Gameplay.FindAction("MoveVertical", throwIfNotFound: true);
+            m_Gameplay_MoveUp = m_Gameplay.FindAction("MoveUp", throwIfNotFound: true);
+            m_Gameplay_MoveDown = m_Gameplay.FindAction("MoveDown", throwIfNotFound: true);
             m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
             m_Gameplay_Banking = m_Gameplay.FindAction("Banking", throwIfNotFound: true);
             m_Gameplay_Fire = m_Gameplay.FindAction("Fire", throwIfNotFound: true);
@@ -326,7 +336,8 @@ namespace Descent.Gameplay.Input
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_Move;
-        private readonly InputAction m_Gameplay_MoveVertical;
+        private readonly InputAction m_Gameplay_MoveUp;
+        private readonly InputAction m_Gameplay_MoveDown;
         private readonly InputAction m_Gameplay_Look;
         private readonly InputAction m_Gameplay_Banking;
         private readonly InputAction m_Gameplay_Fire;
@@ -335,7 +346,8 @@ namespace Descent.Gameplay.Input
             private @DescentInputActions m_Wrapper;
             public GameplayActions(@DescentInputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-            public InputAction @MoveVertical => m_Wrapper.m_Gameplay_MoveVertical;
+            public InputAction @MoveUp => m_Wrapper.m_Gameplay_MoveUp;
+            public InputAction @MoveDown => m_Wrapper.m_Gameplay_MoveDown;
             public InputAction @Look => m_Wrapper.m_Gameplay_Look;
             public InputAction @Banking => m_Wrapper.m_Gameplay_Banking;
             public InputAction @Fire => m_Wrapper.m_Gameplay_Fire;
@@ -351,9 +363,12 @@ namespace Descent.Gameplay.Input
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @MoveVertical.started += instance.OnMoveVertical;
-                @MoveVertical.performed += instance.OnMoveVertical;
-                @MoveVertical.canceled += instance.OnMoveVertical;
+                @MoveUp.started += instance.OnMoveUp;
+                @MoveUp.performed += instance.OnMoveUp;
+                @MoveUp.canceled += instance.OnMoveUp;
+                @MoveDown.started += instance.OnMoveDown;
+                @MoveDown.performed += instance.OnMoveDown;
+                @MoveDown.canceled += instance.OnMoveDown;
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
@@ -370,9 +385,12 @@ namespace Descent.Gameplay.Input
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
-                @MoveVertical.started -= instance.OnMoveVertical;
-                @MoveVertical.performed -= instance.OnMoveVertical;
-                @MoveVertical.canceled -= instance.OnMoveVertical;
+                @MoveUp.started -= instance.OnMoveUp;
+                @MoveUp.performed -= instance.OnMoveUp;
+                @MoveUp.canceled -= instance.OnMoveUp;
+                @MoveDown.started -= instance.OnMoveDown;
+                @MoveDown.performed -= instance.OnMoveDown;
+                @MoveDown.canceled -= instance.OnMoveDown;
                 @Look.started -= instance.OnLook;
                 @Look.performed -= instance.OnLook;
                 @Look.canceled -= instance.OnLook;
@@ -402,7 +420,8 @@ namespace Descent.Gameplay.Input
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
-            void OnMoveVertical(InputAction.CallbackContext context);
+            void OnMoveUp(InputAction.CallbackContext context);
+            void OnMoveDown(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnBanking(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);

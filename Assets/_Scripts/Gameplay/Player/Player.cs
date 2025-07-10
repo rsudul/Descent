@@ -121,14 +121,21 @@ namespace Descent.Gameplay.Player
             _playerMovementController.SetPitchYawAndRoll(_inputController.LookInput.x,
                 _inputController.LookInput.y,
                 _inputController.BankingInput);
-            Vector2 moveInput = new Vector2(_inputController.MoveInput.x, _inputController.MoveInput.y);
-            _playerMovementController.SetMovementFactors(moveInput.x, moveInput.y);
 
-            _playerAnimationsController.SetMovementVelocity(new Vector3(
+            _playerMovementController.SetMovementFactors(
                 _inputController.MoveInput.x,
-                0.0f,
-                _inputController.MoveInput.y
-                ));
+                _inputController.MoveInput.y,
+                _inputController.MoveVerticalInput
+                );
+
+            if (Mathf.Abs(_inputController.MoveVerticalInput) <= 0.01f)
+            {
+                _playerAnimationsController.SetMovementVelocity(new Vector3(
+                    _inputController.MoveInput.x,
+                    0.0f,
+                    _inputController.MoveInput.y
+                    ));
+            }
         }
 
         private void UpdateControllers(float deltaTime)
