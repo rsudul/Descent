@@ -22,4 +22,9 @@ MonoBehaviour:
   <AccelerationForMovementInOppositeDirection>k__BackingField: 6
   <Decceleration>k__BackingField: 2.5
   <DisableMovementAfterCollisionTime>k__BackingField: 0.5
-  <CollisionBounceForce>k__BackingField: 0.25
+  <CollisionBounceForce>k__BackingField: 0.75
+  <ImpactSpeedReactionThreshold>k__BackingField: 2.5
+  <ImpactSpeedStunThreshold>k__BackingField: 9
+  <TangentialFriction>k__BackingField: 0.95
+  <NormalBounceDamping>k__BackingField: 0.4
+  <NormalBounceThreshold>k__BackingField: 0.3

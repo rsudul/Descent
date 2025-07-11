@@ -6,7 +6,6 @@ namespace Descent.Gameplay.Movement
     {
         void UpdateLook(Transform transform, Rigidbody rigidbody, float deltaTime);
         void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime);
-        void FreezeMovement();
-        void Bounce(Rigidbody rigidbody, Vector3 bounceNormal);
+        void OnCollisionImpact(Rigidbody rigidbody, float impactSpeed, Vector3 impactNormal);
     }
 }

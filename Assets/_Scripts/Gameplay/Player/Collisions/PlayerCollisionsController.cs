@@ -36,6 +36,11 @@ namespace Descent.Gameplay.Player.Collisions
 
         private void OnHit(object sender, CollisionEventArgs args)
         {
+            if (args.IsTrigger)
+            {
+                return;
+            }
+
             OnCollision?.Invoke(this, args);
         }
 

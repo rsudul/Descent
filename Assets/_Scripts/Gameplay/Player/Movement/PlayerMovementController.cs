@@ -1,6 +1,7 @@
 using Descent.Extensions.Math;
 using Descent.Gameplay.Movement;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Descent.Gameplay.Player.Movement
 {
@@ -22,7 +23,10 @@ namespace Descent.Gameplay.Player.Movement
 
         private float _movementFreezeTimer = 0.0f;
 
-        private const float movementThreshold = 0.001f;
+        private float _postCollisionDriftTimer = 0.0f;
+        private const float PostCollisionDriftDuration = 0.6f;
+
+        private const float MovementThreshold = 0.001f;
 
         public Vector3 Velocity => _lastVelocity;
         public bool IsMoving => _isMoving;
@@ -96,7 +100,7 @@ namespace Descent.Gameplay.Player.Movement
             Vector3 currentVelocity = rigidbody.velocity;
 
             _lastVelocity = currentVelocity;
-            _isMoving = currentVelocity.sqrMagnitude > movementThreshold;
+            _isMoving = currentVelocity.sqrMagnitude > MovementThreshold;
 
             Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
 
@@ -113,23 +117,17 @@ namespace Descent.Gameplay.Player.Movement
             {
                 speedChangeX = _movementSettings.Decceleration;
             }
-            else
+            else if (Mathf.Sign(relativeCurrentVelocity.x) != Mathf.Sign(relativeTargetVelocity.x))
             {
-                if (Mathf.Sign(relativeCurrentVelocity.x) != Mathf.Sign(relativeTargetVelocity.x))
-                {
-                    speedChangeX = _movementSettings.AccelerationForMovementInOppositeDirection;
-                }
+                speedChangeX = _movementSettings.AccelerationForMovementInOppositeDirection;
             }
             if (relativeTargetVelocity.z == 0.0f)
             {
                 speedChangeZ = _movementSettings.Decceleration;
             }
-            else
+            else if (Mathf.Sign(relativeCurrentVelocity.z) != Mathf.Sign(relativeTargetVelocity.z))
             {
-                if (Mathf.Sign(relativeCurrentVelocity.z) != Mathf.Sign(relativeTargetVelocity.z))
-                {
-                    speedChangeZ = _movementSettings.AccelerationForMovementInOppositeDirection;
-                }
+                speedChangeZ = _movementSettings.AccelerationForMovementInOppositeDirection;
             }
 
             relativeCurrentVelocity.x = Mathf.Lerp(relativeCurrentVelocity.x, relativeTargetVelocity.x, speedChangeX * deltaTime);
@@ -165,7 +163,7 @@ namespace Descent.Gameplay.Player.Movement
             axisStabilized = Quaternion.Angle(rigidbody.rotation, _rotation) == 0.0f;
         }
 
-        public void FreezeMovement()
+        private void FreezeMovement()
         {
             _movementFreezeTimer = _movementSettings.DisableMovementAfterCollisionTime;
             _lastVelocity = Vector3.zero;
@@ -173,8 +171,61 @@ namespace Descent.Gameplay.Player.Movement
 
         public void Bounce(Rigidbody rigidbody, Vector3 bounceNormal)
         {
-            Vector3 reflected = Vector3.Reflect(_lastVelocity, bounceNormal) * _movementSettings.CollisionBounceForce;
-            rigidbody.velocity = reflected;
+            Vector3 velocity = _lastVelocity;
+
+            float normalComponent = Vector3.Dot(velocity.normalized, bounceNormal);
+
+            if (Mathf.Abs(normalComponent) > _movementSettings.NormalBounceThreshold)
+            {
+                Vector3 vN = Vector3.Project(velocity, bounceNormal);
+                Vector3 vT = (velocity - vN) * _movementSettings.TangentialFriction;
+
+                Vector3 bouncedNormal = -vN * _movementSettings.NormalBounceDamping;
+
+                Vector3 finalVelocity = vT + bouncedNormal;
+
+                finalVelocity *= _movementSettings.CollisionBounceForce;
+
+                rigidbody.velocity = finalVelocity;
+            }
+            else
+            {
+                Vector3 newVelocity = Vector3.ProjectOnPlane(velocity, bounceNormal) * _movementSettings.TangentialFriction;
+                rigidbody.velocity = newVelocity;
+            }
+        }
+
+        public void OnCollisionImpact(Rigidbody rigidbody, float impactSpeed, Vector3 impactNormal)
+        {
+            if (impactSpeed < _movementSettings.ImpactSpeedReactionThreshold)
+            {
+                return;
+            }
+
+            Bounce(rigidbody, impactNormal);
+
+            if (impactSpeed > _movementSettings.ImpactSpeedStunThreshold)
+            {
+                FreezeMovement();
+            }
+        }
+
+        private void PostCollisionDrift(float deltaTime)
+        {
+            if (_postCollisionDriftTimer > 0.0f)
+            {
+                _postCollisionDriftTimer -= deltaTime;
+                _isStabilizingAxis = false;
+
+                float driftProgress = _postCollisionDriftTimer / PostCollisionDriftDuration;
+                float wobbleStrength = Mathf.Lerp(0.8f, 0.0f, 1 - driftProgress);
+
+                float yawWobble = Mathf.Sin(Time.time * 13.7f) * wobbleStrength;
+                float rollWobble = Mathf.Sin(Time.time * 8.1f) * wobbleStrength;
+
+                _rotation *= Quaternion.AngleAxis(yawWobble, Vector3.up);
+                _rotation *= Quaternion.AngleAxis(rollWobble, Vector3.forward);
+            }
         }
     }
 }

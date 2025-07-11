@@ -19,7 +19,7 @@ namespace Descent.Gameplay.Collisions
             }
 
             CollisionEventArgs eventArgs = new CollisionEventArgs(collision.transform, collision.contacts[0].point,
-                collision.contacts[0].normal, collisionParameters, false);
+                collision.contacts[0].normal, collision.relativeVelocity, collisionParameters, false);
 
             OnHit?.Invoke(this, eventArgs);
         }
@@ -34,7 +34,7 @@ namespace Descent.Gameplay.Collisions
                 collisionParameters = collisionParametersProvider.GetCollisionParameters();
             }
 
-            CollisionEventArgs eventArgs = new CollisionEventArgs(other.transform, Vector3.zero, Vector3.zero,
+            CollisionEventArgs eventArgs = new CollisionEventArgs(other.transform, Vector3.zero, Vector3.zero, Vector3.zero,
                 collisionParameters, true);
 
             OnHit?.Invoke(this, eventArgs);
