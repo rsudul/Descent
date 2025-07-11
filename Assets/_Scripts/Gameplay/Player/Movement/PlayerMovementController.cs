@@ -130,9 +130,14 @@ namespace Descent.Gameplay.Player.Movement
                 speedChangeZ = _movementSettings.AccelerationForMovementInOppositeDirection;
             }
 
-            relativeCurrentVelocity.x = Mathf.Lerp(relativeCurrentVelocity.x, relativeTargetVelocity.x, speedChangeX * deltaTime);
-            relativeCurrentVelocity.y = Mathf.Lerp(relativeCurrentVelocity.y, relativeTargetVelocity.y, speedChangeY * deltaTime);
-            relativeCurrentVelocity.z = Mathf.Lerp(relativeCurrentVelocity.z, relativeTargetVelocity.z, speedChangeZ * deltaTime);
+            float inertia = Mathf.Clamp01(_movementSettings.Inertia);
+
+            relativeCurrentVelocity.x = Mathf.Lerp(relativeCurrentVelocity.x, relativeTargetVelocity.x,
+                                                    (1.0f - inertia) * speedChangeX * deltaTime);
+            relativeCurrentVelocity.y = Mathf.Lerp(relativeCurrentVelocity.y, relativeTargetVelocity.y,
+                                                    (1.0f - inertia) * speedChangeY * deltaTime);
+            relativeCurrentVelocity.z = Mathf.Lerp(relativeCurrentVelocity.z, relativeTargetVelocity.z,
+                                                    (1.0f - inertia) * speedChangeZ * deltaTime);
 
             currentVelocity = transform.TransformDirection(relativeCurrentVelocity);
 
