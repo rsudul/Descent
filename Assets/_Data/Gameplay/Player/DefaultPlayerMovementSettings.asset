@@ -12,16 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d505a5374fa2d264db8dc0cbaa69570a, type: 3}
   m_Name: DefaultPlayerMovementSettings
   m_EditorClassIdentifier: 
-  <LookSensitivityX>k__BackingField: 1.6
-  <LookSensitivityY>k__BackingField: 1.6
-  <BankingSensitivity>k__BackingField: 16
+  <LookSensitivityX>k__BackingField: 3
+  <LookSensitivityY>k__BackingField: 3
   <LookSmoothness>k__BackingField: 8
   <RollAxisResetSpeed>k__BackingField: 1.5
+  <LookResponsiveness>k__BackingField: 14
   <MovementSpeed>k__BackingField: 10
   <Acceleration>k__BackingField: 1.5
   <AccelerationForMovementInOppositeDirection>k__BackingField: 2.25
   <Decceleration>k__BackingField: 2.5
   <Inertia>k__BackingField: 0.8
+  <MovementResponsiveness>k__BackingField: 6
+  <BankingSensitivity>k__BackingField: 24
+  <BankingResponsiveness>k__BackingField: 6
   <DisableMovementAfterCollisionTime>k__BackingField: 0.5
   <CollisionBounceForce>k__BackingField: 0.75
   <ImpactSpeedReactionThreshold>k__BackingField: 2.5

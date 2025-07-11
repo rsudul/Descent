@@ -28,6 +28,10 @@ namespace Descent.Gameplay.Player.Movement
 
         private const float MovementThreshold = 0.001f;
 
+        private Vector3 _smoothedMovementDirection = Vector3.zero;
+        private Vector2 _smoothedLookInput = Vector2.zero;
+        private float _smoothedBankingInput = 0.0f;
+
         public Vector3 Velocity => _lastVelocity;
         public bool IsMoving => _isMoving;
 
@@ -146,15 +150,28 @@ namespace Descent.Gameplay.Player.Movement
 
         public void SetPitchYawAndRoll(float pitch, float yaw, float roll)
         {
-            _pitchRotation = pitch * _movementSettings.LookSensitivityX;
-            _yawRotation = yaw * _movementSettings.LookSensitivityY;
-            _rollRotation = roll * _movementSettings.BankingSensitivity;
+            Vector2 targetLook = new Vector2(pitch, yaw);
+            float lookResponsiveness = _movementSettings.LookResponsiveness;
+            _smoothedLookInput = Vector2.Lerp(_smoothedLookInput, targetLook, Time.deltaTime * lookResponsiveness);
+
+            float targetBanking = roll;
+            float bankingResponsiveness = _movementSettings.BankingResponsiveness;
+            _smoothedBankingInput = Mathf.Lerp(_smoothedBankingInput, targetBanking, Time.deltaTime * bankingResponsiveness);
+
+            _pitchRotation = _smoothedLookInput.x * _movementSettings.LookSensitivityX;
+            _yawRotation = _smoothedLookInput.y * _movementSettings.LookSensitivityY;
+            _rollRotation = _smoothedBankingInput * _movementSettings.BankingSensitivity;
         }
 
         public void SetMovementFactors(float moveHorizontal, float moveForward, float moveVertical)
         {
-            _movementDirection = new Vector3(moveHorizontal, moveVertical,
+            Vector3 targetDirection = new Vector3(moveHorizontal, moveVertical,
                 Mathf.Abs(moveVertical) > 0.01f ? 0.0f : moveForward);
+
+            float responsiveness = _movementSettings.MovementResponsiveness;
+            _smoothedMovementDirection = Vector3.Lerp(_smoothedMovementDirection, targetDirection, Time.deltaTime * responsiveness);
+
+            _movementDirection = _smoothedMovementDirection;
         }
 
         private void StabilizeRollAxis(Transform transform, Rigidbody rigidbody, float deltaTime, out bool axisStabilized)
