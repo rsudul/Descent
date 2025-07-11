@@ -28,6 +28,8 @@ namespace Descent.Gameplay.Player.Movement
 
         private const float MovementThreshold = 0.001f;
 
+        private Vector3 _smoothedMovementDirection = Vector3.zero;
+
         public Vector3 Velocity => _lastVelocity;
         public bool IsMoving => _isMoving;
 
@@ -153,8 +155,13 @@ namespace Descent.Gameplay.Player.Movement
 
         public void SetMovementFactors(float moveHorizontal, float moveForward, float moveVertical)
         {
-            _movementDirection = new Vector3(moveHorizontal, moveVertical,
+            Vector3 targetDirection = new Vector3(moveHorizontal, moveVertical,
                 Mathf.Abs(moveVertical) > 0.01f ? 0.0f : moveForward);
+
+            float responsiveness = _movementSettings.MovementResponsiveness;
+            _smoothedMovementDirection = Vector3.Lerp(_smoothedMovementDirection, targetDirection, Time.deltaTime * responsiveness);
+
+            _movementDirection = _smoothedMovementDirection;
         }
 
         private void StabilizeRollAxis(Transform transform, Rigidbody rigidbody, float deltaTime, out bool axisStabilized)
