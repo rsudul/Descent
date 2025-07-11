@@ -29,6 +29,8 @@ namespace Descent.Gameplay.Player.Movement
         private const float MovementThreshold = 0.001f;
 
         private Vector3 _smoothedMovementDirection = Vector3.zero;
+        private Vector2 _smoothedLookInput = Vector2.zero;
+        private float _smoothedBankingInput = 0.0f;
 
         public Vector3 Velocity => _lastVelocity;
         public bool IsMoving => _isMoving;
@@ -148,9 +150,17 @@ namespace Descent.Gameplay.Player.Movement
 
         public void SetPitchYawAndRoll(float pitch, float yaw, float roll)
         {
-            _pitchRotation = pitch * _movementSettings.LookSensitivityX;
-            _yawRotation = yaw * _movementSettings.LookSensitivityY;
-            _rollRotation = roll * _movementSettings.BankingSensitivity;
+            Vector2 targetLook = new Vector2(pitch, yaw);
+            float lookResponsiveness = _movementSettings.LookResponsiveness;
+            _smoothedLookInput = Vector2.Lerp(_smoothedLookInput, targetLook, Time.deltaTime * lookResponsiveness);
+
+            float targetBanking = roll;
+            float bankingResponsiveness = _movementSettings.BankingResponsiveness;
+            _smoothedBankingInput = Mathf.Lerp(_smoothedBankingInput, targetBanking, Time.deltaTime * bankingResponsiveness);
+
+            _pitchRotation = _smoothedLookInput.x * _movementSettings.LookSensitivityX;
+            _yawRotation = _smoothedLookInput.y * _movementSettings.LookSensitivityY;
+            _rollRotation = _smoothedBankingInput * _movementSettings.BankingSensitivity;
         }
 
         public void SetMovementFactors(float moveHorizontal, float moveForward, float moveVertical)
