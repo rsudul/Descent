@@ -19,8 +19,9 @@ MonoBehaviour:
   <RollAxisResetSpeed>k__BackingField: 1.5
   <MovementSpeed>k__BackingField: 10
   <Acceleration>k__BackingField: 1.5
-  <AccelerationForMovementInOppositeDirection>k__BackingField: 6
+  <AccelerationForMovementInOppositeDirection>k__BackingField: 2.25
   <Decceleration>k__BackingField: 2.5
+  <Inertia>k__BackingField: 0.8
   <DisableMovementAfterCollisionTime>k__BackingField: 0.5
   <CollisionBounceForce>k__BackingField: 0.75
   <ImpactSpeedReactionThreshold>k__BackingField: 2.5
