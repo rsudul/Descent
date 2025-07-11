@@ -151,17 +151,11 @@ namespace Descent.Gameplay.Player
 
         private void OnCollision(object sender, CollisionEventArgs args)
         {
-            if (args.IsTrigger)
-            {
-                return;
-            }
+            float impactSpeed = args.CollisionRelativeVelocity.magnitude;
 
-            Vector3 impactVelocity = _playerMovementController.Velocity;
-            float shakeStrength = impactVelocity.magnitude;
+            _playerMovementController.OnCollisionImpact(_rigidbody, impactSpeed, args.CollisionNormal);
 
-            _playerMovementController.Bounce(_rigidbody, args.CollisionNormal);
-            _playerCameraController.Shake(shakeStrength);
-            _playerMovementController.FreezeMovement();
+            _playerCameraController.Shake(impactSpeed);
 
             // instead, have IDamageable component on Player, healthcontroller will subscribe to idamageable event
             //_healthController?.TakeDamage(Random.Range(10.0f, 20.0f), args.CollisionPoint);

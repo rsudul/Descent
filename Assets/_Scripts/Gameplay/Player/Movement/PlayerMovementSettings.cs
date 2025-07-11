@@ -18,5 +18,10 @@ namespace Descent.Gameplay.Player.Movement
 
         [field: SerializeField, Header("Collisions")] public float DisableMovementAfterCollisionTime { get; private set; } = 0.5f;
         [field: SerializeField] public float CollisionBounceForce { get; private set; } = 100.0f;
+        [field: SerializeField] public float ImpactSpeedReactionThreshold { get; private set; } = 2.5f;
+        [field: SerializeField] public float ImpactSpeedStunThreshold { get; private set; } = 9.0f;
+        [field: SerializeField] public float TangentialFriction { get; private set; } = 0.98f;
+        [field: SerializeField] public float NormalBounceDamping { get; private set; } = 0.6f;
+        [field: SerializeField] public float NormalBounceThreshold { get; private set; } = 0.3f;
     }
 }
