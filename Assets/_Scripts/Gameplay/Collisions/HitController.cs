@@ -8,6 +8,8 @@ namespace Descent.Gameplay.Collisions
     public class HitController : MonoBehaviour
     {
         public event EventHandler<CollisionEventArgs> OnHit;
+        public event EventHandler<CollisionEventArgs> OnHitStay;
+        public event EventHandler<CollisionEventArgs> OnHitExit;
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -38,6 +40,46 @@ namespace Descent.Gameplay.Collisions
                 collisionParameters, true);
 
             OnHit?.Invoke(this, eventArgs);
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            CollisionParameters collisionParameters = null;
+
+            if (collision.transform.TryGetComponent(out ICollisionParametersProvider collisionParametersProvider))
+            {
+                collisionParameters = collisionParametersProvider.GetCollisionParameters();
+            }
+
+            CollisionEventArgs eventArgs = new CollisionEventArgs(
+                collision.transform,
+                collision.contacts[0].point,
+                collision.contacts[0].normal,
+                collision.relativeVelocity,
+                collisionParameters,
+                false);
+
+            OnHitStay?.Invoke(this, eventArgs);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            CollisionParameters collisionParameters = null;
+
+            if (collision.transform.TryGetComponent(out ICollisionParametersProvider collisionParametersProvider))
+            {
+                collisionParameters = collisionParametersProvider.GetCollisionParameters();
+            }
+
+            CollisionEventArgs eventArgs = new CollisionEventArgs(
+                collision.transform,
+                Vector3.zero,
+                Vector3.zero,
+                Vector3.zero,
+                collisionParameters,
+                false);
+
+            OnHitExit?.Invoke(this, eventArgs);
         }
     }
 }

@@ -17,12 +17,79 @@ MonoBehaviour:
   <LookSmoothness>k__BackingField: 8
   <RollAxisResetSpeed>k__BackingField: 1.5
   <LookResponsiveness>k__BackingField: 14
+  <LookInputDeadzone>k__BackingField: 0.02
   <MovementSpeed>k__BackingField: 10
   <Acceleration>k__BackingField: 1.5
   <AccelerationForMovementInOppositeDirection>k__BackingField: 2.25
   <Decceleration>k__BackingField: 2.5
   <Inertia>k__BackingField: 0.8
   <MovementResponsiveness>k__BackingField: 6
+  <SlidingFrictionCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.98
+      inSlope: -0.000999999
+      outSlope: -0.000999999
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 10
+      value: 0.97
+      inSlope: -0.0015000015
+      outSlope: -0.0015000015
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 20
+      value: 0.95
+      inSlope: -0.002000004
+      outSlope: -0.002000004
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <SpaceDragCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.999
+      inSlope: -0.00090000033
+      outSlope: -0.00090000033
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 10
+      value: 0.99
+      inSlope: -0.0024500012
+      outSlope: -0.0024500012
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 20
+      value: 0.95
+      inSlope: -0.004000002
+      outSlope: -0.004000002
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   <BankingSensitivity>k__BackingField: 24
   <BankingResponsiveness>k__BackingField: 6
   <DisableMovementAfterCollisionTime>k__BackingField: 0.5
