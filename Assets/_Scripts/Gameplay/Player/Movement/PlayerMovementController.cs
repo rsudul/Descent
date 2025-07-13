@@ -57,7 +57,9 @@ namespace Descent.Gameplay.Player.Movement
 
         public void UpdateLook(Transform transform, Rigidbody rigidbody, float deltaTime)
         {
-            bool isLookingNow = _pitchRotation != 0.0f || _yawRotation != 0.0f || _rollRotation != 0.0f;
+            float lookDeadzone = _movementSettings.LookInputDeadzone;
+            bool isLookingNow = Mathf.Abs(_pitchRotation) > lookDeadzone
+                || Mathf.Abs(_yawRotation) > lookDeadzone || Mathf.Abs(_rollRotation) > lookDeadzone;
 
             if (isLookingNow)
             {

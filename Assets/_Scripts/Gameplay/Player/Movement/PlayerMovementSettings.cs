@@ -10,6 +10,7 @@ namespace Descent.Gameplay.Player.Movement
         [field: SerializeField] public float LookSmoothness { get; private set; } = 64.0f;
         [field: SerializeField] public float RollAxisResetSpeed { get; private set; } = 2.0f;
         [field: SerializeField] public float LookResponsiveness { get; private set; } = 9.0f;
+        [field: SerializeField] public float LookInputDeadzone { get; private set; } = 0.02f;
 
         [field: SerializeField, Header("Movement")] public float MovementSpeed { get; private set; } = 4.0f;
         [field: SerializeField] public float Acceleration { get; private set; } = 12.0f;
