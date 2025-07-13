@@ -18,6 +18,7 @@ namespace Descent.Gameplay.Player.Movement
         [field: SerializeField] public float Decceleration { get; private set; } = 4.5f;
         [field: SerializeField] public float Inertia { get; private set; } = 0.85f;
         [field: SerializeField] public float MovementResponsiveness { get; private set; } = 7.0f;
+        [field: SerializeField] public AnimationCurve SlidingFrictionCurve { get; private set; }
 
         [field: SerializeField, Header("Banking")] public float BankingSensitivity { get; private set; } = 16.0f;
         [field: SerializeField] public float BankingResponsiveness { get; private set; } = 9.0f;

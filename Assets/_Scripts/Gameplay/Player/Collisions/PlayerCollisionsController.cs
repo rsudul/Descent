@@ -11,6 +11,9 @@ namespace Descent.Gameplay.Player.Collisions
         private Rigidbody _rigidbody = null;
         private HitController _hitController = null;
 
+        public bool IsTouchingWall { get; private set; } = false;
+        public Vector3 LastCollisionNormal { get; private set; } = Vector3.zero;
+
         public Collider Collider => _collider;
 
         [SerializeField]
@@ -23,6 +26,8 @@ namespace Descent.Gameplay.Player.Collisions
             if (_hitController != null)
             {
                 _hitController.OnHit -= OnHit;
+                _hitController.OnHitStay -= OnHitStay;
+                _hitController.OnHitExit -= OnHitExit;
             }
         }
 
@@ -32,6 +37,8 @@ namespace Descent.Gameplay.Player.Collisions
 
             _hitController = hitController;
             _hitController.OnHit += OnHit;
+            _hitController.OnHitStay += OnHitStay;
+            _hitController.OnHitExit += OnHitExit;
         }
 
         private void OnHit(object sender, CollisionEventArgs args)
@@ -41,7 +48,32 @@ namespace Descent.Gameplay.Player.Collisions
                 return;
             }
 
+            IsTouchingWall = true;
+            LastCollisionNormal = args.CollisionNormal;
+
             OnCollision?.Invoke(this, args);
+        }
+
+        private void OnHitStay(object sender, CollisionEventArgs args)
+        {
+            if (args.IsTrigger)
+            {
+                return;
+            }
+
+            IsTouchingWall = true;
+            LastCollisionNormal = args.CollisionNormal;
+        }
+
+        private void OnHitExit(object sender, CollisionEventArgs args)
+        {
+            if (args.IsTrigger)
+            {
+                return;
+            }
+
+            IsTouchingWall = false;
+            LastCollisionNormal = Vector3.zero;
         }
 
         public CollisionParameters GetCollisionParameters()

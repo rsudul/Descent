@@ -146,7 +146,8 @@ namespace Descent.Gameplay.Player
 
         private void UpdateControllersPhysics(float deltaTime)
         {
-            _playerMovementController.UpdateMovement(transform, _rigidbody, deltaTime);
+            _playerMovementController.UpdateMovement(transform,_rigidbody, deltaTime,
+                _playerCollisionsController.IsTouchingWall, _playerCollisionsController.LastCollisionNormal);
         }
 
         private void OnCollision(object sender, CollisionEventArgs args)

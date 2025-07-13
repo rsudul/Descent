@@ -91,7 +91,8 @@ namespace Descent.Gameplay.Player.Movement
             rigidbody.rotation = Quaternion.Slerp(rigidbody.rotation, _rotation, deltaTime * rotationSpeed);
         }
 
-        public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime)
+        public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime,
+            bool isTouchingWall, Vector3 wallNormal)
         {
             if (_movementFreezeTimer > 0.0f)
             {
@@ -106,7 +107,7 @@ namespace Descent.Gameplay.Player.Movement
             Vector3 currentVelocity = rigidbody.velocity;
 
             _lastVelocity = currentVelocity;
-            _isMoving = currentVelocity.sqrMagnitude > MovementThreshold;
+            _isMoving = currentVelocity.magnitude > MovementThreshold;
 
             Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
 
@@ -148,6 +149,11 @@ namespace Descent.Gameplay.Player.Movement
             currentVelocity = transform.TransformDirection(relativeCurrentVelocity);
 
             rigidbody.velocity = currentVelocity;
+
+            if (isTouchingWall)
+            {
+                rigidbody.velocity = ApplySlidingFriction(rigidbody.velocity, wallNormal);
+            }
         }
 
         public void SetPitchYawAndRoll(float pitch, float yaw, float roll)
@@ -214,8 +220,7 @@ namespace Descent.Gameplay.Player.Movement
             }
             else
             {
-                Vector3 newVelocity = Vector3.ProjectOnPlane(velocity, bounceNormal) * _movementSettings.TangentialFriction;
-                rigidbody.velocity = newVelocity;
+                rigidbody.velocity = ApplySlidingFriction(velocity, bounceNormal);
             }
         }
 
@@ -232,6 +237,25 @@ namespace Descent.Gameplay.Player.Movement
             {
                 FreezeMovement();
             }
+        }
+
+        private Vector3 ApplySlidingFriction(Vector3 velocity, Vector3 wallNormal)
+        {
+            Vector3 vN = Vector3.Project(velocity, wallNormal);
+            Vector3 vT = velocity - vN;
+
+            float slidingFriction = _movementSettings.SlidingFrictionCurve != null
+                ? _movementSettings.SlidingFrictionCurve.Evaluate(vT.magnitude)
+                : _movementSettings.TangentialFriction;
+
+            Vector3 vTnew = vT * slidingFriction;
+
+            if (vTnew.magnitude < 0.15f)
+            {
+                vTnew = Vector3.zero;
+            }
+
+            return vN + vTnew;
         }
 
         private void PostCollisionDrift(float deltaTime)
