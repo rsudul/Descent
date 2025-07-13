@@ -17,11 +17,14 @@ namespace Descent.Gameplay.Player.Movement
         private bool _isStabilizingAxis = false;
 
         private Vector3 _movementDirection = Vector3.zero;
+        private float _movementDirectionActiveThreshold = 0.01f;
         private Vector3 _lastVelocity = Vector3.zero;
 
         private bool _isMoving = false;
 
         private float _movementFreezeTimer = 0.0f;
+
+        private float _verticalInputThreshold = 0.01f;
 
         private float _postCollisionDriftTimer = 0.0f;
         private const float PostCollisionDriftDuration = 0.6f;
@@ -128,6 +131,13 @@ namespace Descent.Gameplay.Player.Movement
             {
                 speedChangeX = _movementSettings.AccelerationForMovementInOppositeDirection;
             }
+            if (relativeTargetVelocity.y == 0.0f)
+            {
+                speedChangeY = _movementSettings.Decceleration;
+            } else if (Mathf.Sign(relativeCurrentVelocity.y) != Mathf.Sign(-relativeTargetVelocity.y))
+            {
+                speedChangeY = _movementSettings.AccelerationForMovementInOppositeDirection;
+            }
             if (relativeTargetVelocity.z == 0.0f)
             {
                 speedChangeZ = _movementSettings.Decceleration;
@@ -153,6 +163,20 @@ namespace Descent.Gameplay.Player.Movement
             if (isTouchingWall)
             {
                 rigidbody.velocity = ApplySlidingFriction(rigidbody.velocity, wallNormal);
+            } else if (!isTouchingWall && !IsPlayerActivelySteering())
+            {
+                float speed = rigidbody.velocity.magnitude;
+
+                float spaceDrag = _movementSettings.SpaceDragCurve != null
+                    ? _movementSettings.SpaceDragCurve.Evaluate(speed)
+                    : _movementSettings.SpaceDragFallback;
+
+                rigidbody.velocity *= spaceDrag;
+
+                if (rigidbody.velocity.magnitude < _movementSettings.SpaceDragSnapThreshold)
+                {
+                    rigidbody.velocity = Vector3.zero;
+                }
             }
         }
 
@@ -174,7 +198,7 @@ namespace Descent.Gameplay.Player.Movement
         public void SetMovementFactors(float moveHorizontal, float moveForward, float moveVertical)
         {
             Vector3 targetDirection = new Vector3(moveHorizontal, moveVertical,
-                Mathf.Abs(moveVertical) > 0.01f ? 0.0f : moveForward);
+                Mathf.Abs(moveVertical) > _verticalInputThreshold ? 0.0f : moveForward);
 
             float responsiveness = _movementSettings.MovementResponsiveness;
             _smoothedMovementDirection = Vector3.Lerp(_smoothedMovementDirection, targetDirection, Time.deltaTime * responsiveness);
@@ -250,12 +274,17 @@ namespace Descent.Gameplay.Player.Movement
 
             Vector3 vTnew = vT * slidingFriction;
 
-            if (vTnew.magnitude < 0.15f)
+            if (vTnew.magnitude < _movementSettings.SlidingFrictionSnapThreshold)
             {
                 vTnew = Vector3.zero;
             }
 
             return vN + vTnew;
+        }
+
+        private bool IsPlayerActivelySteering()
+        {
+            return _movementDirection.sqrMagnitude > _movementDirectionActiveThreshold;
         }
 
         private void PostCollisionDrift(float deltaTime)
