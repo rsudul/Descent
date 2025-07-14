@@ -17,6 +17,8 @@ namespace Descent.Gameplay.Input
         public Vector2 Look { get; private set; }
         public float Banking { get; private set; }
         public float FirePressed { get; private set; }
+        public float GearUpPressed { get; private set; }
+        public float GearDownPressed { get; private set; }
 
         public int InitializationPriority => 1000;
 
@@ -30,6 +32,10 @@ namespace Descent.Gameplay.Input
         public event EventHandler<float> OnBankingChanged;
         public event EventHandler OnFirePressed;
         public event EventHandler OnFireReleased;
+        public event EventHandler OnGearUpPressed;
+        public event EventHandler OnGearUpReleased;
+        public event EventHandler OnGearDownPressed;
+        public event EventHandler OnGearDownReleased;
 
         private InputManager()
         {
@@ -79,6 +85,28 @@ namespace Descent.Gameplay.Input
             {
                 FirePressed = 0.0f;
                 OnFireReleased?.Invoke(this, EventArgs.Empty);
+            };
+
+            _inputActions.Gameplay.GearUp.started += ctx =>
+            {
+                GearUpPressed = 1.0f;
+                OnGearUpPressed?.Invoke(this, EventArgs.Empty);
+            };
+            _inputActions.Gameplay.GearUp.canceled += ctx =>
+            {
+                GearUpPressed = 0.0f;
+                OnGearUpReleased?.Invoke(this, EventArgs.Empty);
+            };
+
+            _inputActions.Gameplay.GearDown.started += ctx =>
+            {
+                GearDownPressed = 1.0f;
+                OnGearDownPressed?.Invoke(this, EventArgs.Empty);
+            };
+            _inputActions.Gameplay.GearDown.canceled += ctx =>
+            {
+                GearDownPressed = 0.0f;
+                OnGearDownReleased?.Invoke(this, EventArgs.Empty);
             };
         }
 

@@ -24,6 +24,8 @@ MonoBehaviour:
   <Decceleration>k__BackingField: 2.5
   <Inertia>k__BackingField: 0.8
   <MovementResponsiveness>k__BackingField: 6
+  <BankingSensitivity>k__BackingField: 24
+  <BankingResponsiveness>k__BackingField: 6
   <SlidingFrictionCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -57,6 +59,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  <SlidingFrictionSnapThreshold>k__BackingField: 0.15
   <SpaceDragCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -90,8 +93,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <BankingSensitivity>k__BackingField: 24
-  <BankingResponsiveness>k__BackingField: 6
+  <SpaceDragFallback>k__BackingField: 1
+  <SpaceDragSnapThreshold>k__BackingField: 0.02
+  <SpeedLevelsCount>k__BackingField: 6
+  <DefaultSpeedLevel>k__BackingField: 2
+  <SpeedLevelMultipliers>k__BackingField:
+  - 0.5
+  - 0.75
+  - 1
+  - 1.33
+  - 1.66
+  - 2
   <DisableMovementAfterCollisionTime>k__BackingField: 0.5
   <CollisionBounceForce>k__BackingField: 0.75
   <ImpactSpeedReactionThreshold>k__BackingField: 2.5

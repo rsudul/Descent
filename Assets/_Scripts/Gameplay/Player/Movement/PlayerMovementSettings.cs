@@ -19,14 +19,18 @@ namespace Descent.Gameplay.Player.Movement
         [field: SerializeField] public float Inertia { get; private set; } = 0.85f;
         [field: SerializeField] public float MovementResponsiveness { get; private set; } = 7.0f;
 
+        [field: SerializeField, Header("Banking")] public float BankingSensitivity { get; private set; } = 16.0f;
+        [field: SerializeField] public float BankingResponsiveness { get; private set; } = 9.0f;
+
         [field: SerializeField, Header("Dynamic friction")] public AnimationCurve SlidingFrictionCurve { get; private set; }
         [field: SerializeField] public float SlidingFrictionSnapThreshold { get; private set; } = 0.15f;
         [field: SerializeField] public AnimationCurve SpaceDragCurve { get; private set; }
         [field: SerializeField] public float SpaceDragFallback { get; private set; } = 1.0f;
         [field: SerializeField] public float SpaceDragSnapThreshold { get; private set; } = 0.02f;
 
-        [field: SerializeField, Header("Banking")] public float BankingSensitivity { get; private set; } = 16.0f;
-        [field: SerializeField] public float BankingResponsiveness { get; private set; } = 9.0f;
+        [field: SerializeField, Header("Speed Levels")] public int SpeedLevelsCount { get; private set; } = 6;
+        [field: SerializeField] public int DefaultSpeedLevel { get; private set; } = 3;
+        [field: SerializeField] public float[] SpeedLevelMultipliers { get; private set; } = { 0.5f, 0.75f, 1.0f, 1.5f, 2.0f };
 
         [field: SerializeField, Header("Collisions")] public float DisableMovementAfterCollisionTime { get; private set; } = 0.5f;
         [field: SerializeField] public float CollisionBounceForce { get; private set; } = 100.0f;

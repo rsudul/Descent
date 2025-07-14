@@ -88,6 +88,8 @@ namespace Descent.Gameplay.Player
             _playerWeaponSystemController.EquipWeapon(_playerWeaponSystemController.PlayerWeapons[0]);
 
             _inputController.OnFirePressed += OnFirePressed;
+            _inputController.OnGearUpPressed += OnGearUpPressed;
+            _inputController.OnGearDownPressed += OnGearDownPressed;
             _playerCollisionsController.OnCollision += OnCollision;
         }
 
@@ -191,6 +193,16 @@ namespace Descent.Gameplay.Player
         private void OnFirePressed(object sender, EventArgs args)
         {
             _playerWeaponSystemController.Fire();
+        }
+
+        private void OnGearUpPressed(object sender, EventArgs args)
+        {
+            _playerMovementController.IncreaseSpeedLevel();
+        }
+
+        private void OnGearDownPressed(object sender, EventArgs args)
+        {
+            _playerMovementController?.DecreaseSpeedLevel();
         }
     }
 }

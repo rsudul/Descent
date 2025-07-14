@@ -14,8 +14,12 @@ namespace Descent.Gameplay.Player.Input
         public Vector2 LookInput { get; private set; }
         public float BankingInput { get; private set; }
         public bool FireInput { get; private set; }
+        public bool GearUpInput { get; private set; }
+        public bool GearDownInput { get; private set; }
 
         public event EventHandler OnFirePressed;
+        public event EventHandler OnGearUpPressed;
+        public event EventHandler OnGearDownPressed;
 
         public PlayerInputController()
         {
@@ -26,6 +30,10 @@ namespace Descent.Gameplay.Player.Input
             InputManager.Instance.OnBankingChanged += HandleBankingChanged;
             InputManager.Instance.OnFirePressed += HandleFirePressed;
             InputManager.Instance.OnFireReleased += HandleFireReleased;
+            InputManager.Instance.OnGearUpPressed += HandleGearUpPressed;
+            InputManager.Instance.OnGearUpReleased += HandleGearUpReleased;
+            InputManager.Instance.OnGearDownPressed += HandleGearDownPressed;
+            InputManager.Instance.OnGearDownReleased += HandleGearDownReleased;
         }
 
         public void Dispose()
@@ -37,6 +45,10 @@ namespace Descent.Gameplay.Player.Input
             InputManager.Instance.OnBankingChanged -= HandleBankingChanged;
             InputManager.Instance.OnFirePressed -= HandleFirePressed;
             InputManager.Instance.OnFireReleased -= HandleFireReleased;
+            InputManager.Instance.OnGearUpPressed -= HandleGearUpPressed;
+            InputManager.Instance.OnGearUpReleased -= HandleGearUpReleased;
+            InputManager.Instance.OnGearDownPressed -= HandleGearDownPressed;
+            InputManager.Instance.OnGearDownReleased -= HandleGearDownReleased;
         }
 
         private void HandleMoveChanged(object sender, Vector2 value)
@@ -75,6 +87,28 @@ namespace Descent.Gameplay.Player.Input
         private void HandleFireReleased(object sender, EventArgs args)
         {
             FireInput = false;
+        }
+
+        private void HandleGearUpPressed(object sender, EventArgs args)
+        {
+            GearUpInput = true;
+            OnGearUpPressed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void HandleGearUpReleased(object sender, EventArgs args)
+        {
+            GearUpInput = false;
+        }
+
+        private void HandleGearDownPressed(object sender, EventArgs args)
+        {
+            GearDownInput = true;
+            OnGearDownPressed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void HandleGearDownReleased(object sender, EventArgs args)
+        {
+            GearDownInput = false;
         }
     }
 }

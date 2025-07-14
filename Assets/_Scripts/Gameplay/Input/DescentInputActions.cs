@@ -82,6 +82,24 @@ namespace Descent.Gameplay.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GearUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""6010f29a-3593-4b7d-aa94-4d5391cabd79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GearDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""a18b1fc5-d86d-4f01-9186-a86530de9b9b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -282,6 +300,28 @@ namespace Descent.Gameplay.Input
                     ""action"": ""MoveDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75826f6d-882e-4685-9aa0-33a13713643d"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GearUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e783b893-1f0e-4eec-9c52-4637014577cb"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GearDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -296,6 +336,8 @@ namespace Descent.Gameplay.Input
             m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
             m_Gameplay_Banking = m_Gameplay.FindAction("Banking", throwIfNotFound: true);
             m_Gameplay_Fire = m_Gameplay.FindAction("Fire", throwIfNotFound: true);
+            m_Gameplay_GearUp = m_Gameplay.FindAction("GearUp", throwIfNotFound: true);
+            m_Gameplay_GearDown = m_Gameplay.FindAction("GearDown", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -363,6 +405,8 @@ namespace Descent.Gameplay.Input
         private readonly InputAction m_Gameplay_Look;
         private readonly InputAction m_Gameplay_Banking;
         private readonly InputAction m_Gameplay_Fire;
+        private readonly InputAction m_Gameplay_GearUp;
+        private readonly InputAction m_Gameplay_GearDown;
         public struct GameplayActions
         {
             private @DescentInputActions m_Wrapper;
@@ -373,6 +417,8 @@ namespace Descent.Gameplay.Input
             public InputAction @Look => m_Wrapper.m_Gameplay_Look;
             public InputAction @Banking => m_Wrapper.m_Gameplay_Banking;
             public InputAction @Fire => m_Wrapper.m_Gameplay_Fire;
+            public InputAction @GearUp => m_Wrapper.m_Gameplay_GearUp;
+            public InputAction @GearDown => m_Wrapper.m_Gameplay_GearDown;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -400,6 +446,12 @@ namespace Descent.Gameplay.Input
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @GearUp.started += instance.OnGearUp;
+                @GearUp.performed += instance.OnGearUp;
+                @GearUp.canceled += instance.OnGearUp;
+                @GearDown.started += instance.OnGearDown;
+                @GearDown.performed += instance.OnGearDown;
+                @GearDown.canceled += instance.OnGearDown;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -422,6 +474,12 @@ namespace Descent.Gameplay.Input
                 @Fire.started -= instance.OnFire;
                 @Fire.performed -= instance.OnFire;
                 @Fire.canceled -= instance.OnFire;
+                @GearUp.started -= instance.OnGearUp;
+                @GearUp.performed -= instance.OnGearUp;
+                @GearUp.canceled -= instance.OnGearUp;
+                @GearDown.started -= instance.OnGearDown;
+                @GearDown.performed -= instance.OnGearDown;
+                @GearDown.canceled -= instance.OnGearDown;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -447,6 +505,8 @@ namespace Descent.Gameplay.Input
             void OnLook(InputAction.CallbackContext context);
             void OnBanking(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);
+            void OnGearUp(InputAction.CallbackContext context);
+            void OnGearDown(InputAction.CallbackContext context);
         }
     }
 }
