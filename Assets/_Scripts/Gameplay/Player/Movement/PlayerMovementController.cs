@@ -1,13 +1,14 @@
 using Descent.Extensions.Math;
 using Descent.Gameplay.Movement;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Descent.Gameplay.Player.Movement
 {
     [System.Serializable]
     public class PlayerMovementController : IPlayerMovementController
     {
+        private PlayerMovementSettings _movementSettings;
+
         private float _pitchRotation = 0.0f;
         private float _yawRotation = 0.0f;
         private float _rollRotation = 0.0f;
@@ -35,16 +36,28 @@ namespace Descent.Gameplay.Player.Movement
         private Vector2 _smoothedLookInput = Vector2.zero;
         private float _smoothedBankingInput = 0.0f;
 
+        private int _currentSpeedLevel = 0;
+        private int _speedLevelsCount = 6;
+        private float[] _speedLevelMultipliers = null;
+        private int _defaultSpeedLevel = 2;
+        private int _minimalSpeedLevel = 2;
+
         public Vector3 Velocity => _lastVelocity;
         public bool IsMoving => _isMoving;
 
-        private PlayerMovementSettings _movementSettings;
+        public int CurrentSpeedLevel => _currentSpeedLevel;
+        public int MaxSpeedLevel => _speedLevelsCount;
 
         public void Initialize(Transform transform, Rigidbody rigidbody, PlayerMovementSettings movementSettings)
         {
             _rotation = transform.rotation;
             _movementSettings = movementSettings;
             InitializeRigidbody(rigidbody);
+
+            _speedLevelsCount = _movementSettings.SpeedLevelsCount;
+            _speedLevelMultipliers = _movementSettings.SpeedLevelMultipliers;
+            _defaultSpeedLevel = Mathf.Clamp(_movementSettings.DefaultSpeedLevel, 0, _speedLevelsCount - 1);
+            _currentSpeedLevel = _defaultSpeedLevel;
         }
 
         private void InitializeRigidbody(Rigidbody rigidbody)
@@ -113,8 +126,13 @@ namespace Descent.Gameplay.Player.Movement
             _isMoving = currentVelocity.magnitude > MovementThreshold;
 
             Vector3 targetVelocity = rigidbody.rotation * _movementDirection;
+            float speedMultiplier = 1.0f;
+            if (_speedLevelMultipliers != null && _speedLevelMultipliers.Length > _currentSpeedLevel)
+            {
+                speedMultiplier = _speedLevelMultipliers[_currentSpeedLevel];
+            }
 
-            targetVelocity = targetVelocity * _movementSettings.MovementSpeed;
+            targetVelocity = targetVelocity * (_movementSettings.MovementSpeed * speedMultiplier);
 
             float speedChangeX = _movementSettings.Acceleration;
             float speedChangeY = _movementSettings.Acceleration;
@@ -285,6 +303,27 @@ namespace Descent.Gameplay.Player.Movement
         private bool IsPlayerActivelySteering()
         {
             return _movementDirection.sqrMagnitude > _movementDirectionActiveThreshold;
+        }
+
+        public void IncreaseSpeedLevel()
+        {
+            if (_currentSpeedLevel < _speedLevelsCount - 1)
+            {
+                _currentSpeedLevel++;
+            }
+        }
+
+        public void DecreaseSpeedLevel()
+        {
+            if (_currentSpeedLevel > _minimalSpeedLevel)
+            {
+                _currentSpeedLevel--;
+            }
+        }
+
+        public void ResetSpeedLevel()
+        {
+            _currentSpeedLevel = _defaultSpeedLevel;
         }
 
         private void PostCollisionDrift(float deltaTime)
