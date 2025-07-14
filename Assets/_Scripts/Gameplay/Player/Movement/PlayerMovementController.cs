@@ -166,13 +166,38 @@ namespace Descent.Gameplay.Player.Movement
             }
 
             float inertia = Mathf.Clamp01(_movementSettings.Inertia);
+            float snapThreshold = _movementSettings.VelocitySnapThreshold;
 
-            relativeCurrentVelocity.x = Mathf.Lerp(relativeCurrentVelocity.x, relativeTargetVelocity.x,
-                                                    (1.0f - inertia) * speedChangeX * deltaTime);
-            relativeCurrentVelocity.y = Mathf.Lerp(relativeCurrentVelocity.y, relativeTargetVelocity.y,
-                                                    (1.0f - inertia) * speedChangeY * deltaTime);
-            relativeCurrentVelocity.z = Mathf.Lerp(relativeCurrentVelocity.z, relativeTargetVelocity.z,
-                                                    (1.0f - inertia) * speedChangeZ * deltaTime);
+            if (Mathf.Abs(relativeCurrentVelocity.x - relativeTargetVelocity.x) > snapThreshold)
+            {
+                relativeCurrentVelocity.x = Mathf.Lerp(relativeCurrentVelocity.x, relativeTargetVelocity.x,
+                    (1.0f - inertia) * speedChangeX * deltaTime);
+            }
+            else
+            {
+                relativeCurrentVelocity.x = Mathf.MoveTowards(relativeCurrentVelocity.x, relativeTargetVelocity.x,
+                    speedChangeX * deltaTime);
+            }
+            if (Mathf.Abs(relativeCurrentVelocity.y - relativeTargetVelocity.y) > snapThreshold)
+            {
+                relativeCurrentVelocity.y = Mathf.Lerp(relativeCurrentVelocity.y, relativeTargetVelocity.y,
+                    (1.0f - inertia) * speedChangeY * deltaTime);
+            }
+            else
+            {
+                relativeCurrentVelocity.y = Mathf.MoveTowards(relativeCurrentVelocity.y, relativeTargetVelocity.y,
+                    speedChangeY * deltaTime);
+            }
+            if (Mathf.Abs(relativeCurrentVelocity.z - relativeTargetVelocity.z) > snapThreshold)
+            {
+                relativeCurrentVelocity.z = Mathf.Lerp(relativeCurrentVelocity.z, relativeTargetVelocity.z,
+                    (1.0f - inertia) * speedChangeZ * deltaTime);
+            }
+            else
+            {
+                relativeCurrentVelocity.z = Mathf.MoveTowards(relativeCurrentVelocity.z, relativeTargetVelocity.z,
+                    speedChangeZ * deltaTime);
+            }
 
             currentVelocity = transform.TransformDirection(relativeCurrentVelocity);
 
