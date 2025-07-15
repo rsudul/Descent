@@ -12,10 +12,6 @@ namespace Descent.Gameplay.Player.Movement
         private float _pitchRotation = 0.0f;
         private float _yawRotation = 0.0f;
         private float _rollRotation = 0.0f;
-        private Quaternion _rotation = Quaternion.identity;
-        private float _rollStabilizationTimer = 0.0f;
-        private float _rollStabilizationDelay = 0.5f;
-        private bool _isStabilizingAxis = false;
 
         private Vector3 _movementDirection = Vector3.zero;
         private float _movementDirectionActiveThreshold = 0.01f;
@@ -26,9 +22,6 @@ namespace Descent.Gameplay.Player.Movement
         private float _movementFreezeTimer = 0.0f;
 
         private float _verticalInputThreshold = 0.01f;
-
-        private float _postCollisionDriftTimer = 0.0f;
-        private const float PostCollisionDriftDuration = 0.6f;
 
         private const float MovementThreshold = 0.001f;
 
@@ -50,7 +43,6 @@ namespace Descent.Gameplay.Player.Movement
 
         public void Initialize(Transform transform, Rigidbody rigidbody, PlayerMovementSettings movementSettings)
         {
-            _rotation = transform.rotation;
             _movementSettings = movementSettings;
             InitializeRigidbody(rigidbody);
 
@@ -73,38 +65,23 @@ namespace Descent.Gameplay.Player.Movement
 
         public void UpdateLook(Transform transform, Rigidbody rigidbody, float deltaTime)
         {
-            float lookDeadzone = _movementSettings.LookInputDeadzone;
-            bool isLookingNow = Mathf.Abs(_pitchRotation) > lookDeadzone
-                || Mathf.Abs(_yawRotation) > lookDeadzone || Mathf.Abs(_rollRotation) > lookDeadzone;
+            Quaternion inputRotation = rigidbody.rotation;
+            inputRotation *= Quaternion.AngleAxis(-_yawRotation, Vector3.right);
+            inputRotation *= Quaternion.AngleAxis(_pitchRotation, Vector3.up);
+            inputRotation *= Quaternion.AngleAxis(_rollRotation, Vector3.forward);
 
-            if (isLookingNow)
+            Quaternion targetRotation = inputRotation;
+
+            bool isRollInputActive = Mathf.Abs(_smoothedBankingInput) > _movementSettings.LookInputDeadzone;
+
+            if (!isRollInputActive)
             {
-                _isStabilizingAxis = false;
-                _rollStabilizationTimer = _rollStabilizationDelay;
-
-                _rotation = rigidbody.rotation;
-                _rotation *= Quaternion.AngleAxis(-_yawRotation, Vector3.right);
-                _rotation *= Quaternion.AngleAxis(_pitchRotation, Vector3.up);
-                _rotation *= Quaternion.AngleAxis(_rollRotation, Vector3.forward);
-            }
-            else
-            {
-                _rollStabilizationTimer -= deltaTime;
-
-                if (_rollStabilizationTimer <= 0.0f)
-                {
-                    _isStabilizingAxis = true;
-                    StabilizeRollAxis(transform, rigidbody, deltaTime, out bool axisStabilized);
-
-                    if (axisStabilized)
-                    {
-                        _rollStabilizationTimer = _rollStabilizationDelay;
-                    }
-                }
+                targetRotation = StabilizeRollAxis(inputRotation);
             }
 
-            float rotationSpeed = _isStabilizingAxis ? _movementSettings.RollAxisResetSpeed : _movementSettings.LookSmoothness;
-            rigidbody.rotation = Quaternion.Slerp(rigidbody.rotation, _rotation, deltaTime * rotationSpeed);
+            float rotationSpeed = _movementSettings.LookSmoothness;
+
+            rigidbody.rotation = Quaternion.Slerp(rigidbody.rotation, targetRotation, deltaTime * rotationSpeed);
         }
 
         public void UpdateMovement(Transform transform, Rigidbody rigidbody, float deltaTime,
@@ -249,15 +226,10 @@ namespace Descent.Gameplay.Player.Movement
             _movementDirection = _smoothedMovementDirection;
         }
 
-        private void StabilizeRollAxis(Transform transform, Rigidbody rigidbody, float deltaTime, out bool axisStabilized)
+        private Quaternion StabilizeRollAxis(Quaternion currentRotation)
         {
-            axisStabilized = false;
-
-            Vector3 nearestWorldAxis = Math3DUtility.NearestWorldAxis(transform.up);
-
-            _rotation = Quaternion.LookRotation(transform.forward, nearestWorldAxis);
-
-            axisStabilized = Quaternion.Angle(rigidbody.rotation, _rotation) == 0.0f;
+            Vector3 nearestWorldAxis = Math3DUtility.NearestWorldAxis(currentRotation * Vector3.up);
+            return Quaternion.LookRotation(currentRotation * Vector3.forward, nearestWorldAxis);
         }
 
         private void FreezeMovement()
@@ -349,24 +321,6 @@ namespace Descent.Gameplay.Player.Movement
         public void ResetSpeedLevel()
         {
             _currentSpeedLevel = _defaultSpeedLevel;
-        }
-
-        private void PostCollisionDrift(float deltaTime)
-        {
-            if (_postCollisionDriftTimer > 0.0f)
-            {
-                _postCollisionDriftTimer -= deltaTime;
-                _isStabilizingAxis = false;
-
-                float driftProgress = _postCollisionDriftTimer / PostCollisionDriftDuration;
-                float wobbleStrength = Mathf.Lerp(0.8f, 0.0f, 1 - driftProgress);
-
-                float yawWobble = Mathf.Sin(Time.time * 13.7f) * wobbleStrength;
-                float rollWobble = Mathf.Sin(Time.time * 8.1f) * wobbleStrength;
-
-                _rotation *= Quaternion.AngleAxis(yawWobble, Vector3.up);
-                _rotation *= Quaternion.AngleAxis(rollWobble, Vector3.forward);
-            }
         }
     }
 }
