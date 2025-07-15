@@ -15,7 +15,7 @@ MonoBehaviour:
   <LookSensitivityX>k__BackingField: 3
   <LookSensitivityY>k__BackingField: 3
   <LookSmoothness>k__BackingField: 8
-  <RollAxisResetSpeed>k__BackingField: 1.5
+  <RollAxisResetSpeed>k__BackingField: 20
   <LookResponsiveness>k__BackingField: 14
   <LookInputDeadzone>k__BackingField: 0.02
   <MovementSpeed>k__BackingField: 10
@@ -24,6 +24,7 @@ MonoBehaviour:
   <Decceleration>k__BackingField: 2.5
   <Inertia>k__BackingField: 0.8
   <MovementResponsiveness>k__BackingField: 6
+  <VelocitySnapThreshold>k__BackingField: 0.05
   <BankingSensitivity>k__BackingField: 24
   <BankingResponsiveness>k__BackingField: 6
   <SlidingFrictionCurve>k__BackingField:
