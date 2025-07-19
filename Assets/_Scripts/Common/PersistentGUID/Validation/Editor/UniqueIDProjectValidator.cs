@@ -1,11 +1,11 @@
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
 using Descent.Common.PersistentGUID.Validation.Data;
-using UnityEditor.SceneManagement;
 
-namespace Descent.Common.PersistentGUID.Validation
+namespace Descent.Common.PersistentGUID.Validation.Editor
 {
     public class UniqueIDProjectValidator : IUniqueIDProjectValidator
     {
