@@ -35,6 +35,7 @@ namespace Descent.Common.PersistentGUID
 
         private void OnEnable()
         {
+#if UNITY_EDITOR
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 return;
@@ -44,16 +45,19 @@ namespace Descent.Common.PersistentGUID
             {
                 return;
             }
+#endif
 
             GeneratedUniqueIDRegistry.Register(this);
         }
 
         private void OnDestroy()
         {
+#if UNITY_EDITOR
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 return;
             }
+#endif
 
             GeneratedUniqueIDRegistry.Unregister(this);
         }
@@ -62,7 +66,9 @@ namespace Descent.Common.PersistentGUID
         {
             _uniqueID = UniqueIDGenerator.GenerateUniqueID();
 
+#if UNITY_EDITOR
             EditorUtility.SetDirty(this);
+#endif
             GeneratedUniqueIDRegistry.Register(this);
         }
     }
