@@ -1,4 +1,4 @@
-using Descent.Gameplay.Systems.Hostility;
+/*using Descent.Gameplay.Systems.Hostility;
 using System;
 using UnityEngine;
 
@@ -46,4 +46,4 @@ namespace Descent.Gameplay.Enemies.BasicEnemy
             InvokeFactionChanged(_faction);
         }
     }
-}
+}*/
