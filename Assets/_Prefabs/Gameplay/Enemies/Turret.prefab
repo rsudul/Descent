@@ -116,6 +116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7360331715839916007}
+  - component: {fileID: 2836397058292455599}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -140,6 +141,23 @@ Transform:
   - {fileID: 193658533713391689}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2836397058292455599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538924006789744770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85b2f2183f8c0c4eb92308e31bcefb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _headTransform: {fileID: 2974651506854455849}
+  _turnSpeed: 180
+  _faction: {fileID: 11400000, guid: d647e537caac37e49b406522ef1678d7, type: 2}
+  _perceptionSettings: {fileID: 11400000, guid: 292cbeb1a126f7948ae8074bf52a7931,
+    type: 2}
 --- !u!1 &2620313905822636940
 GameObject:
   m_ObjectHideFlags: 0
