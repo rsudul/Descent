@@ -6,5 +6,6 @@ namespace Descent.AI.BehaviourTree.Conditions
     {
         bool Check(BehaviourTreeContextRegistry contextRegistry);
         IBehaviourTreeCondition Clone();
+        void ResetCondition();
     }
 }

@@ -2,6 +2,8 @@ using Descent.Gameplay.AI.BehaviourTree.Actions.Movement;
 using System.Collections.Generic;
 using UnityEngine;
 using Descent.AI.BehaviourTree.Nodes;
+using Descent.Gameplay.AI.BehaviourTree.Actions;
+using Descent.Gameplay.AI.BehaviourTree.Conditions;
 
 namespace Descent.AI.BehaviourTree.Editor
 {
@@ -15,10 +17,22 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Name = "Selector";
                 return node;
             }),
+            new NodeCreationMenuItem("Composite/Priority Reactive Selector", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreePriorityReactiveSelector>();
+                node.Name = "Priority Reactive Selector";
+                return node;
+            }),
             new NodeCreationMenuItem("Composite/Sequence", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeSequenceNode>();
                 node.Name = "Sequence";
+                return node;
+            }),
+            new NodeCreationMenuItem("Composite/Repeat Forever", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeRepeatForeverNode>();
+                node.Name = "Repeat Forever";
                 return node;
             }),
             new NodeCreationMenuItem("Composite/Repeat Until Failure", () =>
@@ -52,6 +66,27 @@ namespace Descent.AI.BehaviourTree.Editor
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
                 node.Name = "Patrol";
                 node.Action = new PatrolAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Rotate To Target", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Rotate To Target";
+                node.Action = new RotateToTargetAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Scan Area", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Scan Area";
+                node.Action = new ScanAreaAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Condition/Is Hostile Target Visible", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
+                node.Name = "Is Hostile Target Visible";
+                node.Condition = new IsHostileTargetVisibleCondition();
                 return node;
             })
         };

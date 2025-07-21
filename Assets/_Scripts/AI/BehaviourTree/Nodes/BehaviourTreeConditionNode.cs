@@ -12,7 +12,6 @@ namespace Descent.AI.BehaviourTree.Nodes
     [NodeInspectorLabel("Conditional")]
     public class BehaviourTreeConditionNode : BehaviourTreeNode
     {
-        [SerializeField]
         [ShowInNodeInspector("Condition")]
         public IBehaviourTreeCondition Condition;
 
@@ -26,7 +25,7 @@ namespace Descent.AI.BehaviourTree.Nodes
 
         public override void ResetNode()
         {
-
+            Condition?.ResetCondition();
         }
     }
 }

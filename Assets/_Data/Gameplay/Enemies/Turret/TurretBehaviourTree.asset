@@ -1,0 +1,340 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8897158103496115495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f642eac712a055438c0623ba7dd5821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Selector
+--- !u!114 &-8627134614102007861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Is Hostile Target Visible
+--- !u!114 &-8423153917398654629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Is Hostile Target Visible
+--- !u!114 &-8220483828344212946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Sequence
+--- !u!114 &-8207476221553329365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Scan Area
+  Action:
+    rid: 1033677754895171589
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677754895171589
+      type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &-6363325348205542259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Sequence
+--- !u!114 &-5448604821478355025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Scan Area
+  Action:
+    rid: 1033677754895171588
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677754895171588
+      type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &-2750768408399500944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Scan Area
+  Action:
+    rid: 1033677754895171591
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677754895171591
+      type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &-2257405371301929184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Is Hostile Target Visible
+--- !u!114 &-2183942948920063081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304615493207f1b4b9f2a596fed37931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Priority Reactive Selector
+--- !u!114 &-1457491418649703153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Repeat While Condition
+  _invert: 0
+  Condition:
+    rid: 1033677754895171587
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677754895171587
+      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24afc42d98be6df4b968e0dc43df7f72, type: 3}
+  m_Name: TurretBehaviourTree
+  m_EditorClassIdentifier: 
+  Root: {fileID: 3146622125523718306}
+--- !u!114 &1057887906492335366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Is Hostile Target Visible
+--- !u!114 &1227960805267378028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Sequence
+--- !u!114 &2187337108257896221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Scan Area
+  Action:
+    rid: 1033677754895171590
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677754895171590
+      type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &2988104516030804548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: ScanArea
+  Action:
+    rid: 1033677754895171584
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677754895171584
+      type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &3146622125523718306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f642eac712a055438c0623ba7dd5821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Root
+--- !u!114 &3500203614165783130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57dd8c586f27ec743b76271fd5f36da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Repeat Forever
+--- !u!114 &3982772332810458592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Repeat While Condition
+  _invert: 1
+  Condition:
+    rid: 1033677754895171592
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677754895171592
+      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &5275956808805538336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Sequence
+--- !u!114 &7291786252072308964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57dd8c586f27ec743b76271fd5f36da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Repeat Forever
