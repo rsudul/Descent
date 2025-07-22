@@ -4,6 +4,7 @@ namespace Descent.AI.BehaviourTree.Actions
     {
         MoveTo,
         SetMovementTarget,
-        RotateTo
+        RotateTo,
+        StopRotation
     };
 }

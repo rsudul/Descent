@@ -75,6 +75,13 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new RotateToTargetAction();
                 return node;
             }),
+            new NodeCreationMenuItem("Action/Stop Rotation", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Stop Rotation";
+                node.Action = new StopRotationAction();
+                return node;
+            }),
             new NodeCreationMenuItem("Action/Scan Area", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();

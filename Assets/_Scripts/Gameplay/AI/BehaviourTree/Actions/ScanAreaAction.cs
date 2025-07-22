@@ -31,11 +31,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 return BehaviourTreeStatus.Failure;
             }
 
-            if (context.AgentTransform.name.Contains("1"))
-            {
-                Debug.Log("_dispatcher is on " + _dispatcher.gameObject.name);
-            }
-
             if (_isWaiting)
             {
                 if (Time.time < _waitUntilTime)

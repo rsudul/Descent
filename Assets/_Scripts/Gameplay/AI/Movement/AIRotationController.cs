@@ -77,14 +77,22 @@ namespace Descent.Gameplay.AI.Movement
         public BehaviourTreeRequestResult HandleRequest(BehaviourTreeActionType actionType,
             IBehaviourTreeActionData actionData)
         {
-            if (actionType != BehaviourTreeActionType.RotateTo)
+            if (actionType != BehaviourTreeActionType.RotateTo
+                && actionType != BehaviourTreeActionType.StopRotation)
             {
                 return BehaviourTreeRequestResult.Ignored;
             }
 
-            if (actionData != null && actionData is RotateToTargetActionData rotateData)
+            if (actionType == BehaviourTreeActionType.RotateTo
+                && actionData != null && actionData is RotateToTargetActionData rotateData)
             {
                 RotateTo(rotateData.TargetYAngle);
+                return BehaviourTreeRequestResult.Success;
+            }
+
+            if (actionType == BehaviourTreeActionType.StopRotation)
+            {
+                StopRotation();
                 return BehaviourTreeRequestResult.Success;
             }
 

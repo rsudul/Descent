@@ -23,6 +23,8 @@ namespace Descent.Gameplay.Enemies.Turret
         public override IReadOnlyCollection<Actor> VisibleActors => _visibleActors;
 
         [SerializeField]
+        private Transform _headTransform = null;
+        [SerializeField]
         private Faction _faction = null;
         [SerializeField]
         private PerceptionSettings _perceptionSettings = null;
@@ -71,15 +73,15 @@ namespace Descent.Gameplay.Enemies.Turret
                     continue;
                 }
 
-                Vector3 directionToTarget = (actor.transform.position - transform.position).normalized;
-                float angle = Vector3.Angle(transform.forward, directionToTarget);
+                Vector3 directionToTarget = (actor.transform.position - _headTransform.position).normalized;
+                float angle = Vector3.Angle(_headTransform.forward, directionToTarget);
                 if (angle > _perceptionSettings.ViewAngle * 0.5f)
                 {
                     continue;
                 }
 
-                Vector3 origin = transform.position + Vector3.up * 0.5f;
-                float distance = Vector3.Distance(transform.position, actor.transform.position);
+                Vector3 origin = _headTransform.position + Vector3.up * 0.5f;
+                float distance = Vector3.Distance(_headTransform.position, actor.transform.position);
                 if (Physics.Raycast(origin, (actor.transform.position - origin).normalized, out RaycastHit hitInfo,
                     distance, _perceptionSettings.DetectionMask))
                 {
