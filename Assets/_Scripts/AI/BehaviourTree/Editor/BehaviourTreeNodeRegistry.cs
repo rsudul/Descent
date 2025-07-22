@@ -23,6 +23,12 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Name = "Priority Reactive Selector";
                 return node;
             }),
+            new NodeCreationMenuItem("Composite/Random Selector", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeRandomSelectorNode>();
+                node.Name = "Random Selector";
+                return node;
+            }),
             new NodeCreationMenuItem("Composite/Sequence", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeSequenceNode>();
@@ -45,6 +51,12 @@ namespace Descent.AI.BehaviourTree.Editor
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeRepeatWhileConditionNode>();
                 node.Name = "Repeat While Condition";
+                return node;
+            }),
+            new NodeCreationMenuItem("Composite/Parallel", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeParallelNode>();
+                node.Name = "Parallel";
                 return node;
             }),
             new NodeCreationMenuItem("Action/Set Movement Target", () =>
