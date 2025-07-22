@@ -89,6 +89,12 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new ScanAreaAction();
                 return node;
             }),
+            new NodeCreationMenuItem("Condition/Compare Blackboard", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeCompareNode>();
+                node.Name = "Compare";
+                return node;
+            }),
             new NodeCreationMenuItem("Condition/Is Hostile Target Visible", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
