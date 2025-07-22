@@ -3,10 +3,17 @@ using Descent.Gameplay.Systems.Hostility;
 using System.Collections.Generic;
 using Descent.Gameplay.Entities;
 using Descent.Gameplay.Systems.Perception;
+using Descent.Common.Attributes.AI;
+using Descent.Gameplay.AI.BehaviourTree.Context;
+using Descent.AI.BehaviourTree.Context;
+using Descent.Gameplay.Movement;
 
 namespace Descent.Gameplay.Enemies.Turret
 {
-    public class Turret : Enemy
+    [BehaviourTreeContextProvider(typeof(AIScanContext))]
+    [BehaviourTreeContextProvider(typeof(AIFactionContext))]
+    [BehaviourTreeContextProvider(typeof(AIPerceptionContext))]
+    public class Turret : Enemy, IBehaviourTreeContextProvider
     {
         private List<Actor> _visibleActors = new List<Actor>();
 
@@ -18,11 +25,11 @@ namespace Descent.Gameplay.Enemies.Turret
         [SerializeField]
         private Transform _headTransform = null;
         [SerializeField]
-        private float _turnSpeed = 180.0f;
-        [SerializeField]
         private Faction _faction = null;
         [SerializeField]
         private PerceptionSettings _perceptionSettings = null;
+        [SerializeField]
+        private TurretSettings _turretSettings = null;
 
         private void Update()
         {
@@ -66,15 +73,15 @@ namespace Descent.Gameplay.Enemies.Turret
                     continue;
                 }
 
-                Vector3 directionToTarget = (actor.transform.position - transform.position).normalized;
-                float angle = Vector3.Angle(transform.forward, directionToTarget);
+                Vector3 directionToTarget = (actor.transform.position - _headTransform.position).normalized;
+                float angle = Vector3.Angle(_headTransform.forward, directionToTarget);
                 if (angle > _perceptionSettings.ViewAngle * 0.5f)
                 {
                     continue;
                 }
 
-                Vector3 origin = transform.position + Vector3.up * 0.5f;
-                float distance = Vector3.Distance(transform.position, actor.transform.position);
+                Vector3 origin = _headTransform.position + Vector3.up * 0.5f;
+                float distance = Vector3.Distance(_headTransform.position, actor.transform.position);
                 if (Physics.Raycast(origin, (actor.transform.position - origin).normalized, out RaycastHit hitInfo,
                     distance, _perceptionSettings.DetectionMask))
                 {
@@ -88,45 +95,26 @@ namespace Descent.Gameplay.Enemies.Turret
             }
         }
 
-        private bool RotateHeadTowards(Vector3 targetPosition, float turnSpeed)
+        public BehaviourTreeContext GetBehaviourTreeContext(System.Type contextType, GameObject agent)
         {
-            if (_headTransform == null)
+            if (contextType == typeof(AIScanContext))
             {
-                return false;
+                IAIRotationController rotationController = GetComponent<IAIRotationController>();
+                return new AIScanContext(agent, rotationController, _turretSettings.ScanCenterAngle,
+                    _turretSettings.ScanAngle, _turretSettings.WaitTimeOnEdge);
             }
 
-            Vector3 direction = targetPosition - _headTransform.position;
-            direction.y = 0.0f;
-
-            if (direction.sqrMagnitude < 0.0001f)
+            if (contextType == typeof(AIFactionContext))
             {
-                return true;
+                return new AIFactionContext(agent, _faction);
             }
 
-            Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
-            _headTransform.rotation = Quaternion.RotateTowards(_headTransform.rotation, lookRotation,
-                turnSpeed * Time.deltaTime);
-
-            float angle = Quaternion.Angle(_headTransform.rotation, lookRotation);
-            return angle < 1.0f;
-        }
-
-        private Actor ChooseTarget(IReadOnlyCollection<Actor> actors)
-        {
-            float minDist = float.MaxValue;
-            Actor closest = null;
-
-            foreach (Actor actor in actors)
+            if (contextType == typeof(AIPerceptionContext))
             {
-                float dist = Vector3.Distance(transform.position, actor.transform.position);
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    closest = actor;
-                }
+                return new AIPerceptionContext(agent, this);
             }
 
-            return closest;
+            return null;
         }
     }
 }

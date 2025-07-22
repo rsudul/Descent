@@ -1,7 +1,6 @@
 using Descent.Common.Attributes.AI;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Context;
-using UnityEngine;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
@@ -11,7 +10,6 @@ namespace Descent.AI.BehaviourTree.Nodes
     {
         private bool _isChildRunning = false;
 
-        [SerializeField]
         public BehaviourTreeNode Child;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)

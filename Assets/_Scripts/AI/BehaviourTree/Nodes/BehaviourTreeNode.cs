@@ -6,7 +6,7 @@ using System;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
-    [System.Serializable]
+    [Serializable]
     public abstract class BehaviourTreeNode : ScriptableObject
     {
         [SerializeField]

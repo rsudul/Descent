@@ -3,6 +3,7 @@ using Descent.AI.BehaviourTree.Conditions;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.Gameplay.Systems.Hostility;
 using Descent.Gameplay.Entities;
+using UnityEngine;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
@@ -50,6 +51,11 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
         {
             IsHostileTargetVisibleCondition clone = new IsHostileTargetVisibleCondition();
             return clone;
+        }
+
+        public void ResetCondition()
+        {
+
         }
     }
 }

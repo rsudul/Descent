@@ -30,6 +30,8 @@ namespace Descent.AI.BehaviourTree.Core
         private BehaviourTreeAsset _treeAsset;
         [SerializeField]
         private float _tickInterval = 0.1f;
+        [SerializeField]
+        private bool _debug = false;
 
         private void Start()
         {
@@ -39,6 +41,11 @@ namespace Descent.AI.BehaviourTree.Core
         private void OnDisable()
         {
             OnTreeStopped?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnDestroy()
+        {
+            ResetAndRebuildTree();
         }
 
         private void Update()
@@ -91,9 +98,32 @@ namespace Descent.AI.BehaviourTree.Core
 
         public void ResetTree()
         {
-            _rootNodeInstance?.ResetNode();
+            if (_rootNodeInstance != null)
+            {
+                ResetNodeRecursive(_rootNodeInstance);
+            }
             _tickTimer = 0.0f;
             OnTreeReset?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ResetNodeRecursive(BehaviourTreeNode node)
+        {
+            if (node == null)
+            {
+                return;
+            }
+
+            node.ResetNode();
+
+            if (node is not BehaviourTreeCompositeNode compositeNode)
+            {
+                return;
+            }
+
+            foreach (BehaviourTreeNode child in compositeNode.Children)
+            {
+                ResetNodeRecursive(child);
+            }
         }
 
         public bool HasTreeAsset(BehaviourTreeAsset asset)
@@ -147,7 +177,7 @@ namespace Descent.AI.BehaviourTree.Core
 
         private void ResetAndRebuildTree()
         {
-            _rootNodeInstance?.ResetNode();
+            ResetTree();
             _rootNodeInstance = null;
             _contextRegistry = null;
             _tickTimer = 0.0f;
@@ -178,6 +208,11 @@ namespace Descent.AI.BehaviourTree.Core
 
         private void LogNodeStatus(BehaviourTreeStatus status)
         {
+            if (!_debug)
+            {
+                return;
+            }
+
             Debug.Log($"[BT][{gameObject.name}] Tick: Root node status = {status}");
         }
     }
