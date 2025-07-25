@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
     [System.Serializable]
     public abstract class BehaviourTreeCompositeNode : BehaviourTreeNode
     {
+        [SerializeField]
         protected List<BehaviourTreeNode> _children = new List<BehaviourTreeNode>();
         public IReadOnlyList<BehaviourTreeNode> Children => _children.AsReadOnly();
 

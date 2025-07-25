@@ -89,5 +89,20 @@ namespace Descent.AI.BehaviourTree.Nodes
                 child.ResetNode();
             }
         }
+
+        public override BehaviourTreeNode CloneNode()
+        {
+            BehaviourTreeRepeatWhileConditionNode clone = ScriptableObject.CreateInstance<BehaviourTreeRepeatWhileConditionNode>();
+            clone.Name = Name;
+            clone.Position = Position;
+            clone._currentChildIndex = _currentChildIndex;
+            clone._invert = _invert;
+            clone.Condition = Condition?.Clone();
+            foreach (BehaviourTreeNode child in Children)
+            {
+                clone.AddChild(child.CloneNode());
+            }
+            return clone;
+        }
     }
 }

@@ -1,6 +1,7 @@
 using Descent.Common.Attributes.AI;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Context;
+using UnityEngine;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
@@ -56,6 +57,19 @@ namespace Descent.AI.BehaviourTree.Nodes
             {
                 child.ResetNode();
             }
+        }
+
+        public override BehaviourTreeNode CloneNode()
+        {
+            BehaviourTreeSelectorNode clone = ScriptableObject.CreateInstance<BehaviourTreeSelectorNode>();
+            clone.Name = Name;
+            clone.Position = Position;
+            clone._currentChildIndex = _currentChildIndex;
+            foreach (BehaviourTreeNode child in Children)
+            {
+                clone.AddChild(child.CloneNode());
+            }
+            return clone;
         }
     }
 }

@@ -25,5 +25,14 @@ namespace Descent.AI.BehaviourTree.Nodes
         {
             Action?.ResetAction();
         }
+
+        public override BehaviourTreeNode CloneNode()
+        {
+            BehaviourTreeActionNode clone = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+            clone.Name = Name;
+            clone.Position = Position;
+            clone.Action = Action?.Clone();
+            return clone;
+        }
     }
 }
