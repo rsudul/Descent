@@ -5,6 +5,7 @@ using Descent.Common.Attributes.AI;
 using Descent.AI.BehaviourTree.Requests;
 using Descent.AI.BehaviourTree.Events.Arguments;
 using System;
+using System.Collections.Generic;
 
 namespace Descent.AI.BehaviourTree.Core
 {
@@ -15,6 +16,7 @@ namespace Descent.AI.BehaviourTree.Core
 
         private BehaviourTreeNode _rootNodeInstance;
         private BehaviourTreeContextRegistry _contextRegistry;
+        private List<(IBehaviourTreeContextProvider provider, Type contextType)> _providerEntries;
 
         private float _tickTimer = 0.0f;
 
@@ -35,6 +37,12 @@ namespace Descent.AI.BehaviourTree.Core
 
         private void Start()
         {
+            _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
+            _contextRegistry = new BehaviourTreeContextRegistry();
+
+            InitializeProviders();
+            RefreshContexts();
+
             ResetAndRebuildTree();
         }
 
@@ -58,10 +66,46 @@ namespace Descent.AI.BehaviourTree.Core
             _tickTimer += Time.deltaTime;
             if (_tickTimer >= _tickInterval)
             {
+                RefreshContexts();
+
                 BehaviourTreeStatus status = _rootNodeInstance.Tick(_contextRegistry);
                 LogNodeStatus(status);
                 OnTreeTick?.Invoke(this, new TickEventArgs(_tickTimer, status));
                 _tickTimer = 0.0f;
+            }
+        }
+
+        private void InitializeProviders()
+        {
+            _providerEntries = new List<(IBehaviourTreeContextProvider provider, Type contextType)>();
+
+            foreach (Component component in GetComponents<MonoBehaviour>())
+            {
+                if (component is not IBehaviourTreeContextProvider provider)
+                {
+                    continue;
+                }
+
+                var attrs = component.GetType().GetCustomAttributes(typeof(BehaviourTreeContextProviderAttribute), true);
+
+                foreach (BehaviourTreeContextProviderAttribute attr in attrs)
+                {
+                    _providerEntries.Add((provider, attr.ContextType));
+                }
+            }
+        }
+
+        private void RefreshContexts()
+        {
+            foreach (var (provider, contextType) in _providerEntries)
+            {
+                BehaviourTreeContext context = provider.GetBehaviourTreeContext(contextType, gameObject);
+                if (context == null)
+                {
+                    continue;
+                }
+
+                _contextRegistry.RegisterContext(contextType, context);
             }
         }
 
@@ -102,7 +146,6 @@ namespace Descent.AI.BehaviourTree.Core
             {
                 ResetNodeRecursive(_rootNodeInstance);
             }
-            _tickTimer = 0.0f;
             OnTreeReset?.Invoke(this, EventArgs.Empty);
         }
 
@@ -179,7 +222,6 @@ namespace Descent.AI.BehaviourTree.Core
         {
             ResetTree();
             _rootNodeInstance = null;
-            _contextRegistry = null;
             _tickTimer = 0.0f;
 
             if (_treeAsset == null)
@@ -189,11 +231,7 @@ namespace Descent.AI.BehaviourTree.Core
                 return;
             }
 
-            BuildContextRegistry();
-
             _rootNodeInstance = _treeAsset.CloneTree();
-
-            _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
 
             if (_dispatcher == null)
             {
