@@ -111,7 +111,8 @@ namespace Descent.Gameplay.Enemies.Turret
 
             if (contextType == typeof(AIPerceptionContext))
             {
-                return new AIPerceptionContext(agent, this);
+                return new AIPerceptionContext(agent, this,
+                    _visibleActors.Count > 0 ? _visibleActors[0].transform : null);
             }
 
             return null;

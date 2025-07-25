@@ -59,6 +59,24 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Name = "Parallel";
                 return node;
             }),
+            new NodeCreationMenuItem("Composite/Guard", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeGuardNode>();
+                node.Name = "Guard";
+                return node;
+            }),
+            new NodeCreationMenuItem("Composite/Interrupt", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeInterruptNode>();
+                node.Name = "Interrupt";
+                return node;
+            }),
+            new NodeCreationMenuItem("Composite/Timeout", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeTimeoutNode>();
+                node.Name = "Timeout";
+                return node;
+            }),
             new NodeCreationMenuItem("Action/Set Movement Target", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
@@ -99,6 +117,55 @@ namespace Descent.AI.BehaviourTree.Editor
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
                 node.Name = "Scan Area";
                 node.Action = new ScanAreaAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Fetch Target", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Fetch Target";
+                node.Action = new FetchTargetAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Predictive Aim", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Predictive Aim";
+                node.Action = new PredictiveAimAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Wait", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Wait";
+                node.Action = new WaitAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Clear Flag", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Clear Flag";
+                node.Action = new ClearFlagAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Shoot", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Shoot";
+                node.Action = new ShootAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Move To Last Seen Position", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Move To Last Seen Position";
+                node.Action = new MoveToLastSeenPositionAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Cooldown", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Cooldown";
+                node.Action = new CooldownAction();
                 return node;
             }),
             new NodeCreationMenuItem("Condition/Compare Blackboard", () =>
