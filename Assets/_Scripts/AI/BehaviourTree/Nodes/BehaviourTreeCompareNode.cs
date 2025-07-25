@@ -10,10 +10,13 @@ namespace Descent.AI.BehaviourTree.Nodes
     public class BehaviourTreeCompareNode : BehaviourTreeNode
     {
         [SerializeField, Tooltip("Blackboard key")]
+        [ShowInNodeInspector("Key")]
         private string _key;
         [SerializeField, Tooltip("Comparison type")]
+        [ShowInNodeInspector("Operation")]
         private BehaviourTreeCompareOperation _operation;
         [SerializeField, Tooltip("Threshold value")]
+        [ShowInNodeInspector("Value to compare against")]
         private float _threshold;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)

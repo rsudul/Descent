@@ -28,7 +28,7 @@ namespace Descent.AI.BehaviourTree.Nodes
                 throw new System.ArgumentNullException(nameof(child));
             }
 
-            if (Children != null && Children.Count > 0)
+            if (Children != null && Children.Count > 1)
             {
                 throw new System.InvalidOperationException("Timeout node may have only one child.");
             }
