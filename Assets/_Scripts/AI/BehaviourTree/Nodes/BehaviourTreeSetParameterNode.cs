@@ -22,5 +22,15 @@ namespace Descent.AI.BehaviourTree.Nodes
         {
             Status = BehaviourTreeStatus.Running;
         }
+
+        public override BehaviourTreeNode CloneNode()
+        {
+            BehaviourTreeSetParameterNode<T> clone = ScriptableObject.CreateInstance<BehaviourTreeSetParameterNode<T>>();
+            clone.Name = Name;
+            clone.Position = Position;
+            clone._key = _key;
+            clone._value = _value;
+            return clone;
+        }
     }
 }

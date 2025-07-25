@@ -81,5 +81,20 @@ namespace Descent.AI.BehaviourTree.Nodes
             _timerStarted = false;
             Status = BehaviourTreeStatus.Running;
         }
+
+        public override BehaviourTreeNode CloneNode()
+        {
+            BehaviourTreeTimeoutNode clone = ScriptableObject.CreateInstance<BehaviourTreeTimeoutNode>();
+            clone.Name = name;
+            clone.Position = Position;
+            clone._startTime = _startTime;
+            clone._timerStarted = _timerStarted;
+            clone._timeLimit = _timeLimit;
+            foreach (BehaviourTreeNode child in Children)
+            {
+                clone.AddChild(child.CloneNode());
+            }
+            return clone;
+        }
     }
 }

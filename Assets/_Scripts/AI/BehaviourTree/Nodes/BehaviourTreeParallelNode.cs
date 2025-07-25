@@ -96,5 +96,19 @@ namespace Descent.AI.BehaviourTree.Nodes
 
             Status = BehaviourTreeStatus.Running;
         }
+
+        public override BehaviourTreeNode CloneNode()
+        {
+            BehaviourTreeParallelNode clone = ScriptableObject.CreateInstance<BehaviourTreeParallelNode>();
+            clone.Name = Name;
+            clone.Position = Position;
+            clone._failurePolicy = _failurePolicy;
+            clone._successPolicy = _successPolicy;
+            foreach (BehaviourTreeNode child in Children)
+            {
+                clone.AddChild(child.CloneNode());
+            }
+            return clone;
+        }
     }
 }

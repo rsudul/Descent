@@ -106,5 +106,25 @@ namespace Descent.AI.BehaviourTree.Nodes
 
             return count - 1;
         }
+
+        public override BehaviourTreeNode CloneNode()
+        {
+            BehaviourTreeRandomSelectorNode clone = ScriptableObject.CreateInstance<BehaviourTreeRandomSelectorNode>();
+            clone.Name = Name;
+            clone.Position = Position;
+            clone._currentChildIndex = _currentChildIndex;
+            clone._uniform = _uniform;
+            clone._resampleEachTick = _resampleEachTick;
+            foreach (BehaviourTreeNode child in Children)
+            {
+                clone.AddChild(child.CloneNode());
+            }
+            clone._weights = new List<float>();
+            foreach (float weight in _weights)
+            {
+                clone._weights.Add(weight);
+            }
+            return clone;
+        }
     }
 }

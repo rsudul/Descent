@@ -35,5 +35,7 @@ namespace Descent.AI.BehaviourTree.Nodes
         public abstract BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry);
 
         public abstract void ResetNode();
+
+        public abstract BehaviourTreeNode CloneNode();
     }
 }
