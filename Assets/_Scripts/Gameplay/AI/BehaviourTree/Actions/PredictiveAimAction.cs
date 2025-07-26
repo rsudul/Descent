@@ -25,8 +25,10 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
         private bool _requestedRotate = false;
         private float _targetYAngle = 0.0f;
 
+        [SerializeField]
         [ShowInNodeInspector("Lead time")]
         private float _leadTime = 0.0f;
+        [SerializeField]
         [ShowInNodeInspector("Angle threshold")]
         private float _angleThreshold = 0.0f;
 
@@ -79,6 +81,13 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             Vector3 direction = predictedPosition - rotationContext.AgentTransform.position;
             _targetYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 
+            float currentY = rotationContext.RotationController.CurrentYAngle;
+            float delta = Mathf.DeltaAngle(currentY, _targetYAngle);
+            if (Mathf.Abs(delta) <= _angleThreshold)
+            {
+                return BehaviourTreeStatus.Running;
+            }
+
             if (!rotationContext.IsRotating && !_requestedRotate)
             {
                 RotateToTargetActionData data = new RotateToTargetActionData(_targetYAngle);
@@ -96,14 +105,8 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 return BehaviourTreeStatus.Running;
             }
 
-            _requestedRotate = false;
-            float currentY = rotationContext.RotationController.CurrentYAngle;
-            float delta = Mathf.DeltaAngle(currentY, _targetYAngle);
-            if (Mathf.Abs(delta) <= _angleThreshold)
-            {
-                return BehaviourTreeStatus.Success;
-            }
 
+            _requestedRotate = false;
             return BehaviourTreeStatus.Running;
         }
 

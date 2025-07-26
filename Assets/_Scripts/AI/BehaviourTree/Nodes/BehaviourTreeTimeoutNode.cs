@@ -79,6 +79,7 @@ namespace Descent.AI.BehaviourTree.Nodes
             }
 
             _timerStarted = false;
+            _startTime = 0.0f;
             Status = BehaviourTreeStatus.Running;
         }
 

@@ -8,6 +8,11 @@ namespace Descent.AI.BehaviourTree.Context
 
         public void Set<T>(string key, T value)
         {
+            if (value == null)
+            {
+                return;
+            }
+
             _data[key] = value;
         }
 

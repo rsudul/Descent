@@ -3,6 +3,7 @@ using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Core;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Requests;
+using Descent.Common.Attributes.AI;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Actions
 {
@@ -16,15 +17,18 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
     /// </summary>
     public class FetchTargetAction : IBehaviourTreeAction
     {
-        private readonly string _lastSeenKey;
-
-        public FetchTargetAction(string lastSeenKey = "LastSeenPosition")
-        {
-            _lastSeenKey = lastSeenKey;
-        }
+        [SerializeField]
+        [ShowInNodeInspector("Last seen key")]
+        private string _lastSeenKey;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
+            if (string.IsNullOrEmpty(_lastSeenKey))
+            {
+                Debug.LogError("[FetchTargetAction] lastSeenKey is null or empty - cannot write to blackboard.");
+                return BehaviourTreeStatus.Failure;
+            }
+
             AIPerceptionContext perceptionContext = contextRegistry.GetContext(typeof(AIPerceptionContext)) as AIPerceptionContext;
 
             if (perceptionContext == null)
@@ -40,15 +44,16 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             }
 
             Vector3 lastPosition = perceptionContext.CurrentTarget.position;
-            contextRegistry.Blackboard.Set(_lastSeenKey, lastPosition);
-            Debug.Log($"[FetchTargetAction] Target acquired at {lastPosition}.");
+            contextRegistry.Blackboard.Set<Vector3>(_lastSeenKey, lastPosition);
+            //Debug.Log($"[FetchTargetAction] Target acquired at {lastPosition}.");
 
             return BehaviourTreeStatus.Success;
         }
 
         public IBehaviourTreeAction Clone()
         {
-            FetchTargetAction clone = new FetchTargetAction(_lastSeenKey);
+            FetchTargetAction clone = new FetchTargetAction();
+            clone._lastSeenKey = _lastSeenKey;
             return clone;
         }
 

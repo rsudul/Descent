@@ -41,6 +41,11 @@ namespace Descent.Gameplay.Enemies.Turret
             }
         }
 
+        private void OnDestroy()
+        {
+            _visibleActors.Clear();
+        }
+
         public override Faction GetFaction()
         {
             return _faction;
