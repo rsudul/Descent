@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7203795899908268182
+--- !u!114 &-7780114296504152453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,107 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Sequence
---- !u!114 &-7027328222720471934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Scan Area
-  Action:
-    rid: 1033677776879091712
-  references:
-    version: 2
-    RefIds:
-    - rid: 1033677776879091712
-      type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
-        asm: Assembly-CSharp}
-      data: 
---- !u!114 &-6457222471986910758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Is Hostile Target Visible
-  Condition:
-    rid: 1033677776879091713
-  references:
-    version: 2
-    RefIds:
-    - rid: 1033677776879091713
-      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
-        asm: Assembly-CSharp}
-      data: 
---- !u!114 &-6226588481993371598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Stop Rotation
-  Action:
-    rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
---- !u!114 &-6068061474882779915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Is Hostile Target Visible
-  Condition:
-    rid: 1033677754895171597
-  references:
-    version: 2
-    RefIds:
-    - rid: 1033677754895171597
-      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
-        asm: Assembly-CSharp}
-      data: 
---- !u!114 &-2141731283938766599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 304615493207f1b4b9f2a596fed37931, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Priority Reactive Selector
---- !u!114 &-1845786575881979154
+  _name: Search last known
+  _children:
+  - {fileID: 7582494994584045981}
+  - {fileID: 6631793232640893069}
+--- !u!114 &-7063359881731343838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,7 +29,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Root
---- !u!114 &-1661561057063658944
+  _children:
+  - {fileID: 8342962828686224497}
+--- !u!114 &-6900206015632990921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,70 +40,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Repeat While Condition
-  _invert: 1
-  Condition:
-    rid: 1033677776879091714
-  references:
-    version: 2
-    RefIds:
-    - rid: 1033677776879091714
-      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
-        asm: Assembly-CSharp}
-      data: 
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24afc42d98be6df4b968e0dc43df7f72, type: 3}
-  m_Name: TurretBehaviourTree
-  m_EditorClassIdentifier: 
-  Root: {fileID: -1845786575881979154}
---- !u!114 &307968839062514070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Repeat While Condition
-  _invert: 1
-  Condition:
-    rid: 1033677754895171601
-  references:
-    version: 2
-    RefIds:
-    - rid: 1033677754895171601
-      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
-        asm: Assembly-CSharp}
-      data: 
---- !u!114 &572783939899507614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 304615493207f1b4b9f2a596fed37931, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: Priority Reactive Selector
---- !u!114 &6434375160041793192
+  _name: Post Hit
+  _children: []
+--- !u!114 &-4606214559303349860
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,17 +57,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Stop Rotation
+  _name: Wait
   Action:
-    rid: 1033677776879091715
+    rid: 1033677870446673923
   references:
     version: 2
     RefIds:
-    - rid: 1033677776879091715
-      type: {class: StopRotationAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+    - rid: 1033677870446673923
+      type: {class: WaitAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
+      data:
+        _waitTime: 1
+--- !u!114 &-4044949236055023685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Repeat While Condition
+  _children:
+  - {fileID: -7780114296504152453}
+  - {fileID: -2978016422249369473}
+  _invert: 1
+  Condition:
+    rid: 1033677853183442944
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677853183442944
+      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
         asm: Assembly-CSharp}
       data: 
---- !u!114 &6783969514545632534
+--- !u!114 &-3405862998189047927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Is Hostile Target Visible
+  Condition:
+    rid: 1033677853183442945
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677853183442945
+      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &-2978016422249369473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,15 +129,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Scan Area
   Action:
-    rid: 1033677754895171600
+    rid: 1033677853183442949
   references:
     version: 2
     RefIds:
-    - rid: 1033677754895171600
+    - rid: 1033677853183442949
       type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
         asm: Assembly-CSharp}
       data: 
---- !u!114 &8710116845320454262
+--- !u!114 &-2963779977284236493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -253,4 +149,344 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Sequence
+  _name: Attack
+  _children:
+  - {fileID: 1915102524416195408}
+  - {fileID: -2490160924800350280}
+  - {fileID: 5947579722880774458}
+--- !u!114 &-2711829181049612758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Predictive Aim
+  Action:
+    rid: 1033677870446673927
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677870446673927
+      type: {class: PredictiveAimAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _leadTime: 0.5
+        _angleThreshold: 1
+--- !u!114 &-2490160924800350280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Fetch Target
+  Action:
+    rid: 1033677853183442950
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677853183442950
+      type: {class: FetchTargetAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _lastSeenKey: LastSeenPosition
+--- !u!114 &-2080604504567898658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Shoot
+  Action:
+    rid: 1033677870446673922
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677870446673922
+      type: {class: ShootAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
+      data: 
+--- !u!114 &-556645557947307028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b16840686a58b842988798cd2ceac7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Compare
+  _key: LastSeenPosition
+  _operation: 0
+  _threshold: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24afc42d98be6df4b968e0dc43df7f72, type: 3}
+  m_Name: TurretBehaviourTree
+  m_EditorClassIdentifier: 
+  Root: {fileID: -7063359881731343838}
+--- !u!114 &890580043895424185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Cooldown
+  Action:
+    rid: 1033677870446673925
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677870446673925
+      type: {class: CooldownAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &1893235544625143236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Fire
+  _children: []
+--- !u!114 &1915102524416195408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffa8f261045598c46a20b423d30681b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Timeout
+  _children:
+  - {fileID: -3405862998189047927}
+  _timeLimit: 0.5
+--- !u!114 &4146126406670220180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Repeat While Condition
+  _children:
+  - {fileID: -2711829181049612758}
+  _invert: 0
+  Condition:
+    rid: 1033677870446673926
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677870446673926
+      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &4372510668664008558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Predictive Aim
+  Action:
+    rid: 1033677870446673921
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677870446673921
+      type: {class: PredictiveAimAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _leadTime: 0
+        _angleThreshold: 0
+--- !u!114 &5947579722880774458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e81a689e0ce42f41a10b15f736459c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Parallel
+  _children:
+  - {fileID: 4146126406670220180}
+  - {fileID: 6565411628567471653}
+  _failurePolicy: 0
+  _successPolicy: 1
+--- !u!114 &6565411628567471653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Fire
+  _children:
+  - {fileID: 7331587338784127353}
+--- !u!114 &6631793232640893069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Wait
+  Action:
+    rid: 1033677853183442948
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677853183442948
+      type: {class: WaitAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
+      data:
+        _waitTime: 0.3
+--- !u!114 &6679554303143803283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Repeat While Condition
+  _children: []
+  _invert: 0
+  Condition:
+    rid: 1033677870446673920
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677870446673920
+      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &7331587338784127353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Shoot
+  Action:
+    rid: 1033677870446673928
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677870446673928
+      type: {class: ShootAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
+      data: 
+--- !u!114 &7582494994584045981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Move To Last Seen Position
+  Action:
+    rid: 1033677853183442946
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677853183442946
+      type: {class: MoveToLastSeenPositionAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &8342962828686224497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304615493207f1b4b9f2a596fed37931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Priority Reactive Selector
+  _children:
+  - {fileID: -2963779977284236493}
+  - {fileID: -4044949236055023685}
