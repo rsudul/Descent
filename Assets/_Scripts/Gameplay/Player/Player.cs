@@ -1,19 +1,21 @@
+using System;
+
+using UnityEngine;
+
 using Descent.Common.Attributes.Gameplay.Player;
-using Descent.Gameplay.Entities;
 using Descent.Gameplay.Collisions;
+using Descent.Gameplay.Entities;
 using Descent.Gameplay.Events.Arguments;
-using Descent.Gameplay.Systems.Durability.Health;
-using Descent.Gameplay.Systems.Durability.Repair;
 using Descent.Gameplay.Player.Animations;
 using Descent.Gameplay.Player.Camera;
 using Descent.Gameplay.Player.Collisions;
 using Descent.Gameplay.Player.Input;
 using Descent.Gameplay.Player.Movement;
+using Descent.Gameplay.Systems.Durability.Health;
+using Descent.Gameplay.Systems.Durability.Repair;
 using Descent.Gameplay.Systems.Hostility;
-using UnityEngine;
-using Descent.Gameplay.Player.Combat;
 using Descent.Gameplay.Systems.WeaponSystem;
-using System;
+using Descent.Gameplay.Systems.WeaponSystem.Core;
 
 namespace Descent.Gameplay.Player
 {
@@ -23,7 +25,7 @@ namespace Descent.Gameplay.Player
         private PlayerInputController _inputController;
         private PlayerMovementController _playerMovementController;
         private IHealthController _healthController;
-        private PlayerWeaponSystemController _playerWeaponSystemController;
+        private WeaponSystemController _playerWeaponSystemController;
 
         public IHealthController HealthController => _healthController;
 
@@ -76,7 +78,7 @@ namespace Descent.Gameplay.Player
             _inputController = new PlayerInputController();
             _playerMovementController = new PlayerMovementController();
             _healthController = new HealthController(_healthSettings);
-            _playerWeaponSystemController = new PlayerWeaponSystemController();
+            _playerWeaponSystemController = new WeaponSystemController();
 
             PlayerMovementController playerMovementController = _playerMovementController as PlayerMovementController;
 
@@ -85,7 +87,7 @@ namespace Descent.Gameplay.Player
             _playerCollisionsController.Initialize(_hitController, _rigidbody);
             _playerWeaponSystemController.Initialize(_weaponsConfig);
 
-            _playerWeaponSystemController.EquipWeapon(_playerWeaponSystemController.PlayerWeapons[0]);
+            _playerWeaponSystemController.EquipWeapon(_playerWeaponSystemController.Weapons[0]);
 
             _inputController.OnFirePressed += OnFirePressed;
             _inputController.OnGearUpPressed += OnGearUpPressed;
