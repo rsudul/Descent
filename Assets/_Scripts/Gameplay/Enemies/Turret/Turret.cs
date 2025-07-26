@@ -7,6 +7,8 @@ using Descent.Common.Attributes.AI;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Context;
 using Descent.Gameplay.Movement;
+using Descent.Gameplay.Systems.WeaponSystem.Core;
+using Descent.Gameplay.Systems.WeaponSystem;
 
 namespace Descent.Gameplay.Enemies.Turret
 {
@@ -20,6 +22,8 @@ namespace Descent.Gameplay.Enemies.Turret
         private float _perceptionTimer = 0.0f;
         private float _perceptionInterval = 0.2f;
 
+        private WeaponSystemController _weaponSystemController;
+
         public override IReadOnlyCollection<Actor> VisibleActors => _visibleActors;
 
         [SerializeField]
@@ -30,6 +34,18 @@ namespace Descent.Gameplay.Enemies.Turret
         private PerceptionSettings _perceptionSettings = null;
         [SerializeField]
         private TurretSettings _turretSettings = null;
+        [SerializeField]
+        private WeaponsConfig _weaponsConfig = null;
+
+        public override void Initialize()
+        {
+            _weaponSystemController = new WeaponSystemController();
+            _weaponSystemController.Initialize(_weaponsConfig);
+            if (_weaponSystemController.Weapons.Count > 0)
+            {
+                _weaponSystemController.EquipWeapon(_weaponSystemController.Weapons[0]);
+            }
+        }
 
         private void Update()
         {

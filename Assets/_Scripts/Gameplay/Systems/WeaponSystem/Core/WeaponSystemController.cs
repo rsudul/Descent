@@ -1,14 +1,28 @@
 using System;
+using System.Collections.Generic;
 
 namespace Descent.Gameplay.Systems.WeaponSystem.Core
 {
-    public abstract class WeaponSystemController : IWeaponSystemController
+    public class WeaponSystemController : IWeaponSystemController
     {
+        private List<Weapon> _weapons;
+
         public IWeapon CurrentWeapon { get; protected set; }
+        public IReadOnlyList<Weapon> Weapons => _weapons;
 
         public event EventHandler<IWeapon> OnWeaponEquipped;
         public event EventHandler OnFired;
         public event EventHandler OnReloaded;
+
+        public void Initialize(WeaponsConfig weaponsConfig)
+        {
+            _weapons = new List<Weapon>();
+            foreach (WeaponData weaponData in weaponsConfig.StartingWeapons)
+            {
+                Weapon weapon = new Weapon(weaponData, null);
+                _weapons.Add(weapon);
+            }
+        }
 
         public virtual void Fire()
         {
