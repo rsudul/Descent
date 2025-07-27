@@ -11,7 +11,7 @@ namespace Descent.Gameplay.Combat.Projectiles.Base
         protected float _travelTimer = 0.0f;
         protected Vector3 _travelStartPosition = Vector3.zero;
 
-        protected Collider _owner = null;
+        protected GameObject _owner = null;
 
         [SerializeField]
         private ProjectileCollisionsController _collisionsController;
@@ -63,7 +63,7 @@ namespace Descent.Gameplay.Combat.Projectiles.Base
             Destroy(gameObject, 0.1f);
         }
 
-        public void SetOwner(Collider owner)
+        public void SetOwner(GameObject owner, bool ignoreCollisions = true)
         {
             if (owner == null)
             {
@@ -72,12 +72,22 @@ namespace Descent.Gameplay.Combat.Projectiles.Base
 
             _owner = owner;
 
+            if (!ignoreCollisions)
+            {
+                return;
+            }
+
             if (_collisionsController == null || _collisionsController.Collider == null)
             {
                 return;
             }
 
-            Physics.IgnoreCollision(_owner, _collisionsController.Collider);
+            if (!_owner.TryGetComponent<Collider>(out Collider ownerCollider))
+            {
+                return;
+            }
+
+            Physics.IgnoreCollision(ownerCollider, _collisionsController.Collider, true);
         }
     }
 }

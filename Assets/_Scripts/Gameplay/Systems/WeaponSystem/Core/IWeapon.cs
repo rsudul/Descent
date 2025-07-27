@@ -10,6 +10,7 @@ namespace Descent.Gameplay.Systems.WeaponSystem.Core
     {
         WeaponData WeaponData { get; }
         WeaponModel WeaponModel { get; }
+        IWeaponOwner Owner { get; }
         float Damage { get; }
         float FireRate { get; }
         int MagazineSize { get; }

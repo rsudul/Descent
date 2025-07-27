@@ -33,7 +33,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3727491235765950033}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3302915846753947387
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0da213b83b72946a29268752cb5295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uniqueID: a2668381-fb0f-4dd2-9bfa-98ed08b3b0f5
+  _uniqueID: 401058df-b0a5-4ff3-9903-7182c4c8845f
 --- !u!114 &6100354459095868790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +71,7 @@ MonoBehaviour:
     _collider: {fileID: 5586539351590801712}
   _rigidbody: {fileID: 509301648802752551}
   _playerBody: {fileID: 5175616808587552804}
+  _weaponMountPoint: {fileID: 3727491235765950033}
   _playerMovementSettings: {fileID: 11400000, guid: f714b7dc86c0d4643939772c8ee38f58,
     type: 2}
   _faction: {fileID: 11400000, guid: 00a957c5cd3d30a408b82955da59d645, type: 2}
@@ -135,3 +137,34 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8730213288439880641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3727491235765950033}
+  m_Layer: 0
+  m_Name: WeaponMountPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3727491235765950033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8730213288439880641}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3147, y: 0, z: 0.47}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5175616808587552804}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

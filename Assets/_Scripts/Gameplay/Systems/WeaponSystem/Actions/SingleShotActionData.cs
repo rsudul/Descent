@@ -1,6 +1,7 @@
 using UnityEngine;
 using Descent.Gameplay.Systems.WeaponSystem.Core;
 using Descent.Gameplay.Systems.WeaponSystem.Projectiles;
+using Descent.Gameplay.Combat.Projectiles.BasicProjectile;
 
 namespace Descent.Gameplay.Systems.WeaponSystem.Actions
 {
@@ -14,8 +15,35 @@ namespace Descent.Gameplay.Systems.WeaponSystem.Actions
         {
             if (ProjectileData == null)
             {
-                Debug.Log($"{weapon.WeaponData.WeaponName} fires single shot.");
+                Debug.Log($"[{ActionName}] ProjectileData is null.");
+                return;
             }
+
+            if (weapon == null)
+            {
+                Debug.LogError($"[{ActionName}] Weapon is null.");
+                return;
+            }
+
+            if (weapon.WeaponModel == null)
+            {
+                Debug.Log("weaponmodel is null");
+                return;
+            }
+
+            if (weapon.WeaponModel.FirePoint == null)
+            {
+                Debug.Log("firepoint is null");
+                return;
+            }
+
+            Vector3 projectileSpawnPoint = weapon.WeaponModel.FirePoint.position;
+            Vector3 projectileSpawnOrientation = weapon.WeaponModel.FirePoint.forward;
+            BasicProjectile projectile = Instantiate(ProjectileData.Prefab, projectileSpawnPoint,
+                                            Quaternion.Euler(projectileSpawnOrientation)).GetComponent<BasicProjectile>();
+            projectile.SetOwner(weapon.Owner.GameObject);
+            projectile.Initialize(projectileSpawnOrientation, projectileSpawnOrientation);
+            projectile.StartMovement(Time.deltaTime);
         }
     }
 }

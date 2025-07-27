@@ -1,4 +1,5 @@
 using Descent.Gameplay.Collisions;
+using Descent.Gameplay.Events.Arguments;
 using System;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace Descent.Gameplay.Combat.Projectiles.Base
             }
         }
 
-        protected virtual void OnCollided(object sender, EventArgs args)
+        protected virtual void OnCollided(object sender, CollisionEventArgs args)
         {
             OnCollisionEntered?.Invoke(this, EventArgs.Empty);
         }

@@ -26,6 +26,8 @@ namespace Descent.Gameplay.Enemies.Turret
 
         public override IReadOnlyCollection<Actor> VisibleActors => _visibleActors;
 
+        public override Transform WeaponMountPoint => _weaponMountPoint;
+
         [SerializeField]
         private Transform _headTransform = null;
         [SerializeField]
@@ -36,11 +38,13 @@ namespace Descent.Gameplay.Enemies.Turret
         private TurretSettings _turretSettings = null;
         [SerializeField]
         private WeaponsConfig _weaponsConfig = null;
+        [SerializeField]
+        private Transform _weaponMountPoint = null;
 
         public override void Initialize()
         {
             _weaponSystemController = new WeaponSystemController();
-            _weaponSystemController.Initialize(_weaponsConfig);
+            _weaponSystemController.Initialize(_weaponsConfig, this);
             if (_weaponSystemController.Weapons.Count > 0)
             {
                 _weaponSystemController.EquipWeapon(_weaponSystemController.Weapons[0]);
