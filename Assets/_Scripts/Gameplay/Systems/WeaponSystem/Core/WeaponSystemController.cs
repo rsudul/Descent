@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Descent.Gameplay.Systems.WeaponSystem.Core
 {
@@ -14,12 +15,12 @@ namespace Descent.Gameplay.Systems.WeaponSystem.Core
         public event EventHandler OnFired;
         public event EventHandler OnReloaded;
 
-        public void Initialize(WeaponsConfig weaponsConfig)
+        public void Initialize(WeaponsConfig weaponsConfig, IWeaponOwner owner)
         {
             _weapons = new List<Weapon>();
             foreach (WeaponData weaponData in weaponsConfig.StartingWeapons)
             {
-                Weapon weapon = new Weapon(weaponData, null);
+                Weapon weapon = new Weapon(weaponData, owner);
                 _weapons.Add(weapon);
             }
         }

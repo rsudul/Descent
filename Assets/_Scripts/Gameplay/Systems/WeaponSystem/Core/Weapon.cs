@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Descent.Gameplay.Systems.WeaponSystem.Actions;
 using Descent.Gameplay.Systems.WeaponSystem.Mods;
 using Descent.Gameplay.Systems.WeaponSystem.Attachments;
@@ -17,6 +18,7 @@ namespace Descent.Gameplay.Systems.WeaponSystem.Core
 
         public WeaponData WeaponData { get; private set; }
         public WeaponModel WeaponModel { get; private set; }
+        public IWeaponOwner Owner { get; private set; }
         public float Damage { get; private set; }
         public float FireRate { get; private set; }
         public int MagazineSize { get; private set; }
@@ -31,12 +33,21 @@ namespace Descent.Gameplay.Systems.WeaponSystem.Core
         public WeaponAction SelectedAction => _actions.Count > 0 ? _actions[_selectedActionIndex] : null;
 
         public Weapon(WeaponData weaponData,
-               WeaponModel weaponModel,
+               IWeaponOwner owner,
                List<WeaponModData> startMods = null,
                Dictionary<AttachmentSlotData, List<AttachmentData>> startAttachments = null)
         {
             WeaponData = weaponData;
-            WeaponModel = weaponModel;
+            Owner = owner;
+            WeaponModel = GameObject.Instantiate(weaponData.WeaponModelPrefab,
+                                                 Owner.WeaponMountPoint.position,
+                                                 Owner.WeaponMountPoint.rotation,
+                                                 Owner.WeaponMountPoint) as WeaponModel;
+            if (WeaponModel == null)
+            {
+                Debug.Log($"[{WeaponData.WeaponName}][{Owner.WeaponMountPoint.root.name}]: WeaponModel could not be instantiated.");
+                return;
+            }
             Initialize(startMods, startAttachments);
         }
 

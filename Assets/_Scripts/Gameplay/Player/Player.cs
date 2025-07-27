@@ -20,7 +20,7 @@ using Descent.Gameplay.Systems.WeaponSystem.Core;
 namespace Descent.Gameplay.Player
 {
     [IsPlayerObject]
-    public class Player : Actor, IRepairable
+    public class Player : Actor, IRepairable, IWeaponOwner
     {
         private PlayerInputController _inputController;
         private PlayerMovementController _playerMovementController;
@@ -28,6 +28,9 @@ namespace Descent.Gameplay.Player
         private WeaponSystemController _playerWeaponSystemController;
 
         public IHealthController HealthController => _healthController;
+
+        public GameObject GameObject => gameObject;
+        public Transform WeaponMountPoint => _weaponMountPoint;
 
         [Header("Controllers")]
         [SerializeField]
@@ -44,6 +47,8 @@ namespace Descent.Gameplay.Player
         private Rigidbody _rigidbody = null;
         [SerializeField]
         private Transform _playerBody = null;
+        [SerializeField]
+        private Transform _weaponMountPoint = null;
 
         [Header("Settings")]
         [SerializeField]
@@ -85,7 +90,7 @@ namespace Descent.Gameplay.Player
             playerMovementController.Initialize(_playerBody, _rigidbody, _playerMovementSettings);
             _playerAnimationsController.Initialize(_playerCameraController.CameraTransform);
             _playerCollisionsController.Initialize(_hitController, _rigidbody);
-            _playerWeaponSystemController.Initialize(_weaponsConfig);
+            _playerWeaponSystemController.Initialize(_weaponsConfig, this);
 
             _playerWeaponSystemController.EquipWeapon(_playerWeaponSystemController.Weapons[0]);
 

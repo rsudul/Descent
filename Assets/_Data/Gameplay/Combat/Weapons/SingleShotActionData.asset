@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ActionName>k__BackingField: SingleShotAction
   <Description>k__BackingField: 
-  <ProjectileData>k__BackingField: {fileID: 0}
+  <ProjectileData>k__BackingField: {fileID: 11400000, guid: 455bf156cacafb542895f630f6b699ed,
+    type: 2}
   <Cooldown>k__BackingField: 0
