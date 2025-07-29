@@ -91,8 +91,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             if (!rotationContext.IsRotating && !_requestedRotate)
             {
                 RotateToTargetActionData data = new RotateToTargetActionData(_targetYAngle);
-                BehaviourTreeRequestResult result = _dispatcher.RequestAction(rotationContext.AgentTransform,
-                                                                              BehaviourTreeActionType.RotateTo, data);
+                BehaviourTreeRequestResult result = _dispatcher.RequestAction(BehaviourTreeActionType.RotateTo, data);
                 if (result == BehaviourTreeRequestResult.Failure)
                 {
                     return BehaviourTreeStatus.Failure;

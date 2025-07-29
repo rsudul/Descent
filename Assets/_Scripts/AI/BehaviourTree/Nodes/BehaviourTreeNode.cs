@@ -10,14 +10,15 @@ namespace Descent.AI.BehaviourTree.Nodes
     public abstract class BehaviourTreeNode : ScriptableObject
     {
         [SerializeField]
+        protected BehaviourTreeNode _parent = null;
+        [SerializeField]
+        protected Vector2 _position = Vector2.zero;
+
+        [SerializeField]
         [ShowInNodeInspector("Name", 1000)]
         [NodeNameField]
         protected string _name = "Node";
 
-        [SerializeField]
-        public BehaviourTreeNode Parent { get; set; }
-        [SerializeField]
-        public Vector2 Position { get; set; }
         public BehaviourTreeStatus Status { get; protected set; }
 
         public string Name
@@ -27,6 +28,32 @@ namespace Descent.AI.BehaviourTree.Nodes
             {
                 _name = value;
                 OnPropertyChanged?.Invoke(this, nameof(Name));
+            }
+        }
+
+        public Vector2 Position
+        {
+            get => _position;
+            set
+            {
+                if (_position != value)
+                {
+                    _position = value;
+                    OnPropertyChanged?.Invoke(this, nameof(Position));
+                }
+            }
+        }
+
+        public BehaviourTreeNode Parent
+        {
+            get => _parent;
+            set
+            {
+                if (_parent != value)
+                {
+                    _parent = value;
+                    OnPropertyChanged?.Invoke(this, nameof(Parent));
+                }
             }
         }
 

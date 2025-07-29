@@ -29,6 +29,7 @@ namespace Descent.Gameplay.Systems.WeaponSystem.Core
         {
             if (CurrentWeapon == null)
             {
+                Debug.Log("current weapon is null");
                 return;
             }
 

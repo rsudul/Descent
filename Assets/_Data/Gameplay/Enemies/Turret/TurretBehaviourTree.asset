@@ -1,5 +1,23 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7824482336173612408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b16840686a58b842988798cd2ceac7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 2283103977757618142}
+  _position: {x: -79, y: 672}
+  _name: Compare
+  _key: LastShootHit
+  _operation: 0
+  _threshold: 1
 --- !u!114 &-7780114296504152453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,6 +30,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -4044949236055023685}
+  _position: {x: 301, y: 319}
   _name: Search last known
   _children:
   - {fileID: 7582494994584045981}
@@ -28,6 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f642eac712a055438c0623ba7dd5821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Root
   _children:
   - {fileID: 8342962828686224497}
@@ -43,8 +65,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Post Hit
   _children: []
+--- !u!114 &-5361619980384404790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 6565411628567471653}
+  _position: {x: 77, y: 570}
+  _name: Cooldown
+  Action:
+    rid: 1033677922581348354
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677922581348354
+      type: {class: CooldownAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _cooldownTime: 1
 --- !u!114 &-4606214559303349860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,6 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Wait
   Action:
     rid: 1033677870446673923
@@ -79,6 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 8342962828686224497}
+  _position: {x: 398, y: 210}
   _name: Repeat While Condition
   _children:
   - {fileID: -7780114296504152453}
@@ -105,6 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 1915102524416195408}
+  _position: {x: -758, y: 454}
   _name: Is Hostile Target Visible
   Condition:
     rid: 1033677853183442945
@@ -127,6 +182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -4044949236055023685}
+  _position: {x: 576, y: 319}
   _name: Scan Area
   Action:
     rid: 1033677853183442949
@@ -149,6 +206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 8342962828686224497}
+  _position: {x: -286, y: 210}
   _name: Attack
   _children:
   - {fileID: 1915102524416195408}
@@ -166,6 +225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 4146126406670220180}
+  _position: {x: -363, y: 570}
   _name: Predictive Aim
   Action:
     rid: 1033677870446673927
@@ -190,6 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -2963779977284236493}
+  _position: {x: -554, y: 345}
   _name: Fetch Target
   Action:
     rid: 1033677853183442950
@@ -213,6 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Shoot
   Action:
     rid: 1033677870446673922
@@ -222,6 +287,30 @@ MonoBehaviour:
     - rid: 1033677870446673922
       type: {class: ShootAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
       data: 
+--- !u!114 &-1832620878656128204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 2283103977757618142}
+  _position: {x: -54, y: 763}
+  _name: Wait
+  Action:
+    rid: 1033677922581348352
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677922581348352
+      type: {class: WaitAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
+      data:
+        _waitTime: 1
 --- !u!114 &-556645557947307028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b16840686a58b842988798cd2ceac7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Compare
   _key: LastSeenPosition
   _operation: 0
@@ -263,6 +354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Cooldown
   Action:
     rid: 1033677870446673925
@@ -272,7 +365,8 @@ MonoBehaviour:
     - rid: 1033677870446673925
       type: {class: CooldownAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
         asm: Assembly-CSharp}
-      data: 
+      data:
+        _cooldownTime: 0
 --- !u!114 &1893235544625143236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,6 +379,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Fire
   _children: []
 --- !u!114 &1915102524416195408
@@ -299,10 +395,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa8f261045598c46a20b423d30681b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -2963779977284236493}
+  _position: {x: -705, y: 345}
   _name: Timeout
   _children:
   - {fileID: -3405862998189047927}
   _timeLimit: 0.5
+--- !u!114 &2283103977757618142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 6565411628567471653}
+  _position: {x: -79, y: 570}
+  _name: Post Fire
+  _children:
+  - {fileID: -7824482336173612408}
+  - {fileID: -1832620878656128204}
+  - {fileID: 5012180379654216271}
 --- !u!114 &4146126406670220180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +432,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 5947579722880774458}
+  _position: {x: -414, y: 454}
   _name: Repeat While Condition
   _children:
   - {fileID: -2711829181049612758}
@@ -340,6 +459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Predictive Aim
   Action:
     rid: 1033677870446673921
@@ -352,6 +473,31 @@ MonoBehaviour:
       data:
         _leadTime: 0
         _angleThreshold: 0
+--- !u!114 &5012180379654216271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 2283103977757618142}
+  _position: {x: -79, y: 858}
+  _name: Clear Flag
+  Action:
+    rid: 1033677922581348353
+  references:
+    version: 2
+    RefIds:
+    - rid: 1033677922581348353
+      type: {class: ClearFlagAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _flagKey: LastShootHit
 --- !u!114 &5947579722880774458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e81a689e0ce42f41a10b15f736459c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -2963779977284236493}
+  _position: {x: -247, y: 345}
   _name: Parallel
   _children:
   - {fileID: 4146126406670220180}
@@ -382,9 +530,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 5947579722880774458}
+  _position: {x: -154, y: 461}
   _name: Fire
   _children:
   - {fileID: 7331587338784127353}
+  - {fileID: 2283103977757618142}
+  - {fileID: -5361619980384404790}
 --- !u!114 &6631793232640893069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,6 +549,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -7780114296504152453}
+  _position: {x: 376, y: 560}
   _name: Wait
   Action:
     rid: 1033677853183442948
@@ -419,6 +573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 0, y: 0}
   _name: Repeat While Condition
   _children: []
   _invert: 0
@@ -443,6 +599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: 6565411628567471653}
+  _position: {x: -199, y: 570}
   _name: Shoot
   Action:
     rid: 1033677870446673928
@@ -464,6 +622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -7780114296504152453}
+  _position: {x: 283, y: 438}
   _name: Move To Last Seen Position
   Action:
     rid: 1033677853183442946
@@ -486,6 +646,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304615493207f1b4b9f2a596fed37931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parent: {fileID: -7063359881731343838}
+  _position: {x: -74, y: 97}
   _name: Priority Reactive Selector
   _children:
   - {fileID: -2963779977284236493}

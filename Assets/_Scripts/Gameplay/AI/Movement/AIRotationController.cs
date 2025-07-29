@@ -5,6 +5,7 @@ using Descent.Common.Attributes.AI;
 using Descent.Gameplay.AI.BehaviourTree.Actions.Data;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.Gameplay.Movement;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Descent.Gameplay.AI.Movement
@@ -32,12 +33,14 @@ namespace Descent.Gameplay.AI.Movement
         private void Start()
         {
             _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
-            _dispatcher.Register(transform, this);
+            _dispatcher.Register(BehaviourTreeActionType.RotateTo, this);
+            _dispatcher.Register(BehaviourTreeActionType.StopRotation, this);
         }
 
         private void OnDestroy()
         {
-            _dispatcher.Unregister(transform);
+            _dispatcher.Unregister(BehaviourTreeActionType.RotateTo);
+            _dispatcher.Unregister(BehaviourTreeActionType.StopRotation);
         }
 
         private void Update()

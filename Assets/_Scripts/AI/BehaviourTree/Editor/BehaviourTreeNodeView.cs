@@ -1,9 +1,9 @@
 using UnityEditor.Experimental.GraphView;
 using Descent.AI.BehaviourTree.Nodes;
 using UnityEngine.UIElements;
-using UnityEditor;
 using UnityEngine;
 using Descent.AI.BehaviourTree.Core;
+using UnityEditor;
 
 namespace Descent.AI.BehaviourTree.Editor
 {
@@ -78,7 +78,7 @@ namespace Descent.AI.BehaviourTree.Editor
             if (Node.Position != newPos)
             {
                 Node.Position = newPos;
-                // !!! SAVE ASSETS LATER - WHEN YOU PRESS SAVE BUTTON !!!
+                EditorUtility.SetDirty(Node);
                 AssetDatabase.SaveAssets();
             }
         }
@@ -111,6 +111,9 @@ namespace Descent.AI.BehaviourTree.Editor
             {
                 UpdateTitle();
             }
+
+            EditorUtility.SetDirty(Node);
+            AssetDatabase.SaveAssets();
         }
     }
 }
