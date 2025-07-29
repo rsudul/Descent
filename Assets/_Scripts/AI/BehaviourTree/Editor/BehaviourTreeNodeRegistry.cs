@@ -53,6 +53,12 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Name = "Repeat While Condition";
                 return node;
             }),
+            new NodeCreationMenuItem("Composite/Repeat N Times", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeRepeatNTimesNode>();
+                node.Name = "Repeat N Times";
+                return node;
+            }),
             new NodeCreationMenuItem("Composite/Parallel", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeParallelNode>();

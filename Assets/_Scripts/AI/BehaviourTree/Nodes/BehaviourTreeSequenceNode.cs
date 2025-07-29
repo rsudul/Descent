@@ -11,6 +11,10 @@ namespace Descent.AI.BehaviourTree.Nodes
     {
         private int _currentChildIndex = 0;
 
+        [ShowInNodeInspector("Failure policy")]
+        [SerializeField]
+        private BehaviourTreeFailurePolicy _failurePolicy = BehaviourTreeFailurePolicy.OnChildFailure;
+
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
             if (Children?.Count == 0)
@@ -23,17 +27,18 @@ namespace Descent.AI.BehaviourTree.Nodes
             {
                 BehaviourTreeStatus status = Children[_currentChildIndex].Tick(contextRegistry);
 
-                if (status == BehaviourTreeStatus.Running)
-                {
-                    Status = BehaviourTreeStatus.Running;
-                    return BehaviourTreeStatus.Running;
-                }
-
-                if (status == BehaviourTreeStatus.Failure)
+                if ((status == BehaviourTreeStatus.Failure && _failurePolicy == BehaviourTreeFailurePolicy.OnChildFailure)
+                    || (status == BehaviourTreeStatus.Success && _failurePolicy == BehaviourTreeFailurePolicy.OnChildSuccess))
                 {
                     ResetNode();
                     Status = BehaviourTreeStatus.Failure;
                     return BehaviourTreeStatus.Failure;
+                }
+
+                if (status == BehaviourTreeStatus.Running)
+                {
+                    Status = BehaviourTreeStatus.Running;
+                    return BehaviourTreeStatus.Running;
                 }
 
                 _currentChildIndex++;
