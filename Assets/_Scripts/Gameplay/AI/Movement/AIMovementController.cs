@@ -7,6 +7,7 @@ using UnityEngine;
 using System;
 using Descent.AI.BehaviourTree.Actions;
 using Descent.AI.BehaviourTree.Context;
+using System.Collections.Generic;
 
 namespace Descent.Gameplay.AI.Movement
 {
@@ -37,12 +38,12 @@ namespace Descent.Gameplay.AI.Movement
             _rigidbody = GetComponent<Rigidbody>();
             _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
 
-            _dispatcher.Register(transform, this);
+            _dispatcher.Register(BehaviourTreeActionType.MoveTo, this);
         }
 
         private void OnDestroy()
         {
-            _dispatcher.Unregister(transform);
+            _dispatcher.Unregister(BehaviourTreeActionType.MoveTo);
         }
 
         private void FixedUpdate()

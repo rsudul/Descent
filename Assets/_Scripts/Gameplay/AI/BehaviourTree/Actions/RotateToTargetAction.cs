@@ -34,8 +34,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             {
                 RotateToTargetActionData requestData = new RotateToTargetActionData(_targetYAngle);
 
-                BehaviourTreeRequestResult result = _dispatcher.RequestAction(context.AgentTransform,
-                    BehaviourTreeActionType.RotateTo, requestData);
+                BehaviourTreeRequestResult result = _dispatcher.RequestAction(BehaviourTreeActionType.RotateTo, requestData);
 
                 if (result == BehaviourTreeRequestResult.Failure)
                 {

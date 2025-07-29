@@ -39,9 +39,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions.Movement
             {
                 MoveToActionData requestData = new MoveToActionData(context.TargetPosition.Value);
 
-                BehaviourTreeRequestResult result = _dispatcher.RequestAction(context.AgentTransform,
-                    BehaviourTreeActionType.MoveTo,
-                    requestData);
+                BehaviourTreeRequestResult result = _dispatcher.RequestAction(BehaviourTreeActionType.MoveTo, requestData);
 
                 if (result == BehaviourTreeRequestResult.Failure)
                 {

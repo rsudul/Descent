@@ -7,22 +7,21 @@ namespace Descent.AI.BehaviourTree.Requests
 {
     public class BehaviourTreeActionRequestDispatcher : MonoBehaviour
     {
-        private Dictionary<Transform, IBehaviourTreeRequestReceiver> _receivers = new Dictionary<Transform, IBehaviourTreeRequestReceiver>();
+        private Dictionary<BehaviourTreeActionType, IBehaviourTreeRequestReceiver> _receivers = new Dictionary<BehaviourTreeActionType, IBehaviourTreeRequestReceiver>();
 
-        public void Register(Transform agent, IBehaviourTreeRequestReceiver receiver)
+        public void Register(BehaviourTreeActionType actionType, IBehaviourTreeRequestReceiver receiver)
         {
-            _receivers[agent] = receiver;
+            _receivers[actionType] = receiver;
         }
 
-        public void Unregister(Transform agent)
+        public void Unregister(BehaviourTreeActionType actionType)
         {
-            _receivers.Remove(agent);
+            _receivers.Remove(actionType);
         }
 
-        public BehaviourTreeRequestResult RequestAction(Transform agent,
-            BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
+        public BehaviourTreeRequestResult RequestAction(BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
         {
-            if (!_receivers.TryGetValue(agent, out IBehaviourTreeRequestReceiver receiver))
+            if (!_receivers.TryGetValue(actionType, out IBehaviourTreeRequestReceiver receiver))
             {
                 return BehaviourTreeRequestResult.Failure;
             }

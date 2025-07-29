@@ -20,6 +20,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
         private bool _started = false;
 
         [ShowInNodeInspector("Cooldown time")]
+        [SerializeField]
         private float _cooldownTime = 0.0f;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)

@@ -26,8 +26,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 return BehaviourTreeStatus.Failure;
             }
 
-            BehaviourTreeRequestResult result = _dispatcher.RequestAction(context.AgentTransform,
-                BehaviourTreeActionType.StopRotation, null);
+            BehaviourTreeRequestResult result = _dispatcher.RequestAction(BehaviourTreeActionType.StopRotation, null);
 
             if (result == BehaviourTreeRequestResult.Failure)
             {

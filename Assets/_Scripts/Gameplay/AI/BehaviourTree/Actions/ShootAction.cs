@@ -27,19 +27,17 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 return BehaviourTreeStatus.Failure;
             }
 
-            AIRotationContext rotationContext = contextRegistry.GetContext(typeof(AIRotationContext)) as AIRotationContext;
-            if (rotationContext == null)
+            AIShootContext shootContext = contextRegistry.GetContext(typeof(AIShootContext)) as AIShootContext;
+            if (shootContext == null)
             {
-                Debug.LogWarning("[ShootAction]: No AIRotationContext found.");
+                Debug.LogWarning("[ShootAction]: No AIShootContext found.");
                 return BehaviourTreeStatus.Failure;
             }
 
             if (!_requested)
             {
                 ShootActionData data = new ShootActionData();
-                BehaviourTreeRequestResult result = _dispatcher.RequestAction(rotationContext.AgentTransform,
-                                                                              BehaviourTreeActionType.Shoot,
-                                                                              data);
+                BehaviourTreeRequestResult result = _dispatcher.RequestAction(BehaviourTreeActionType.Shoot, data);
 
                 if (result == BehaviourTreeRequestResult.Failure)
                 {

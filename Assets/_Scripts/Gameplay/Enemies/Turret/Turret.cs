@@ -9,13 +9,17 @@ using Descent.AI.BehaviourTree.Context;
 using Descent.Gameplay.Movement;
 using Descent.Gameplay.Systems.WeaponSystem.Core;
 using Descent.Gameplay.Systems.WeaponSystem;
+using Descent.AI.BehaviourTree.Requests;
+using Descent.AI.BehaviourTree.Actions;
+using Descent.Gameplay.AI.BehaviourTree.Actions.Data;
 
 namespace Descent.Gameplay.Enemies.Turret
 {
     [BehaviourTreeContextProvider(typeof(AIScanContext))]
     [BehaviourTreeContextProvider(typeof(AIFactionContext))]
     [BehaviourTreeContextProvider(typeof(AIPerceptionContext))]
-    public class Turret : Enemy, IBehaviourTreeContextProvider
+    [BehaviourTreeContextProvider(typeof(AIShootContext))]
+    public class Turret : Enemy, IBehaviourTreeContextProvider, IBehaviourTreeRequestReceiver
     {
         private List<Actor> _visibleActors = new List<Actor>();
 
@@ -23,6 +27,8 @@ namespace Descent.Gameplay.Enemies.Turret
         private float _perceptionInterval = 0.2f;
 
         private WeaponSystemController _weaponSystemController;
+
+        private BehaviourTreeActionRequestDispatcher _dispatcher = null;
 
         public override IReadOnlyCollection<Actor> VisibleActors => _visibleActors;
 
@@ -49,6 +55,12 @@ namespace Descent.Gameplay.Enemies.Turret
             {
                 _weaponSystemController.EquipWeapon(_weaponSystemController.Weapons[0]);
             }
+
+            _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
+            if (_dispatcher != null)
+            {
+                _dispatcher.Register(BehaviourTreeActionType.Shoot, this);
+            }
         }
 
         private void Update()
@@ -64,6 +76,7 @@ namespace Descent.Gameplay.Enemies.Turret
         private void OnDestroy()
         {
             _visibleActors.Clear();
+            _dispatcher.Unregister(BehaviourTreeActionType.Shoot);
         }
 
         public override Faction GetFaction()
@@ -140,7 +153,23 @@ namespace Descent.Gameplay.Enemies.Turret
                     _visibleActors.Count > 0 ? _visibleActors[0].transform : null);
             }
 
+            if (contextType == typeof(AIShootContext))
+            {
+                return new AIShootContext(agent);
+            }
+
             return null;
+        }
+
+        public BehaviourTreeRequestResult HandleRequest(BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
+        {
+            if (actionType == BehaviourTreeActionType.Shoot)
+            {
+                _weaponSystemController.Fire();
+                return BehaviourTreeRequestResult.Success;
+            }
+
+            return BehaviourTreeRequestResult.Failure;
         }
     }
 }
