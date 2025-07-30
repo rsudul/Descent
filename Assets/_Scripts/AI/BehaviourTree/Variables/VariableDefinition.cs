@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Descent.AI.BehaviourTree.Variables
 {
-    [System.Serializable]
+    [Serializable]
     public class VariableDefinition
     {
         [SerializeField]
@@ -52,6 +52,21 @@ namespace Descent.AI.BehaviourTree.Variables
             Name = name;
             VariableType = type;
             _defaultValue = SerializationWrapper.CreateDefault(type);
+        }
+
+        public VariableDefinition(string name, Type enumClrType)
+        {
+            if (!enumClrType.IsEnum)
+            {
+                throw new ArgumentException("enumClrType must be an enum type", nameof(enumClrType));
+            }
+
+            Name = name;
+            VariableType = VariableType.Enum;
+            EnumTypeName = enumClrType.AssemblyQualifiedName;
+
+            var first = Enum.GetValues(enumClrType).GetValue(0);
+            _defaultValue = new SerializationWrapper(first);
         }
     }
 }

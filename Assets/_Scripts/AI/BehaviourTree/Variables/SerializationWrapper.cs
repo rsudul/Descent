@@ -26,7 +26,17 @@ namespace Descent.AI.BehaviourTree.Variables
         {
             Type type = Type.GetType(TypeName);
             Wrapper wrapper = JsonUtility.FromJson<Wrapper>(JsonValue);
-            return Convert.ChangeType(wrapper.Value, type);
+            object rawValue = wrapper.Value;
+            if (rawValue == null)
+            {
+                if (type.IsValueType)
+                {
+                    return Activator.CreateInstance(type);
+                }
+
+                return null;
+            }
+            return Convert.ChangeType(rawValue, type);
         }
 
         public static SerializationWrapper CreateDefault(VariableType type)

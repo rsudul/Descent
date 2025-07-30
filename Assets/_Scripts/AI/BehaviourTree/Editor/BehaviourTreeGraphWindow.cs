@@ -14,6 +14,7 @@ namespace Descent.AI.BehaviourTree.Editor
     {
         private BehaviourTreeGraphView _graphView;
         private BehaviourTreeNodeInspectorOverlay _inspectorOverlay;
+        private BehaviourTreeVariablesOverlay _variablesOverlay;
         private BehaviourTreeAsset _treeAsset;
 
         [MenuItem("Window/Descent/AI/Behaviour Tree Graph Editor")]
@@ -35,6 +36,7 @@ namespace Descent.AI.BehaviourTree.Editor
         {
             ConstructGraphView();
             GenerateToolbar();
+            InitializeVariablesOverlay();
         }
 
         private void OnDisable()
@@ -81,6 +83,8 @@ namespace Descent.AI.BehaviourTree.Editor
             {
                 _treeAsset = evt.newValue as BehaviourTreeAsset;
                 _graphView.PopulateView(_treeAsset);
+                _variablesOverlay.SetTreeAsset(_treeAsset);
+                _variablesOverlay.Refresh();
             });
             toolbar.Add(objectField);
 
@@ -93,6 +97,9 @@ namespace Descent.AI.BehaviourTree.Editor
             Button resetButton = new Button(ResetTree) { text = "Reset BT (runtime)" };
             resetButton.style.marginBottom = 6;
             toolbar.Add(resetButton);
+
+            Button variablesButton = new Button(ToggleVariablesOverlay) { text = "Variables" };
+            toolbar.Add(variablesButton);
         }
 
         private void OnNodeDeleted(object sender, BehaviourTreeNodeView nodeView)
@@ -200,6 +207,22 @@ namespace Descent.AI.BehaviourTree.Editor
             }
 
             _inspectorOverlay.UpdateSelection(this, node);
+        }
+
+        private void InitializeVariablesOverlay()
+        {
+            _variablesOverlay = new BehaviourTreeVariablesOverlay(_treeAsset);
+            _variablesOverlay.visible = false;
+            rootVisualElement.Add(_variablesOverlay);
+            _variablesOverlay.Refresh();
+        }
+
+        private void ToggleVariablesOverlay()
+        {
+            if (_variablesOverlay != null)
+            {
+                _variablesOverlay.visible = !_variablesOverlay.visible;
+            }
         }
     }
 }
