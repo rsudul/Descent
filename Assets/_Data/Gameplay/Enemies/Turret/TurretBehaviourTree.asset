@@ -36,6 +36,7 @@ MonoBehaviour:
   _children:
   - {fileID: 7582494994584045981}
   - {fileID: 6631793232640893069}
+  _failurePolicy: 0
 --- !u!114 &-7063359881731343838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parent: {fileID: 0}
-  _position: {x: 0, y: 0}
+  _position: {x: -18, y: -40}
   _name: Root
   _children:
   - {fileID: 8342962828686224497}
@@ -69,6 +70,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _name: Post Hit
   _children: []
+  _failurePolicy: 0
 --- !u!114 &-5361619980384404790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +215,7 @@ MonoBehaviour:
   - {fileID: 1915102524416195408}
   - {fileID: -2490160924800350280}
   - {fileID: 5947579722880774458}
+  _failurePolicy: 0
 --- !u!114 &-2711829181049612758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +345,35 @@ MonoBehaviour:
   m_Name: TurretBehaviourTree
   m_EditorClassIdentifier: 
   Root: {fileID: -7063359881731343838}
+  _variableContainer:
+    _variables:
+    - _guid: 9ab3b90e-45b2-4ef9-b616-bd517df54bcf
+      _name: Variable
+      VariableType: 2
+      EnumTypeName: 
+      _defaultValue:
+        TypeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        JsonValue: '{}'
+      Description: 
+--- !u!114 &343015445985741481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815da87090f29eb4088ddafc188f55b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 680, y: 193}
+  _name: Get Variable
+  _variableGuid: 
+  _cachedValue:
+    TypeName: 
+    JsonValue: 
 --- !u!114 &890580043895424185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +415,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _name: Fire
   _children: []
+  _failurePolicy: 0
 --- !u!114 &1915102524416195408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,6 +453,7 @@ MonoBehaviour:
   - {fileID: -7824482336173612408}
   - {fileID: -1832620878656128204}
   - {fileID: 5012180379654216271}
+  _failurePolicy: 0
 --- !u!114 &4146126406670220180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,6 +571,7 @@ MonoBehaviour:
   - {fileID: 7331587338784127353}
   - {fileID: 2283103977757618142}
   - {fileID: -5361619980384404790}
+  _failurePolicy: 0
 --- !u!114 &6631793232640893069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,6 +645,25 @@ MonoBehaviour:
     - rid: 1033677870446673928
       type: {class: ShootAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
       data: 
+--- !u!114 &7386096278143450852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815da87090f29eb4088ddafc188f55b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 1027, y: 247}
+  _name: Node
+  _variableGuid: 9ab3b90e-45b2-4ef9-b616-bd517df54bcf
+  _cachedValue:
+    TypeName: 
+    JsonValue: 
 --- !u!114 &7582494994584045981
 MonoBehaviour:
   m_ObjectHideFlags: 0

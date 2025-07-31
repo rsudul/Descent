@@ -37,6 +37,7 @@ namespace Descent.AI.BehaviourTree.Editor
             ConstructGraphView();
             GenerateToolbar();
             InitializeVariablesOverlay();
+            InitializeDragAndDrop();
         }
 
         private void OnDisable()
@@ -223,6 +224,51 @@ namespace Descent.AI.BehaviourTree.Editor
             {
                 _variablesOverlay.visible = !_variablesOverlay.visible;
             }
+        }
+
+        private void InitializeDragAndDrop()
+        {
+            rootVisualElement.RegisterCallback<DragUpdatedEvent>(evt =>
+            {
+                if (DragAndDrop.GetGenericData("VariableGUID") is string)
+                {
+                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                    evt.StopPropagation();
+                }
+            });
+
+            rootVisualElement.RegisterCallback<DragPerformEvent>(evt =>
+            {
+                if (DragAndDrop.GetGenericData("VariableGUID") is not string guid)
+                {
+                    return;
+                }
+
+                DragAndDrop.AcceptDrag();
+                evt.StopPropagation();
+
+                Vector2 globalMousePos = evt.mousePosition;
+                Vector2 localPos = _graphView.contentViewContainer.WorldToLocal(globalMousePos);
+
+                ShowVariableDropDownMenu(guid, localPos);
+            });
+        }
+
+        private void ShowVariableDropDownMenu(string variableGuid, Vector2 position)
+        {
+            GenericMenu menu = new GenericMenu();
+
+            menu.AddItem(new GUIContent("Get Variable"), false, () =>
+            {
+                _graphView.CreateVariableNode(true, variableGuid, position);
+            });
+
+            menu.AddItem(new GUIContent("Set Variable"), false, () =>
+            {
+                _graphView.CreateVariableNode(false, variableGuid, position);
+            });
+
+            menu.DropDown(new Rect(position, Vector2.zero));
         }
     }
 }

@@ -390,5 +390,27 @@ namespace Descent.AI.BehaviourTree.Editor
                 nodeView.SetStatus(node.Status);
             }
         }
+
+        public void CreateVariableNode(bool isGet, string variableGuid, Vector2 position)
+        {
+            if (isGet)
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeGetVariableNode>();
+
+                node.VariableGUID = variableGuid;
+                node.Position = position;
+
+                AddNodeToGraph(node, node.Position);
+            }
+            else
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeSetVariableNode>();
+
+                node.VariableGUID = variableGuid;
+                node.Position = position;
+
+                AddNodeToGraph(node, node.Position);
+            }
+        }
     }
 }

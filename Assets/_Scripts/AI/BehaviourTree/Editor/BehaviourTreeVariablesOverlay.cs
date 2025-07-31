@@ -89,20 +89,29 @@ namespace Descent.AI.BehaviourTree.Editor
                     }
                 };
 
-                TextField nameField = new TextField
+                Label dragLabel = new Label(def.Name)
                 {
-                    value = def.Name,
                     style =
                     {
-                        width = 100
+                        width = 100,
+                        unityTextAlign = TextAnchor.MiddleLeft,
+                        unityFontStyleAndWeight = FontStyle.Bold
                     }
                 };
-                nameField.RegisterValueChangedCallback(evt =>
+                dragLabel.RegisterCallback<MouseDownEvent>(evt =>
                 {
-                    def.Name = evt.newValue;
-                    EditorUtility.SetDirty(_treeAsset);
+                    if (evt.button != 0)
+                    {
+                        return;
+                    }
+
+                    DragAndDrop.PrepareStartDrag();
+                    DragAndDrop.SetGenericData("VariableGUID", def.GUID);
+                    DragAndDrop.objectReferences = new UnityEngine.Object[] { };
+                    DragAndDrop.StartDrag(def.Name);
+                    evt.StopPropagation();
                 });
-                line1.Add(nameField);
+                line1.Add(dragLabel);
 
                 EnumField typeEnum = new EnumField(def.VariableType)
                 {
