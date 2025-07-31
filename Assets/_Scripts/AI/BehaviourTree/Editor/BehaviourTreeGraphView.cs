@@ -7,10 +7,11 @@ using UnityEditor;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using Descent.AI.BehaviourTree.Variables;
 
 namespace Descent.AI.BehaviourTree.Editor
 {
-    public class BehaviourTreeGraphView : GraphView
+    public class BehaviourTreeGraphView : GraphView, IEdgeConnectorListener
     {
         private BehaviourTreeAsset _treeAsset;
 
@@ -31,12 +32,13 @@ namespace Descent.AI.BehaviourTree.Editor
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
+            this.AddManipulator(new EdgeConnector<Edge>(this));
 
             GridBackground grid = new GridBackground();
             Insert(0, grid);
             grid.StretchToParentSize();
 
-            graphViewChanged = OnGraphViewChanged;
+            graphViewChanged += OnGraphViewChanged;
 
             RegisterCallback<KeyDownEvent>(evt =>
             {
@@ -205,6 +207,26 @@ namespace Descent.AI.BehaviourTree.Editor
         {
             if (change.edgesToCreate != null)
             {
+                List<Edge> validEdges = new List<Edge>();
+
+                foreach (Edge edge in change.edgesToCreate)
+                {
+                    ValuePinView outPin = edge.output as ValuePinView;
+                    ValuePinView inPin = edge.input as ValuePinView;
+
+                    if (outPin != null && inPin != null)
+                    {
+                        if (outPin.Definition.Type != inPin.Definition.Type)
+                        {
+                            continue;
+                        }
+                    }
+
+                    validEdges.Add(edge);
+                }
+
+                change.edgesToCreate = validEdges;
+
                 CreateEdges(change);
             }
 
@@ -391,13 +413,16 @@ namespace Descent.AI.BehaviourTree.Editor
             }
         }
 
-        public void CreateVariableNode(bool isGet, string variableGuid, Vector2 position)
+        public void CreateVariableNode(bool isGet, string variableGuid, VariableType variableType, Vector2 position)
         {
             if (isGet)
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeGetVariableNode>();
 
+                VariableDefinition variableDefinition = _treeAsset.VariableContainer.GetByGUID(variableGuid);
+                node.Name = variableDefinition != null ? variableDefinition.Name : "Get Variable";
                 node.VariableGUID = variableGuid;
+                node.VariableType = variableType;
                 node.Position = position;
 
                 AddNodeToGraph(node, node.Position);
@@ -406,11 +431,23 @@ namespace Descent.AI.BehaviourTree.Editor
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeSetVariableNode>();
 
+                VariableDefinition variableDefinition = _treeAsset.VariableContainer.GetByGUID(variableGuid);
+                node.Name = variableDefinition != null ? variableDefinition.Name : "Set Variable";
                 node.VariableGUID = variableGuid;
                 node.Position = position;
 
                 AddNodeToGraph(node, node.Position);
             }
+        }
+
+        public void OnDrop(GraphView graphView, Edge edge)
+        {
+            this.AddElement(edge);
+        }
+
+        public void OnDropOutsidePort(Edge edge, Vector2 position)
+        {
+
         }
     }
 }

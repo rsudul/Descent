@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 using Descent.AI.BehaviourTree.Nodes;
 using Descent.Common.Attributes.AI;
+using Descent.AI.BehaviourTree.Variables;
 
 namespace Descent.AI.BehaviourTree.Editor
 {
@@ -92,11 +93,9 @@ namespace Descent.AI.BehaviourTree.Editor
             rootVisualElement.Add(toolbar);
 
             Button saveButton = new Button(Save) { text = "Save " };
-            saveButton.style.marginBottom = 6;
             toolbar.Add(saveButton);
 
             Button resetButton = new Button(ResetTree) { text = "Reset BT (runtime)" };
-            resetButton.style.marginBottom = 6;
             toolbar.Add(resetButton);
 
             Button variablesButton = new Button(ToggleVariablesOverlay) { text = "Variables" };
@@ -260,12 +259,13 @@ namespace Descent.AI.BehaviourTree.Editor
 
             menu.AddItem(new GUIContent("Get Variable"), false, () =>
             {
-                _graphView.CreateVariableNode(true, variableGuid, position);
+                VariableType variableType = _treeAsset.VariableContainer.GetByGUID(variableGuid).VariableType;
+                _graphView.CreateVariableNode(true, variableGuid, variableType, position);
             });
 
             menu.AddItem(new GUIContent("Set Variable"), false, () =>
             {
-                _graphView.CreateVariableNode(false, variableGuid, position);
+                _graphView.CreateVariableNode(false, variableGuid, VariableType.Int, position);
             });
 
             menu.DropDown(new Rect(position, Vector2.zero));

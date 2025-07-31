@@ -3,6 +3,8 @@ using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Context;
 using Descent.Common.Attributes.AI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
@@ -20,6 +22,14 @@ namespace Descent.AI.BehaviourTree.Nodes
         protected string _name = "Node";
 
         public BehaviourTreeStatus Status { get; protected set; }
+
+        public virtual IEnumerable<ValuePinDefinition> ValuePins
+        {
+            get
+            {
+                yield break;
+            }
+        }
 
         public string Name
         {
