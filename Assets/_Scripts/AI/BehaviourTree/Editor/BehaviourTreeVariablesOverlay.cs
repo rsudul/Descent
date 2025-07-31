@@ -8,6 +8,7 @@ using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Variables;
 using UnityEditor.UIElements;
 using System.Text.RegularExpressions;
+using Descent.AI.BehaviourTree.Nodes;
 
 namespace Descent.AI.BehaviourTree.Editor
 {
@@ -24,6 +25,7 @@ namespace Descent.AI.BehaviourTree.Editor
                 .ToList();
 
         private BehaviourTreeAsset _treeAsset;
+        private BehaviourTreeGraphView _graphView;
         private ScrollView _scrollView;
 
         private Position OverlayPosition = Position.Absolute;
@@ -34,9 +36,10 @@ namespace Descent.AI.BehaviourTree.Editor
         private StyleColor BackgroundColor = new StyleColor(new Color(0.0f, 0.0f, 0.0f, 0.6f));
         private float Padding = 10.0f;
 
-        public BehaviourTreeVariablesOverlay(BehaviourTreeAsset treeAsset)
+        public BehaviourTreeVariablesOverlay(BehaviourTreeAsset treeAsset, BehaviourTreeGraphView graphView)
         {
             _treeAsset = treeAsset;
+            _graphView = graphView;
             _scrollView = new ScrollView();
 
             StyleOverlay();
@@ -303,9 +306,11 @@ namespace Descent.AI.BehaviourTree.Editor
 
             Button removeButton = new Button(() =>
             {
-                container.RemoveVariable(variableDefinition.GUID);
-                EditorUtility.SetDirty(_treeAsset);
-                Refresh();
+                if (TryRemoveVariable(variableDefinition))
+                {
+                    EditorUtility.SetDirty(_treeAsset);
+                    Refresh();
+                }
             })
             {
                 text = "☒",
@@ -519,6 +524,42 @@ namespace Descent.AI.BehaviourTree.Editor
             });
 
             return enumField;
+        }
+
+        private bool TryRemoveVariable(VariableDefinition variableDefinition)
+        {
+            var usages = _graphView.NodeViews
+                .Where(kvp =>
+                {
+                    if (kvp.Key is BehaviourTreeGetVariableNode getNode && getNode.VariableGUID == variableDefinition.GUID)
+                    {
+                        return true;
+                    }
+
+                    if (kvp.Key is BehaviourTreeSetVariableNode setNode && setNode.VariableGUID == variableDefinition.GUID)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }).
+                ToList();
+
+            if (usages.Count > 0)
+            {
+                string msg = $"Variable '{variableDefinition.Name}' is used in {usages.Count} nodes.\n" +
+                    "Removing this variable will leave those nodes without values.\n" +
+                    "Are you sure you want to remove it?";
+
+                if (!EditorUtility.DisplayDialog("Remove variable", msg, "Remove", "Cancel"))
+                {
+                    return false;
+                }
+            }
+
+            _treeAsset.VariableContainer.RemoveVariable(variableDefinition.GUID);
+
+            return true;
         }
     }
 }

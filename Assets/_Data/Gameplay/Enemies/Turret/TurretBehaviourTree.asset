@@ -314,6 +314,25 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions, asm: Assembly-CSharp}
       data:
         _waitTime: 1
+--- !u!114 &-1375480438700842984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815da87090f29eb4088ddafc188f55b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 529, y: -30}
+  _name: Node
+  _variableGuid: 7652c1bb-6e50-44bb-935c-92c8c8b662af
+  _cachedValue:
+    TypeName: 
+    JsonValue: 
 --- !u!114 &-556645557947307028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,15 +365,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Root: {fileID: -7063359881731343838}
   _variableContainer:
-    _variables:
-    - _guid: 9ab3b90e-45b2-4ef9-b616-bd517df54bcf
-      _name: Variable
-      VariableType: 2
-      EnumTypeName: 
-      _defaultValue:
-        TypeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-        JsonValue: '{}'
-      Description: 
+    _variables: []
 --- !u!114 &343015445985741481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,6 +465,25 @@ MonoBehaviour:
   - {fileID: -1832620878656128204}
   - {fileID: 5012180379654216271}
   _failurePolicy: 0
+--- !u!114 &3268589723058935160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815da87090f29eb4088ddafc188f55b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parent: {fileID: 0}
+  _position: {x: 869, y: 56}
+  _name: Get Variable
+  _variableGuid: 557545ee-3b99-4100-ab4a-343be05f081f
+  _cachedValue:
+    TypeName: 
+    JsonValue: 
 --- !u!114 &4146126406670220180
 MonoBehaviour:
   m_ObjectHideFlags: 0

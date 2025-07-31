@@ -212,7 +212,7 @@ namespace Descent.AI.BehaviourTree.Editor
 
         private void InitializeVariablesOverlay()
         {
-            _variablesOverlay = new BehaviourTreeVariablesOverlay(_treeAsset);
+            _variablesOverlay = new BehaviourTreeVariablesOverlay(_treeAsset, _graphView);
             _variablesOverlay.visible = false;
             rootVisualElement.Add(_variablesOverlay);
             _variablesOverlay.Refresh();
