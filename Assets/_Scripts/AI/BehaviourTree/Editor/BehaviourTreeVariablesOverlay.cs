@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Variables;
 using UnityEditor.UIElements;
+using System.Text.RegularExpressions;
 
 namespace Descent.AI.BehaviourTree.Editor
 {
@@ -29,7 +30,7 @@ namespace Descent.AI.BehaviourTree.Editor
             style.position = Position.Absolute;
             style.top = 30;
             style.left = 10;
-            style.width = 300;
+            style.width = 360;
             style.height = new StyleLength(Length.Percent(50));
             style.backgroundColor = new StyleColor(new Color(0.0f, 0.0f, 0.0f, 0.6f));
             style.paddingLeft = 10;
@@ -70,6 +71,21 @@ namespace Descent.AI.BehaviourTree.Editor
                 }
             });
 
+            VisualElement header = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    marginBottom = 4
+                }
+            };
+            header.Add(new Label(" ") { style = { width = 20 } });
+            header.Add(new Label("Name") { style = { width = 100 } });
+            header.Add(new Label("Type") { style = { width = 80 } });
+            header.Add(new Label("Default") { style = { width = 120 } });
+            header.Add(new Label(" ") { style = { width = 20 } });
+            _scrollView.Add(header);
+
             foreach (VariableDefinition def in container.Variables)
             {
                 VisualElement row = new VisualElement
@@ -89,16 +105,16 @@ namespace Descent.AI.BehaviourTree.Editor
                     }
                 };
 
-                Label dragLabel = new Label(def.Name)
+                Label dragHandle = new Label("☰")
                 {
                     style =
                     {
-                        width = 100,
-                        unityTextAlign = TextAnchor.MiddleLeft,
-                        unityFontStyleAndWeight = FontStyle.Bold
+                        width = 16,
+                        unityTextAlign = TextAnchor.MiddleCenter,
+                        marginRight = 4
                     }
                 };
-                dragLabel.RegisterCallback<MouseDownEvent>(evt =>
+                dragHandle.RegisterCallback<MouseDownEvent>(evt =>
                 {
                     if (evt.button != 0)
                     {
@@ -111,7 +127,41 @@ namespace Descent.AI.BehaviourTree.Editor
                     DragAndDrop.StartDrag(def.Name);
                     evt.StopPropagation();
                 });
-                line1.Add(dragLabel);
+                line1.Add(dragHandle);
+
+                TextField nameField = new TextField
+                {
+                    value = def.Name,
+                    style =
+                    {
+                        width = 100
+                    }
+                };
+                nameField.RegisterValueChangedCallback(evt =>
+                {
+                    string newName = evt.newValue;
+                    if (!Regex.IsMatch(newName, @"^[A-Za-z_][A-Za-z0-9_]*$"))
+                    {
+                        EditorUtility.DisplayDialog("Invalid variable name",
+                            "Name must start with a letter or underscore and contain only letters, numbers or _", "OK");
+                        nameField.SetValueWithoutNotify(def.Name);
+                        return;
+                    }
+                    
+                    bool duplicate = _treeAsset.VariableContainer.Variables
+                    .Any(v => v != def && v.Name == newName);
+                    if (duplicate)
+                    {
+                        EditorUtility.DisplayDialog("Name duplicate",
+                            $"Variable with name '{newName}' already exists.", "OK");
+                        nameField.SetValueWithoutNotify(def.Name);
+                        return;
+                    }
+
+                    def.Name = evt.newValue;
+                    EditorUtility.SetDirty(_treeAsset);
+                });
+                line1.Add(nameField);
 
                 EnumField typeEnum = new EnumField(def.VariableType)
                 {
@@ -208,7 +258,13 @@ namespace Descent.AI.BehaviourTree.Editor
                             List<string> displayNames = allEnums.Select(t => t.Name).ToList();
                             int currentIndex = Mathf.Max(0, typeNames.IndexOf(def.EnumTypeName));
 
-                            PopupField<string> popup = new PopupField<string>("Enum Type", displayNames, currentIndex);
+                            PopupField<string> popup = new PopupField<string>("Enum Type", displayNames, currentIndex)
+                            {
+                                style =
+                                {
+                                    width = 150
+                                }
+                            };
                             popup.RegisterValueChangedCallback(evt =>
                             {
                                 Type selectedClr = allEnums[popup.index];
@@ -247,7 +303,14 @@ namespace Descent.AI.BehaviourTree.Editor
                     container.RemoveVariable(def.GUID);
                     EditorUtility.SetDirty(_treeAsset);
                     Refresh();
-                });
+                })
+                {
+                    text = "☒",
+                    style =
+                    {
+                        width = 20
+                    }
+                };
                 line1.Add(removeButton);
 
                 row.Add(line1);
@@ -261,7 +324,7 @@ namespace Descent.AI.BehaviourTree.Editor
                     }
                 };
 
-                if (def.VariableType == VariableType.Int ||  def.VariableType == VariableType.Float)
+                /*if (def.VariableType == VariableType.Int ||  def.VariableType == VariableType.Float)
                 {
                     FloatField minField = new FloatField("Min")
                     {
@@ -286,7 +349,7 @@ namespace Descent.AI.BehaviourTree.Editor
                         EditorUtility.SetDirty(_treeAsset);
                     });
                     line2.Add(maxField);
-                }
+                }*/
 
                 TextField descField = new TextField("Description")
                 {
@@ -331,17 +394,20 @@ namespace Descent.AI.BehaviourTree.Editor
 
         public void SetTreeAsset(BehaviourTreeAsset treeAsset)
         {
-            if (treeAsset == null || _treeAsset == treeAsset)
+            if (_treeAsset == treeAsset)
             {
                 return;
             }
 
             _treeAsset = treeAsset;
+
+            Refresh();
         }
 
         private List<Type> GetAllEnumTypes()
         {
             return AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.FullName.StartsWith("Descent"))
                 .SelectMany(a =>
                 {
                     try { return a.GetTypes(); }
