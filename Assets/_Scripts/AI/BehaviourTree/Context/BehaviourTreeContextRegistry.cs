@@ -1,3 +1,4 @@
+using Descent.AI.BehaviourTree.Variables;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,14 @@ namespace Descent.AI.BehaviourTree.Context
         public int Count => _contexts.Count;
 
         public Blackboard Blackboard { get; } = new Blackboard();
+
+        public BehaviourTreeContextRegistry(VariableContainer container)
+        {
+            foreach (VariableDefinition def in container.Variables)
+            {
+                Blackboard.Set(def.GUID, def.DefaultValue);
+            }
+        }
 
         public void RegisterContext(Type contextType, BehaviourTreeContext context)
         {
