@@ -38,7 +38,7 @@ namespace Descent.AI.BehaviourTree.Core
         private void Start()
         {
             _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
-            _contextRegistry = new BehaviourTreeContextRegistry();
+            _contextRegistry = new BehaviourTreeContextRegistry(_treeAsset.VariableContainer);
 
             InitializeProviders();
             RefreshContexts();
@@ -111,7 +111,7 @@ namespace Descent.AI.BehaviourTree.Core
 
         private void BuildContextRegistry()
         {
-            _contextRegistry = new BehaviourTreeContextRegistry();
+            _contextRegistry = new BehaviourTreeContextRegistry(_treeAsset.VariableContainer);
 
             foreach (Component component in GetComponents<MonoBehaviour>())
             {
