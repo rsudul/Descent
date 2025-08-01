@@ -353,6 +353,48 @@ namespace Descent.AI.BehaviourTree.Editor
             { text = "+ Add variable" };
             _scrollView.Add(addButton);
 
+            VisualElement ioRow = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    marginTop = 8
+                }
+            };
+
+            Button exportButton = new Button(() =>
+            {
+                string path = EditorUtility.SaveFilePanel("Export Variables to JSON",
+                    Application.dataPath,
+                    _treeAsset.name + "_Variables.json",
+                    "json");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    VariableContainerIO.ExportToJson(_treeAsset.VariableContainer, path);
+                    AssetDatabase.Refresh();
+                }
+            })
+            { text = "Export JSON" };
+
+            Button importButton = new Button(() =>
+            {
+                string path = EditorUtility.OpenFilePanel("Import Variables from JSON",
+                    Application.dataPath,
+                    "json");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    VariableContainerIO.ImportFromJson(_treeAsset.VariableContainer, path);
+                    EditorUtility.SetDirty(_treeAsset);
+                    Refresh();
+                }
+            })
+            { text = "Import JSON" };
+
+            ioRow.Add(exportButton);
+            ioRow.Add(importButton);
+
+            _scrollView.Add(ioRow);
+
             return addButton;
         }
 
