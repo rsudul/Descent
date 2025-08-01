@@ -27,5 +27,13 @@ namespace Descent.AI.BehaviourTree.Core
                 _variableContainer = new VariableContainer();
             }
         }
+
+        private void OnValidate()
+        {
+            if (_variableContainer == null)
+            {
+                _variableContainer = new VariableContainer();
+            }
+        }
     }
 }

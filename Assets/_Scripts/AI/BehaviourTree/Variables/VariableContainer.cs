@@ -32,6 +32,11 @@ namespace Descent.AI.BehaviourTree.Variables
             UpdateLookup();
         }
 
+        public void ClearVariables()
+        {
+            _variables.Clear();
+        }
+
         private void UpdateLookup()
         {
             _lookup = _variables.ToDictionary(v => v.GUID, v => v);
