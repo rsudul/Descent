@@ -1,16 +1,22 @@
+using System;
+using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Context;
 using Descent.Common.Attributes.AI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Descent.Common.PersistentGUID;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
     [Serializable]
     public abstract class BehaviourTreeNode : ScriptableObject
     {
+        [SerializeField]
+        protected string _guid;
+
         [SerializeField]
         protected BehaviourTreeNode _parent = null;
         [SerializeField]
@@ -22,6 +28,7 @@ namespace Descent.AI.BehaviourTree.Nodes
         protected string _name = "Node";
 
         public BehaviourTreeStatus Status { get; protected set; }
+        public string GUID => _guid;
 
         public virtual IEnumerable<ValuePinDefinition> ValuePins
         {
@@ -68,6 +75,17 @@ namespace Descent.AI.BehaviourTree.Nodes
         }
 
         public event EventHandler<string> OnPropertyChanged;
+
+        protected virtual void OnValidate()
+        {
+#if UNITY_EDITOR
+            if (string.IsNullOrEmpty(_guid))
+            {
+                _guid = UniqueIDGenerator.GenerateUniqueID();
+                EditorUtility.SetDirty(this);
+            }
+#endif
+        }
 
         public abstract BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry);
 

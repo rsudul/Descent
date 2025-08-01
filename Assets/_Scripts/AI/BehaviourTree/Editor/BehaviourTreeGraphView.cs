@@ -101,6 +101,7 @@ namespace Descent.AI.BehaviourTree.Editor
         private void CreateNodeRecursive(BehaviourTreeNode node, BehaviourTreeNodeView parentView)
         {
             BehaviourTreeNodeView nodeView = new BehaviourTreeNodeView(node);
+            nodeView.userData = node.GUID;
             AddElement(nodeView);
             
             _nodeViews[node] = nodeView;
@@ -155,6 +156,7 @@ namespace Descent.AI.BehaviourTree.Editor
         private BehaviourTreeNodeView CreateNodeView(BehaviourTreeNode node, Vector2 position)
         {
             BehaviourTreeNodeView nodeView = new BehaviourTreeNodeView(node);
+            nodeView.userData = node.GUID;
             AddElement(nodeView);
             nodeView.SetPosition(new Rect(position, new Vector2(200.0f, 150.0f)));
             _nodeViews[node] = nodeView;
@@ -273,6 +275,19 @@ namespace Descent.AI.BehaviourTree.Editor
 
         private void RemoveEdge(Edge edge)
         {
+            if (edge.output is Port outPort && edge.input is Port inPort)
+            {
+                ValueConnection valueConnection = new ValueConnection
+                {
+                    SourceNodeGUID = (string)outPort.node.userData,
+                    SourcePinName = outPort.portName,
+                    TargetNodeGUID = (string)inPort.node.userData,
+                    TargetPinName = inPort.portName
+                };
+                _treeAsset.RemoveValueConnection(valueConnection);
+                EditorUtility.SetDirty(_treeAsset);
+            }
+
             BehaviourTreeNodeView parentView = edge.output.node as BehaviourTreeNodeView;
             BehaviourTreeNodeView childView = edge.input.node as BehaviourTreeNodeView;
 
@@ -443,6 +458,19 @@ namespace Descent.AI.BehaviourTree.Editor
         public void OnDrop(GraphView graphView, Edge edge)
         {
             this.AddElement(edge);
+
+            if (edge.output is Port outPort && edge.input is Port inPort)
+            {
+                ValueConnection valueConnection = new ValueConnection
+                {
+                    SourceNodeGUID = (string)outPort.node.userData,
+                    SourcePinName = outPort.portName,
+                    TargetNodeGUID = (string)inPort.node.userData,
+                    TargetPinName = inPort.portName
+                };
+                _treeAsset.AddValueConnection(valueConnection);
+                EditorUtility.SetDirty(_treeAsset);
+            }
         }
 
         public void OnDropOutsidePort(Edge edge, Vector2 position)
