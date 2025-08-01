@@ -92,5 +92,21 @@ namespace Descent.AI.BehaviourTree.Nodes
         public abstract void ResetNode();
 
         public abstract BehaviourTreeNode CloneNode();
+
+        protected T GetInputValue<T>(string pinName, BehaviourTreeContextRegistry contextRegistry)
+        {
+            if (contextRegistry.TryGetValueConnection(GUID, pinName, out ValueConnection valueConnection))
+            {
+                BehaviourTreeGetVariableNode source = contextRegistry.GetNodeInstance(valueConnection.SourceNodeGUID)
+                    as BehaviourTreeGetVariableNode;
+                if (source != null)
+                {
+                    source.Tick(contextRegistry);
+                    return (T)source.CachedValue.GetValue();
+                }
+            }
+
+            return contextRegistry.Blackboard.Get<T>(pinName);
+        }
     }
 }

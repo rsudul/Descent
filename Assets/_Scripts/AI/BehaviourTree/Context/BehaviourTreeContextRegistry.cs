@@ -1,4 +1,5 @@
 using Descent.AI.BehaviourTree.Core;
+using Descent.AI.BehaviourTree.Nodes;
 using Descent.AI.BehaviourTree.Variables;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Descent.AI.BehaviourTree.Context
         private readonly Dictionary<Type, BehaviourTreeContext> _contexts = new Dictionary<Type, BehaviourTreeContext>();
 
         private Dictionary<(string nodeGuid, string pinName), ValueConnection> _valueLookup;
+
+        private Dictionary<string, BehaviourTreeNode> _nodeInstances = new Dictionary<string, BehaviourTreeNode>();
 
         public int Count => _contexts.Count;
 
@@ -53,5 +56,12 @@ namespace Descent.AI.BehaviourTree.Context
 
             return false;
         }
+
+        public void RegisterNodeInstance(string guid, BehaviourTreeNode node)
+        {
+            _nodeInstances[guid] = node;
+        }
+
+        public BehaviourTreeNode GetNodeInstance(string guid) => _nodeInstances.TryGetValue(guid, out var n) ? n : null;
     }
 }

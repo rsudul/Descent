@@ -40,6 +40,7 @@ namespace Descent.AI.BehaviourTree.Core
             _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
             _contextRegistry = new BehaviourTreeContextRegistry(_treeAsset.VariableContainer, _treeAsset.ValueConnections);
 
+            RegisterNodesInContext();
             InitializeProviders();
             RefreshContexts();
 
@@ -252,6 +253,15 @@ namespace Descent.AI.BehaviourTree.Core
             }
 
             Debug.Log($"[BT][{gameObject.name}] Tick: Root node status = {status}");
+        }
+
+        private void RegisterNodesInContext()
+        {
+            foreach (BehaviourTreeNode assetNode in _treeAsset.AllNodes)
+            {
+                var instance = assetNode.CloneNode();
+                _contextRegistry.RegisterNodeInstance(assetNode.GUID, instance);
+            }
         }
     }
 }

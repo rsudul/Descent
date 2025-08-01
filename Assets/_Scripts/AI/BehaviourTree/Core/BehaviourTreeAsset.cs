@@ -2,6 +2,7 @@ using UnityEngine;
 using Descent.AI.BehaviourTree.Nodes;
 using Descent.AI.BehaviourTree.Variables;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace Descent.AI.BehaviourTree.Core
 {
@@ -17,9 +18,14 @@ namespace Descent.AI.BehaviourTree.Core
         [SerializeField]
         private List<ValueConnection> _valueConnections = new List<ValueConnection>();
 
+        [SerializeField]
+        private List<BehaviourTreeNode> _allNodes = new List<BehaviourTreeNode>();
+
         public VariableContainer VariableContainer => _variableContainer;
 
         public IReadOnlyList<ValueConnection> ValueConnections => _valueConnections;
+
+        public IReadOnlyList<BehaviourTreeNode> AllNodes => _allNodes;
 
         public BehaviourTreeNode CloneTree()
         {
@@ -32,6 +38,10 @@ namespace Descent.AI.BehaviourTree.Core
             {
                 _variableContainer = new VariableContainer();
             }
+
+#if UNITY_EDITOR
+            SyncAllNodes();
+#endif
         }
 
         private void OnValidate()
@@ -40,6 +50,10 @@ namespace Descent.AI.BehaviourTree.Core
             {
                 _variableContainer = new VariableContainer();
             }
+
+#if UNITY_EDITOR
+            SyncAllNodes();
+#endif
         }
 
         public void AddValueConnection(ValueConnection valueConnection)
@@ -54,6 +68,40 @@ namespace Descent.AI.BehaviourTree.Core
             c.SourcePinName == valueConnection.SourcePinName &&
             c.TargetNodeGUID == valueConnection.TargetNodeGUID &&
             c.TargetPinName == valueConnection.TargetPinName);
+        }
+
+        private void SyncAllNodes()
+        {
+#if UNITY_EDITOR
+            _allNodes.Clear();
+            if (Root != null)
+            {
+                CollectRecursive(Root);
+            }
+            EditorUtility.SetDirty(this);
+#endif
+        }
+
+        private void CollectRecursive(BehaviourTreeNode node)
+        {
+#if UNITY_EDITOR
+            _allNodes.Add(node);
+
+            if (node is BehaviourTreeCompositeNode compositeNode)
+            {
+                foreach (BehaviourTreeNode child in compositeNode.Children)
+                {
+                    CollectRecursive(child);
+                }
+            }
+            else if (node is BehaviourTreeRepeatUntilFailureNode repeatUntilFailureNode)
+            {
+                if (repeatUntilFailureNode.Child != null)
+                {
+                    CollectRecursive(repeatUntilFailureNode.Child);
+                }
+            }
+#endif
         }
     }
 }
