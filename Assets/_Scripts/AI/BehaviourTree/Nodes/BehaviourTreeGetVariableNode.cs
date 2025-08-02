@@ -23,6 +23,8 @@ namespace Descent.AI.BehaviourTree.Nodes
         [ShowInNodeInspector("Value")]
         private SerializationWrapper _cachedValue;
 
+        public SerializationWrapper CachedValue => _cachedValue;
+
         public string VariableGUID
         {
             get => _variableGuid;
