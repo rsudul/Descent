@@ -6,13 +6,23 @@ using UnityEngine;
 namespace Descent.AI.BehaviourTree.Variables
 {
     [Serializable]
-    public class VariableContainer
+    public class VariableContainer : ISerializationCallbackReceiver
     {
         [SerializeField]
         private List<VariableDefinition> _variables = new List<VariableDefinition>();
         private Dictionary<string, VariableDefinition> _lookup;
 
-        public IReadOnlyList<VariableDefinition> Variables => _variables;
+        public IReadOnlyList<VariableDefinition> Variables
+        {
+            get
+            {
+                if (_lookup == null)
+                {
+                    UpdateLookup();
+                }
+                return _variables;
+            }
+        }
 
         public void AddVariable(VariableDefinition def)
         {
@@ -63,6 +73,16 @@ namespace Descent.AI.BehaviourTree.Variables
             }
 
             return def;
+        }
+
+        public void OnBeforeSerialize()
+        {
+
+        }
+
+        public void OnAfterDeserialize()
+        {
+            UpdateLookup();
         }
     }
 }

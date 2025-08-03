@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 
+  _guid: 305048f7-4561-4ca5-a757-33921a10fec2
   _parent: {fileID: 6565411628567471653}
   _position: {x: -192, y: 570}
   _name: Is Aim Aligned
@@ -373,8 +373,14 @@ MonoBehaviour:
   _variableGuid: 7652c1bb-6e50-44bb-935c-92c8c8b662af
   _variableType: 0
   _cachedValue:
-    TypeName: 
-    JsonValue: 
+    _intValue: 0
+    _floatValue: 0
+    _boolValue: 0
+    _stringValue: 
+    _vector3Value: {x: 0, y: 0, z: 0}
+    _vector2Value: {x: 0, y: 0}
+    _colorValue: {r: 0, g: 0, b: 0, a: 0}
+    _type: 0
 --- !u!114 &-556645557947307028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +414,176 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Root: {fileID: -7063359881731343838}
   _variableContainer:
-    _variables: []
+    _variables:
+    - _guid: 2a95c910-41ce-4e09-8dee-3b7b20b78dec
+      _name: AlertLevel
+      VariableType: 0
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 0
+      Description: Current alert state. 0 = Idle, 1 = Suspicious, 2 = Alert, 3 =
+        Combat, 4 = Search, 5 = Cooldown
+    - _guid: e285348d-ba3c-49df-a281-61bbba490e10
+      _name: AlertTimer
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 0
+      Description: Timer for state transitions
+    - _guid: eccf31cd-e824-4b26-919f-a711a1f12f10
+      _name: LastKnownTargetPosition
+      VariableType: 5
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 0
+      Description: Where we last saw the target
+    - _guid: ecf7bd1a-f451-4b14-95e3-b6cf3931a53f
+      _name: SuspicionLevel
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 0
+      Description: Gradual buildup before becoming alert (from 0.0 to 1.0)
+    - _guid: 23260a43-fbf0-42fb-946d-01d1efc05485
+      _name: CombatTimer
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 0
+      Description: How long we've been in combat
+    - _guid: d59e74be-b849-4542-8b43-1b96965b52a3
+      _name: HasActiveTarget
+      VariableType: 2
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 0
+      Description: Do we currently see a target
+    - _guid: 2596af93-9f06-4db3-813d-196ada3ff201
+      _name: SearchTimeRemaining
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 0
+      Description: How long to keep searching
+    - _guid: 4f0f7e5c-1549-46ec-a1d7-dbcd8fbc1347
+      _name: SuspicionThreshold
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 1
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 1
+      Description: When to become alert
+    - _guid: 9f5254ad-ebfa-4aae-a8af-15d395cdba40
+      _name: SuspicionDecayRate
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 0.5
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 1
+      Description: How fast suspicion fades
+    - _guid: eecbafb7-8fd1-474a-bb81-9fda116b8847
+      _name: SearchDuration
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 5
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 1
+      Description: How long to search after losing target
+    - _guid: 41ef3415-06d8-4a76-8803-4332288d34ca
+      _name: CooldownDuration
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 3
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 1
+      Description: Post-combat cooldown time
+    - _guid: 88356413-f859-40da-98d4-7d1006c46eb1
+      _name: CombatTimeForCooldown
+      VariableType: 1
+      EnumTypeName: 
+      _defaultValue:
+        _intValue: 0
+        _floatValue: 10
+        _boolValue: 0
+        _stringValue: 
+        _vector3Value: {x: 0, y: 0, z: 0}
+        _vector2Value: {x: 0, y: 0}
+        _colorValue: {r: 0, g: 0, b: 0, a: 0}
+        _type: 1
+      Description: Combat time needed to trigger cooldown
   _valueConnections: []
   _allNodes:
   - {fileID: -7063359881731343838}
@@ -421,6 +596,7 @@ MonoBehaviour:
   - {fileID: 4146126406670220180}
   - {fileID: -2711829181049612758}
   - {fileID: 6565411628567471653}
+  - {fileID: -4713862729676154752}
   - {fileID: 7331587338784127353}
   - {fileID: 2283103977757618142}
   - {fileID: -7824482336173612408}
@@ -451,8 +627,14 @@ MonoBehaviour:
   _variableGuid: 
   _variableType: 0
   _cachedValue:
-    TypeName: 
-    JsonValue: 
+    _intValue: 0
+    _floatValue: 0
+    _boolValue: 0
+    _stringValue: 
+    _vector3Value: {x: 0, y: 0, z: 0}
+    _vector2Value: {x: 0, y: 0}
+    _colorValue: {r: 0, g: 0, b: 0, a: 0}
+    _type: 0
 --- !u!114 &890580043895424185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,8 +738,14 @@ MonoBehaviour:
   _variableGuid: 557545ee-3b99-4100-ab4a-343be05f081f
   _variableType: 0
   _cachedValue:
-    TypeName: 
-    JsonValue: 
+    _intValue: 0
+    _floatValue: 0
+    _boolValue: 0
+    _stringValue: 
+    _vector3Value: {x: 0, y: 0, z: 0}
+    _vector2Value: {x: 0, y: 0}
+    _colorValue: {r: 0, g: 0, b: 0, a: 0}
+    _type: 0
 --- !u!114 &4146126406670220180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,8 +965,14 @@ MonoBehaviour:
   _variableGuid: 9ab3b90e-45b2-4ef9-b616-bd517df54bcf
   _variableType: 0
   _cachedValue:
-    TypeName: 
-    JsonValue: 
+    _intValue: 0
+    _floatValue: 0
+    _boolValue: 0
+    _stringValue: 
+    _vector3Value: {x: 0, y: 0, z: 0}
+    _vector2Value: {x: 0, y: 0}
+    _colorValue: {r: 0, g: 0, b: 0, a: 0}
+    _type: 0
 --- !u!114 &7582494994584045981
 MonoBehaviour:
   m_ObjectHideFlags: 0
