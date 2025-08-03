@@ -193,6 +193,27 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Name = "Is Aim Aligned";
                 node.Condition = new IsAimAlignedCondition();
                 return node;
+            }),
+            new NodeCreationMenuItem("Condition/Alert Level", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
+                node.Name = "Alert Level";
+                node.Condition = new AlertLevelCondition();
+                return node;
+            }),
+            new NodeCreationMenuItem("Condition/Suspicion Level", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
+                node.Name = "Suspicion Level";
+                node.Condition = new SuspicionLevelCondition();
+                return node;
+            }),
+            new NodeCreationMenuItem("Condition/Timer Check", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
+                node.Name = "Timer Check";
+                node.Condition = new TimerCondition();
+                return node;
             })
         };
     }
