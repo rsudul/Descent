@@ -51,7 +51,7 @@ namespace Descent.AI.BehaviourTree.Variables
         {
             Name = name;
             VariableType = type;
-            _defaultValue = SerializationWrapper.CreateDefault(type);
+            _defaultValue = new SerializationWrapper(GetDefaultValueForType(type));
         }
 
         public VariableDefinition(string name, Type enumClrType)
@@ -67,6 +67,22 @@ namespace Descent.AI.BehaviourTree.Variables
 
             var first = Enum.GetValues(enumClrType).GetValue(0);
             _defaultValue = new SerializationWrapper(first);
+        }
+
+        private static object GetDefaultValueForType(VariableType type)
+        {
+            return type switch
+            {
+                VariableType.Int => 0,
+                VariableType.Float => 0.0f,
+                VariableType.Bool => false,
+                VariableType.String => string.Empty,
+                VariableType.Vector2 => Vector2.zero,
+                VariableType.Vector3 => Vector3.zero,
+                VariableType.Quaternion => Quaternion.identity,
+                VariableType.Color => Color.white,
+                _ => null
+            };
         }
     }
 }
