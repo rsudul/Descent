@@ -186,6 +186,13 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Name = "Is Hostile Target Visible";
                 node.Condition = new IsHostileTargetVisibleCondition();
                 return node;
+            }),
+            new NodeCreationMenuItem("Condition/Is Aim Aligned", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
+                node.Name = "Is Aim Aligned";
+                node.Condition = new IsAimAlignedCondition();
+                return node;
             })
         };
     }
