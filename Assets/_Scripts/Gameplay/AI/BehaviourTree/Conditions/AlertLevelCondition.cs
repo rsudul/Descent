@@ -1,49 +1,53 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Conditions;
 using Descent.AI.BehaviourTree.Core;
+using Descent.AI.BehaviourTree.Variables;
 using Descent.Common.Attributes.AI;
+using Descent.Constants;
+using Descent.Gameplay.Systems.Alert;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
     [System.Serializable]
-    public class AlertLevelCondition : IBehaviourTreeCondition
+    public class AlertLevelCondition : BehaviourTreeConditionWithPins
     {
-        [ShowInNodeInspector("Alert level")]
+        [ShowInNodeInspector("Alert level to check")]
         [SerializeField]
-        private int _requiredAlertLevel = 0;
+        private AlertLevel _targetAlertLevel = AlertLevel.Idle;
 
         [ShowInNodeInspector("Comparison")]
         [SerializeField]
         private BehaviourTreeCompareOperation _compareOperation = BehaviourTreeCompareOperation.Equal;
 
-        public bool Check(BehaviourTreeContextRegistry contextRegistry)
+        public override bool Check(BehaviourTreeContextRegistry contextRegistry)
         {
-            int currentLevel = contextRegistry.Blackboard.Get<int>("AlertLevel", 0);
+            AlertLevel currentLevel = GetPinValue<AlertLevel>(PinNames.CURRENT_ALERT_LEVEL, contextRegistry);
 
             return _compareOperation switch
             {
-                BehaviourTreeCompareOperation.Equal => currentLevel == _requiredAlertLevel,
-                BehaviourTreeCompareOperation.NotEqual => currentLevel != _requiredAlertLevel,
-                BehaviourTreeCompareOperation.Less => currentLevel < _requiredAlertLevel,
-                BehaviourTreeCompareOperation.LessOrEqual => currentLevel <= _requiredAlertLevel,
-                BehaviourTreeCompareOperation.Greater => currentLevel > _requiredAlertLevel,
-                BehaviourTreeCompareOperation.GreaterOrEqual => currentLevel >= _requiredAlertLevel,
+                BehaviourTreeCompareOperation.Equal => currentLevel == _targetAlertLevel,
+                BehaviourTreeCompareOperation.NotEqual => currentLevel != _targetAlertLevel,
+                BehaviourTreeCompareOperation.Less => (int)currentLevel < (int)_targetAlertLevel,
+                BehaviourTreeCompareOperation.LessOrEqual => (int)currentLevel <= (int)_targetAlertLevel,
+                BehaviourTreeCompareOperation.Greater => (int)currentLevel > (int)_targetAlertLevel,
+                BehaviourTreeCompareOperation.GreaterOrEqual => (int)currentLevel >= (int)_targetAlertLevel,
                 _ => false
             };
         }
 
-        public void ResetCondition()
-        {
-
-        }
-
-        public IBehaviourTreeCondition Clone()
+        public override IBehaviourTreeCondition Clone()
         {
             AlertLevelCondition clone = new AlertLevelCondition();
-            clone._requiredAlertLevel = _requiredAlertLevel;
+            clone._targetAlertLevel = _targetAlertLevel;
             clone._compareOperation = _compareOperation;
             return clone;
+        }
+
+        public override IEnumerable<ValuePinDefinition> GetRequiredPins()
+        {
+            yield return InputPin(PinNames.CURRENT_ALERT_LEVEL, VariableType.Enum);
         }
     }
 }

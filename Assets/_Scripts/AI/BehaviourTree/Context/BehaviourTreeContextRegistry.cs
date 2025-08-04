@@ -63,5 +63,36 @@ namespace Descent.AI.BehaviourTree.Context
         }
 
         public BehaviourTreeNode GetNodeInstance(string guid) => _nodeInstances.TryGetValue(guid, out var n) ? n : null;
+
+        public T GetPinValue<T>(string nodeGuid, string pinName)
+        {
+            if (TryGetValueConnection(nodeGuid, pinName, out ValueConnection valueConnection))
+            {
+                BehaviourTreeGetVariableNode source = GetNodeInstance(valueConnection.SourceNodeGUID)
+                    as BehaviourTreeGetVariableNode;
+                if (source != null)
+                {
+                    source.Tick(this);
+                    return (T)source.CachedValue.GetValue();
+                }
+            }
+
+            return default(T);
+        }
+
+        public bool HasPinConnection(string nodeGuid, string pinName)
+        {
+            return TryGetValueConnection(nodeGuid, pinName, out _);
+        }
+
+        public T GetVariableValue<T>(string variableGuid)
+        {
+            return Blackboard.Get<T>(variableGuid);
+        }
+
+        public void SetVariableValue<T>(string variableGuid, T value)
+        {
+            Blackboard.Set<T>(variableGuid, value);
+        }
     }
 }

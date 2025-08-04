@@ -3,7 +3,8 @@ using Descent.AI.BehaviourTree.Conditions;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.Gameplay.Systems.Hostility;
 using Descent.Gameplay.Entities;
-using UnityEngine;
+using Descent.AI.BehaviourTree.Core;
+using System.Collections.Generic;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
@@ -56,6 +57,11 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
         public void ResetCondition()
         {
 
+        }
+
+        public IEnumerable<ValuePinDefinition> GetRequiredPins()
+        {
+            yield break;
         }
     }
 }

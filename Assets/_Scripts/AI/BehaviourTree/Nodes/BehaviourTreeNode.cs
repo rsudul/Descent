@@ -93,7 +93,7 @@ namespace Descent.AI.BehaviourTree.Nodes
 
         public abstract BehaviourTreeNode CloneNode();
 
-        protected T GetInputValue<T>(string pinName, BehaviourTreeContextRegistry contextRegistry)
+        public T GetInputValue<T>(string pinName, BehaviourTreeContextRegistry contextRegistry)
         {
             if (contextRegistry.TryGetValueConnection(GUID, pinName, out ValueConnection valueConnection))
             {
