@@ -15,13 +15,13 @@ namespace Descent.AI.BehaviourTree.Editor
     public class BehaviourTreeVariablesOverlay : VisualElement
     {
         private static readonly List<Type> s_allEnums = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.FullName.StartsWith("Descent"))
+                .Where(a => a.FullName != null && a.GetName().Name.Contains("Assembly-CSharp"))
                 .SelectMany(a =>
                 {
                     try { return a.GetTypes(); }
                     catch { return new Type[0]; }
                 })
-                .Where(t => t.IsEnum)
+                .Where(t => t.IsEnum && !t.IsGenericType && t.Namespace != null && t.Namespace.StartsWith("Descent"))
                 .ToList();
 
         private BehaviourTreeAsset _treeAsset;
