@@ -191,7 +191,7 @@ namespace Descent.AI.BehaviourTree.Editor
             new NodeCreationMenuItem("Action/Update Timers", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
-                node.Name = "Updatee Timers";
+                node.Name = "Update Timers";
                 node.Action = new UpdateTimersAction();
                 return node;
             }),

@@ -4,7 +4,6 @@ using Descent.AI.BehaviourTree.Actions;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Context;
 using Descent.Common.Attributes.AI;
-using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 
 namespace Descent.AI.BehaviourTree.Nodes
@@ -32,12 +31,6 @@ namespace Descent.AI.BehaviourTree.Nodes
 
         public BehaviourTreeActionNode()
         {
-            if (Action == null)
-            {
-                Debug.LogError($"[{GetType().Name}]: Action is null.");
-                return;
-            }
-
             if (Action is BehaviourTreeActionWithPins actionWithPins)
             {
                 actionWithPins.SetNodeGuid(GUID);

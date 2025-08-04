@@ -1,4 +1,4 @@
-using UnityEditor.Experimental.GraphView;
+﻿using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Descent.AI.BehaviourTree.Core;
@@ -79,12 +79,61 @@ namespace Descent.AI.BehaviourTree.Editor
                 return;
             }
 
+            _treeAsset.SyncAllNodes();
+
             if (_treeAsset.Root == null)
             {
                 CreateRootNode();
             }
 
             CreateNodeRecursive(_treeAsset.Root, null);
+
+            LoadOrphanedNodes();
+
+            LoadValueConnections();
+        }
+
+        private void LoadOrphanedNodes()
+        {
+            foreach (BehaviourTreeNode node in _treeAsset.AllNodes)
+            {
+                if (_nodeViews.ContainsKey(node))
+                {
+                    continue;
+                }
+
+                BehaviourTreeNodeView nodeView = new BehaviourTreeNodeView(node);
+                nodeView.userData = node.GUID;
+                AddElement(nodeView);
+
+                _nodeViews[node] = nodeView;
+                nodeView.SetPosition(new Rect(node.Position, new Vector2(200, 150)));
+            }
+        }
+
+        private void LoadValueConnections()
+        {
+            foreach (ValueConnection connection in _treeAsset.ValueConnections)
+            {
+                BehaviourTreeNodeView sourceView = _nodeViews.Values.FirstOrDefault(nv => nv.Node.GUID == connection.SourceNodeGUID);
+                BehaviourTreeNodeView targetView = _nodeViews.Values.FirstOrDefault(nv => nv.Node.GUID == connection.TargetNodeGUID);
+
+                if (sourceView == null || targetView == null)
+                {
+                    continue;
+                }
+
+                Port sourcePort = sourceView.outputContainer.Children().OfType<Port>()
+                    .FirstOrDefault(p => p.portName == connection.SourcePinName);
+                Port targetPort = targetView.inputContainer.Children().OfType<Port>()
+                    .FirstOrDefault(p => p.portName == connection.TargetPinName);
+
+                if (sourcePort != null && targetPort != null)
+                {
+                    Edge edge = sourcePort.ConnectTo(targetPort);
+                    AddElement(edge);
+                }
+            }
         }
 
         // this is just for loading existing tree asset
@@ -92,6 +141,8 @@ namespace Descent.AI.BehaviourTree.Editor
         {
             _treeAsset.Root = ScriptableObject.CreateInstance<BehaviourTreeSelectorNode>();
             _treeAsset.Root.Name = "Root";
+            _treeAsset.Root.ForceGenerateGuid();
+
             float horizontalCenter = contentViewContainer.layout.size.x * 0.5f;
             _treeAsset.Root.Position = new Vector2(horizontalCenter, 100.0f);
             AssetDatabase.AddObjectToAsset(_treeAsset.Root, _treeAsset);
@@ -155,6 +206,8 @@ namespace Descent.AI.BehaviourTree.Editor
 
         private BehaviourTreeNodeView CreateNodeView(BehaviourTreeNode node, Vector2 position)
         {
+            node.ForceGenerateGuid();
+
             BehaviourTreeNodeView nodeView = new BehaviourTreeNodeView(node);
             nodeView.userData = node.GUID;
             AddElement(nodeView);
@@ -314,6 +367,23 @@ namespace Descent.AI.BehaviourTree.Editor
                     continue;
                 }
 
+                bool isValuePinConnection = !string.IsNullOrEmpty(edge.output.portName) ||
+                                            !string.IsNullOrEmpty(edge.input.portName);
+
+                if (isValuePinConnection)
+                {
+                    ValueConnection valueConnection = new ValueConnection
+                    {
+                        SourceNodeGUID = parentView.Node.GUID,
+                        SourcePinName = edge.output.portName,
+                        TargetNodeGUID = childView.Node.GUID,
+                        TargetPinName = edge.input.portName
+                    };
+                    _treeAsset.AddValueConnection(valueConnection);
+                    EditorUtility.SetDirty(_treeAsset);
+                    return;
+                }
+
                 BehaviourTreeNode parentNode = parentView.Node;
                 BehaviourTreeNode childNode = childView.Node;
 
@@ -440,7 +510,7 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.VariableType = variableType;
                 node.Position = position;
 
-                AddNodeToGraph(node, node.Position);
+                AddNodeToGraph(node, position);
             }
             else
             {
@@ -451,26 +521,13 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.VariableGUID = variableGuid;
                 node.Position = position;
 
-                AddNodeToGraph(node, node.Position);
+                AddNodeToGraph(node, position);
             }
         }
 
         public void OnDrop(GraphView graphView, Edge edge)
         {
-            this.AddElement(edge);
 
-            if (edge.output is Port outPort && edge.input is Port inPort)
-            {
-                ValueConnection valueConnection = new ValueConnection
-                {
-                    SourceNodeGUID = (string)outPort.node.userData,
-                    SourcePinName = outPort.portName,
-                    TargetNodeGUID = (string)inPort.node.userData,
-                    TargetPinName = inPort.portName
-                };
-                _treeAsset.AddValueConnection(valueConnection);
-                EditorUtility.SetDirty(_treeAsset);
-            }
         }
 
         public void OnDropOutsidePort(Edge edge, Vector2 position)

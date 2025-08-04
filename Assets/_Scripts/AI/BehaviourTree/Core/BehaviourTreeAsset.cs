@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Descent.AI.BehaviourTree.Nodes;
 using Descent.AI.BehaviourTree.Variables;
 using System.Collections.Generic;
@@ -70,14 +70,18 @@ namespace Descent.AI.BehaviourTree.Core
             c.TargetPinName == valueConnection.TargetPinName);
         }
 
-        private void SyncAllNodes()
+        public void SyncAllNodes()
         {
 #if UNITY_EDITOR
             _allNodes.Clear();
+
             if (Root != null)
             {
                 CollectRecursive(Root);
             }
+
+            CollectAllSubAssets();
+
             EditorUtility.SetDirty(this);
 #endif
         }
@@ -101,6 +105,64 @@ namespace Descent.AI.BehaviourTree.Core
                     CollectRecursive(repeatUntilFailureNode.Child);
                 }
             }
+#endif
+        }
+
+        private void CollectAllSubAssets()
+        {
+#if UNITY_EDITOR
+            string assetPath = AssetDatabase.GetAssetPath(this);
+            Object[] subAssets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+
+            foreach (Object subAsset in subAssets)
+            {
+                if (subAsset is BehaviourTreeNode node && subAsset != this)
+                {
+                    if (!string.IsNullOrEmpty(node.GUID) && !_allNodes.Contains(node))
+                    {
+                        _allNodes.Add(node);
+                    }
+                }
+            }
+#endif
+        }
+
+        [ContextMenu("Clean Up Asset")]
+        public void CleanUpAsset()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Starting asset cleanup...");
+
+            string assetPath = AssetDatabase.GetAssetPath(this);
+            UnityEngine.Object[] subAssets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+
+            List<UnityEngine.Object> toRemove = new List<UnityEngine.Object>();
+
+            foreach (UnityEngine.Object subAsset in subAssets)
+            {
+                if (subAsset == this) continue; // Don't remove the main asset
+
+                if (subAsset is BehaviourTreeNode node)
+                {
+                    // Remove nodes with empty names or invalid GUIDs
+                    if (string.IsNullOrEmpty(node.name) || string.IsNullOrEmpty(node.GUID))
+                    {
+                        Debug.Log($"Marking for removal: {node.name} ({node.GetType().Name}) - GUID: {node.GUID}");
+                        toRemove.Add(subAsset);
+                    }
+                }
+            }
+
+            foreach (var obj in toRemove)
+            {
+                AssetDatabase.RemoveObjectFromAsset(obj);
+            }
+
+            EditorUtility.SetDirty(this);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"Cleanup complete. Removed {toRemove.Count} corrupted nodes.");
 #endif
         }
     }

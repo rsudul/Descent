@@ -108,5 +108,16 @@ namespace Descent.AI.BehaviourTree.Nodes
 
             return contextRegistry.Blackboard.Get<T>(pinName);
         }
+
+        public void ForceGenerateGuid()
+        {
+#if UNITY_EDITOR
+            if (string.IsNullOrEmpty(_guid))
+            {
+                _guid = UniqueIDGenerator.GenerateUniqueID();
+                EditorUtility.SetDirty(this);
+            }
+#endif
+        }
     }
 }
