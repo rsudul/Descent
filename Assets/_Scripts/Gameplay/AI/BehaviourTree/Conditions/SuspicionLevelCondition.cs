@@ -1,7 +1,9 @@
 using UnityEngine;
 using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Conditions;
+using Descent.AI.BehaviourTree.Core;
 using Descent.Common.Attributes.AI;
+using System.Collections.Generic;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
@@ -28,6 +30,11 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
             SuspicionLevelCondition clone = new SuspicionLevelCondition();
             clone._threshold = _threshold;
             return clone;
+        }
+
+        public IEnumerable<ValuePinDefinition> GetRequiredPins()
+        {
+            yield break;
         }
     }
 }

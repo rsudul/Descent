@@ -3,6 +3,8 @@ using Descent.AI.BehaviourTree.Context;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Conditions;
 using Descent.Common.Attributes.AI;
+using System.Collections.Generic;
+using Descent.AI.BehaviourTree.Core;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
@@ -47,6 +49,11 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
             IsAimAlignedCondition clone = new IsAimAlignedCondition();
             clone._maxAngleDeg = _maxAngleDeg;
             return clone;
+        }
+
+        public IEnumerable<ValuePinDefinition> GetRequiredPins()
+        {
+            yield break;
         }
     }
 }

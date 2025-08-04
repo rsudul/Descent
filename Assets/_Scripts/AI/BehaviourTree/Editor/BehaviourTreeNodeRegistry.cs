@@ -174,6 +174,34 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new CooldownAction();
                 return node;
             }),
+            new NodeCreationMenuItem("Action/Set Alert Level", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Set Alert Level";
+                node.Action = new SetAlertLevelAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Update Suspicion", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Update Suspicion";
+                node.Action = new UpdateSuspicionAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Update Timers", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Updatee Timers";
+                node.Action = new UpdateTimersAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Store Last Known Position", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Store Last Known Position";
+                node.Action = new StoreLastKnownPositionAction();
+                return node;
+            }),
             new NodeCreationMenuItem("Condition/Compare Blackboard", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeCompareNode>();
