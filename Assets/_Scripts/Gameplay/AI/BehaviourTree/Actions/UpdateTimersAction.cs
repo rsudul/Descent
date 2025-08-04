@@ -3,52 +3,57 @@ using Descent.AI.BehaviourTree.Actions;
 using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Requests;
+using Descent.AI.BehaviourTree.Variables;
+using Descent.Constants;
+using System.Collections.Generic;
+using Descent.Gameplay.Systems.Alert;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Actions
 {
     [System.Serializable]
-    public class UpdateTimersAction : IBehaviourTreeAction
+    public class UpdateTimersAction : BehaviourTreeActionWithPins
     {
-        public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
+        public override BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
             float deltaTime = Time.deltaTime;
 
-            float alertTimer = contextRegistry.Blackboard.Get<float>("AlertTimer", 0.0f);
+            float alertTimer = GetPinValue<float>(PinNames.ALERT_TIMER, contextRegistry);
             alertTimer += deltaTime;
-            contextRegistry.Blackboard.Set("AlertTimer", alertTimer);
+            contextRegistry.SetVariableValue(PinNames.ALERT_TIMER, alertTimer);
 
-            int alertLevel = contextRegistry.Blackboard.Get<int>("AlertLevel", 0);
-            if (alertLevel == 3)
+            AlertLevel alertLevel = GetPinValue<AlertLevel>(PinNames.CURRENT_ALERT_LEVEL, contextRegistry);
+            if (alertLevel == AlertLevel.Combat)
             {
-                float combatTimer = contextRegistry.Blackboard.Get<float>("CombatTimer", 0.0f);
+                float combatTimer = GetPinValue<float>(PinNames.COMBAT_TIMER, contextRegistry);
                 combatTimer += deltaTime;
-                contextRegistry.Blackboard.Set("CombatTimer", combatTimer);
+                contextRegistry.SetVariableValue(PinNames.COMBAT_TIMER, combatTimer);
             }
 
-            if (alertLevel == 4)
+            if (alertLevel == AlertLevel.Search)
             {
-                float searchTime = contextRegistry.Blackboard.Get<float>("SearchTimeRemaining", 0.0f);
+                float searchTime = GetPinValue<float>(PinNames.SEARCH_TIME_REMAINING, contextRegistry);
                 searchTime -= deltaTime;
                 searchTime = Mathf.Max(0.0f, searchTime);
-                contextRegistry.Blackboard.Set("SearchTimeRemaining", searchTime);
+                contextRegistry.SetVariableValue(PinNames.SEARCH_TIME_REMAINING, searchTime);
             }
 
             return BehaviourTreeStatus.Success;
         }
 
-        public void ResetAction()
-        {
-
-        }
-
-        public IBehaviourTreeAction Clone()
+        public override IBehaviourTreeAction Clone()
         {
             return new UpdateTimersAction();
         }
 
-        public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
+        public override IEnumerable<ValuePinDefinition> GetRequiredPins()
         {
-
+            yield return InputPin(PinNames.CURRENT_ALERT_LEVEL, VariableType.Enum);
+            yield return InputPin(PinNames.ALERT_TIMER, VariableType.Float);
+            yield return InputPin(PinNames.COMBAT_TIMER, VariableType.Float);
+            yield return InputPin(PinNames.SEARCH_TIME_REMAINING, VariableType.Float);
+            yield return OutputPin(PinNames.ALERT_TIMER, VariableType.Float);
+            yield return OutputPin(PinNames.COMBAT_TIMER, VariableType.Float);
+            yield return OutputPin(PinNames.SEARCH_TIME_REMAINING, VariableType.Float);
         }
     }
 }
