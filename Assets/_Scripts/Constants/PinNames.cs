@@ -7,6 +7,7 @@ namespace Descent.Constants
         public const string TARGET_ALERT_LEVEL = "TargetAlertLevel";
         public const string SUSPICION_LEVEL = "SuspicionLevel";
         public const string SUSPICION_THRESHOLD = "SuspicionThreshold";
+        public const string SUSPICION_DECAY_RATE = "SuspicionDecayRate";
 
         // Timer Pins
         public const string SEARCH_DURATION = "SearchDuration";
