@@ -191,7 +191,7 @@ namespace Descent.AI.BehaviourTree.Editor
             new NodeCreationMenuItem("Action/Update Timers", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
-                node.Name = "Updatee Timers";
+                node.Name = "Update Timers";
                 node.Action = new UpdateTimersAction();
                 return node;
             }),
@@ -200,6 +200,20 @@ namespace Descent.AI.BehaviourTree.Editor
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
                 node.Name = "Store Last Known Position";
                 node.Action = new StoreLastKnownPositionAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Always Fail", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Always Fail";
+                node.Action = new AlwaysFailAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Condition/Always True", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
+                node.Name = "Always True";
+                node.Condition = new AlwaysTrueCondition();
                 return node;
             }),
             new NodeCreationMenuItem("Condition/Compare Blackboard", () =>
