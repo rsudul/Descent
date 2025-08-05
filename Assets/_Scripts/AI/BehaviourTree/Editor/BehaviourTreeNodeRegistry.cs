@@ -188,6 +188,13 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new UpdateTimersAction();
                 return node;
             }),
+            new NodeCreationMenuItem("Action/Store Last Known Position", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Store Last Known Position";
+                node.Action = new StoreLastKnownPositionAction();
+                return node;
+            }),
             new NodeCreationMenuItem("Action/Always Fail", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
