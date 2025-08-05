@@ -202,6 +202,20 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new StoreLastKnownPositionAction();
                 return node;
             }),
+            new NodeCreationMenuItem("Action/Always Fail", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Always Fail";
+                node.Action = new AlwaysFailAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Condition/Always True", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeConditionNode>();
+                node.Name = "Always True";
+                node.Condition = new AlwaysTrueCondition();
+                return node;
+            }),
             new NodeCreationMenuItem("Condition/Compare Blackboard", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeCompareNode>();

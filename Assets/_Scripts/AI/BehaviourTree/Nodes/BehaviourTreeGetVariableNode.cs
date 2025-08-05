@@ -53,7 +53,7 @@ namespace Descent.AI.BehaviourTree.Nodes
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            object val = contextRegistry.Blackboard.Get<object>(_variableGuid, null);
+            object val = contextRegistry.GetVariableValue<object>(_variableGuid);
             _cachedValue = new SerializationWrapper(val);
             Status = BehaviourTreeStatus.Success;
             return Status;
