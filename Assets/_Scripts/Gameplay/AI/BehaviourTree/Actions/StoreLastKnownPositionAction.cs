@@ -23,13 +23,13 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
 
             if (perceptionContext.CurrentTarget == null)
             {
-                contextRegistry.SetVariableValue(PinNames.HAS_ACTIVE_TARGET, false);
+                contextRegistry.Blackboard.Set(PinNames.HAS_ACTIVE_TARGET, false);
                 return BehaviourTreeStatus.Success;
             }
 
             Vector3 targetPosition = perceptionContext.CurrentTarget.position;
-            contextRegistry.SetVariableValue(PinNames.LAST_KNOWN_POSITION, targetPosition);
-            contextRegistry.SetVariableValue(PinNames.HAS_ACTIVE_TARGET, true);
+            contextRegistry.Blackboard.Set(PinNames.LAST_KNOWN_POSITION, targetPosition);
+            contextRegistry.Blackboard.Set(PinNames.HAS_ACTIVE_TARGET, true);
 
             return BehaviourTreeStatus.Success;
         }
@@ -41,8 +41,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
 
         public override IEnumerable<ValuePinDefinition> GetRequiredPins()
         {
-            yield return OutputPin(PinNames.LAST_KNOWN_POSITION, VariableType.Vector3);
-            yield return OutputPin(PinNames.HAS_ACTIVE_TARGET, VariableType.Bool);
+            yield break;
         }
     }
 }

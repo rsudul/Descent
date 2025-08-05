@@ -498,31 +498,17 @@ namespace Descent.AI.BehaviourTree.Editor
             }
         }
 
-        public void CreateVariableNode(bool isGet, string variableGuid, VariableType variableType, Vector2 position)
+        public void CreateVariableNode(string variableGuid, VariableType variableType, Vector2 position)
         {
-            if (isGet)
-            {
-                var node = ScriptableObject.CreateInstance<BehaviourTreeGetVariableNode>();
+            var node = ScriptableObject.CreateInstance<BehaviourTreeGetVariableNode>();
 
-                VariableDefinition variableDefinition = _treeAsset.VariableContainer.GetByGUID(variableGuid);
-                node.Name = variableDefinition != null ? variableDefinition.Name : "Get Variable";
-                node.VariableGUID = variableGuid;
-                node.VariableType = variableType;
-                node.Position = position;
+            VariableDefinition variableDefinition = _treeAsset.VariableContainer.GetByGUID(variableGuid);
+            node.Name = variableDefinition != null ? variableDefinition.Name : "Get Variable";
+            node.VariableGUID = variableGuid;
+            node.VariableType = variableType;
+            node.Position = position;
 
-                AddNodeToGraph(node, position);
-            }
-            else
-            {
-                var node = ScriptableObject.CreateInstance<BehaviourTreeSetVariableNode>();
-
-                VariableDefinition variableDefinition = _treeAsset.VariableContainer.GetByGUID(variableGuid);
-                node.Name = variableDefinition != null ? variableDefinition.Name : "Set Variable";
-                node.VariableGUID = variableGuid;
-                node.Position = position;
-
-                AddNodeToGraph(node, position);
-            }
+            AddNodeToGraph(node, position);
         }
 
         public void OnDrop(GraphView graphView, Edge edge)

@@ -146,13 +146,6 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new WaitAction();
                 return node;
             }),
-            new NodeCreationMenuItem("Action/Clear Flag", () =>
-            {
-                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
-                node.Name = "Clear Flag";
-                node.Action = new ClearFlagAction();
-                return node;
-            }),
             new NodeCreationMenuItem("Action/Shoot", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
@@ -193,13 +186,6 @@ namespace Descent.AI.BehaviourTree.Editor
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
                 node.Name = "Update Timers";
                 node.Action = new UpdateTimersAction();
-                return node;
-            }),
-            new NodeCreationMenuItem("Action/Store Last Known Position", () =>
-            {
-                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
-                node.Name = "Store Last Known Position";
-                node.Action = new StoreLastKnownPositionAction();
                 return node;
             }),
             new NodeCreationMenuItem("Action/Always Fail", () =>

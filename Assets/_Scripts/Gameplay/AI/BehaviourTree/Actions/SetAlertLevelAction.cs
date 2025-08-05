@@ -24,32 +24,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
 
         public override BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
-            contextRegistry.SetVariableValue(PinNames.CURRENT_ALERT_LEVEL, _targetAlertLevel);
-
-            if (_resetTimers)
-            {
-                contextRegistry.SetVariableValue(PinNames.ALERT_TIMER, 0.0f);
-
-                switch (_targetAlertLevel)
-                {
-                    case AlertLevel.Search:
-                        if (HasPinConnection(PinNames.SEARCH_DURATION, contextRegistry))
-                        {
-                            float searchDuration = GetPinValue<float>(PinNames.SEARCH_DURATION, contextRegistry);
-                            contextRegistry.SetVariableValue(PinNames.SEARCH_TIME_REMAINING, searchDuration);
-                        }
-                        break;
-
-                    case AlertLevel.Cooldown:
-                        if (HasPinConnection(PinNames.COOLDOWN_DURATION, contextRegistry))
-                        {
-                            float cooldownDuration = GetPinValue<float>(PinNames.COOLDOWN_DURATION, contextRegistry);
-                            contextRegistry.SetVariableValue(PinNames.ALERT_TIMER, cooldownDuration);
-                        }
-                        break;
-                }
-            }
-
             return BehaviourTreeStatus.Success;
         }
 
@@ -73,7 +47,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
 
         public override IEnumerable<ValuePinDefinition> GetRequiredPins()
         {
-            yield return OutputPin(PinNames.CURRENT_ALERT_LEVEL, VariableType.Enum);
             if (_resetTimers)
             {
                 yield return InputPin(PinNames.SEARCH_DURATION, VariableType.Float);

@@ -26,9 +26,6 @@ namespace Descent.AI.BehaviourTree.Conditions
         protected ValuePinDefinition InputPin(string name, VariableType type) =>
             new ValuePinDefinition(name, type, PinDirection.Input);
 
-        protected ValuePinDefinition OutputPin(string name, VariableType type) =>
-            new ValuePinDefinition(name, type, PinDirection.Output);
-
         public abstract bool Check(BehaviourTreeContextRegistry contextRegistry);
         public abstract IEnumerable<ValuePinDefinition> GetRequiredPins();
         public abstract IBehaviourTreeCondition Clone();
