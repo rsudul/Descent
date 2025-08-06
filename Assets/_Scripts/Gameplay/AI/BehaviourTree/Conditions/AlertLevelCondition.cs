@@ -3,15 +3,15 @@ using UnityEngine;
 using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Conditions;
 using Descent.AI.BehaviourTree.Core;
-using Descent.AI.BehaviourTree.Variables;
 using Descent.Common.Attributes.AI;
-using Descent.Constants;
 using Descent.Gameplay.Systems.Alert;
+using Descent.Gameplay.AI.BehaviourTree.Context;
+using UnityEngine.Rendering;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
     [System.Serializable]
-    public class AlertLevelCondition : BehaviourTreeConditionWithPins
+    public class AlertLevelCondition : IBehaviourTreeCondition
     {
         [ShowInNodeInspector("Alert level to check")]
         [SerializeField]
@@ -21,9 +21,16 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
         [SerializeField]
         private BehaviourTreeCompareOperation _compareOperation = BehaviourTreeCompareOperation.Equal;
 
-        public override bool Check(BehaviourTreeContextRegistry contextRegistry)
+        public bool Check(BehaviourTreeContextRegistry contextRegistry)
         {
-            AlertLevel currentLevel = GetPinValue<AlertLevel>(PinNames.CURRENT_ALERT_LEVEL, contextRegistry);
+            AIAlertContext alertContext = contextRegistry.GetContext(typeof(AIAlertContext)) as AIAlertContext;
+
+            if (alertContext == null)
+            {
+                return false;
+            }
+
+            AlertLevel currentLevel = alertContext.CurrentAlertLevel;
 
             return _compareOperation switch
             {
@@ -37,7 +44,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
             };
         }
 
-        public override IBehaviourTreeCondition Clone()
+        public IBehaviourTreeCondition Clone()
         {
             AlertLevelCondition clone = new AlertLevelCondition();
             clone._targetAlertLevel = _targetAlertLevel;
@@ -45,9 +52,9 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
             return clone;
         }
 
-        public override IEnumerable<ValuePinDefinition> GetRequiredPins()
+        public void ResetCondition()
         {
-            yield return InputPin(PinNames.CURRENT_ALERT_LEVEL, VariableType.Enum);
+
         }
     }
 }

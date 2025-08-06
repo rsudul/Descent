@@ -3,7 +3,6 @@ using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Conditions;
 using Descent.Common.Attributes.AI;
 using System.Collections.Generic;
-using Descent.AI.BehaviourTree.Core;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
@@ -40,11 +39,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
             clone._threshold = _threshold;
             clone._greaterThan = _greaterThan;
             return clone;
-        }
-
-        public IEnumerable<ValuePinDefinition> GetRequiredPins()
-        {
-            yield break;
         }
     }
 }

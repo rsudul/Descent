@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -29,14 +28,6 @@ namespace Descent.AI.BehaviourTree.Nodes
 
         public BehaviourTreeStatus Status { get; protected set; }
         public string GUID => _guid;
-
-        public virtual IEnumerable<ValuePinDefinition> ValuePins
-        {
-            get
-            {
-                yield break;
-            }
-        }
 
         public string Name
         {
@@ -92,22 +83,6 @@ namespace Descent.AI.BehaviourTree.Nodes
         public abstract void ResetNode();
 
         public abstract BehaviourTreeNode CloneNode();
-
-        public T GetInputValue<T>(string pinName, BehaviourTreeContextRegistry contextRegistry)
-        {
-            if (contextRegistry.TryGetValueConnection(GUID, pinName, out ValueConnection valueConnection))
-            {
-                BehaviourTreeGetVariableNode source = contextRegistry.GetNodeInstance(valueConnection.SourceNodeGUID)
-                    as BehaviourTreeGetVariableNode;
-                if (source != null)
-                {
-                    source.Tick(contextRegistry);
-                    return (T)source.CachedValue.GetValue();
-                }
-            }
-
-            return default(T);
-        }
 
         public void ForceGenerateGuid()
         {

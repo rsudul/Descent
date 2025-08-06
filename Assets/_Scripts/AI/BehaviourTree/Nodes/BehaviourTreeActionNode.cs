@@ -4,7 +4,6 @@ using Descent.AI.BehaviourTree.Actions;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Context;
 using Descent.Common.Attributes.AI;
-using System.Collections.Generic;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
@@ -15,27 +14,6 @@ namespace Descent.AI.BehaviourTree.Nodes
         [SerializeReference]
         [ShowInNodeInspector("Action")]
         public IBehaviourTreeAction Action;
-
-        public override IEnumerable<ValuePinDefinition> ValuePins
-        {
-            get
-            {
-                if (Action is IBehaviourTreeActionWithPins actionWithPins)
-                {
-                    return actionWithPins.GetRequiredPins();
-                }
-
-                return base.ValuePins;
-            }
-        }
-
-        public BehaviourTreeActionNode()
-        {
-            if (Action is BehaviourTreeActionWithPins actionWithPins)
-            {
-                actionWithPins.SetNodeGuid(GUID);
-            }
-        }
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
