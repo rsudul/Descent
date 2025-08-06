@@ -1,10 +1,9 @@
-using Descent.AI.BehaviourTree.Core;
 using System;
-using Descent.AI.BehaviourTree.Context;
-using Descent.Common.Attributes.AI;
-using Descent.AI.BehaviourTree.Conditions;
 using UnityEngine;
-using System.Collections.Generic;
+using Descent.AI.BehaviourTree.Conditions;
+using Descent.AI.BehaviourTree.Context;
+using Descent.AI.BehaviourTree.Core;
+using Descent.Common.Attributes.AI;
 
 namespace Descent.AI.BehaviourTree.Nodes
 {
@@ -16,30 +15,12 @@ namespace Descent.AI.BehaviourTree.Nodes
         [ShowInNodeInspector("Condition")]
         public IBehaviourTreeCondition Condition;
 
-        public override IEnumerable<ValuePinDefinition> ValuePins
-        {
-            get
-            {
-                if (Condition is IBehaviourTreeConditionWithPins conditionWithPins)
-                {
-                    return conditionWithPins.GetRequiredPins();
-                }
-
-                return base.ValuePins;
-            }
-        }
-
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
             if (Condition == null)
             {
                 Debug.LogError($"[{nameof(BehaviourTreeConditionNode)}] Condition is null on node {Name}");
                 return BehaviourTreeStatus.Failure;
-            }
-
-            if (Condition is IBehaviourTreeConditionWithPins conditionWithPins)
-            {
-                conditionWithPins.SetNodeGuid(GUID);
             }
 
             BehaviourTreeStatus status = Condition.Check(contextRegistry)

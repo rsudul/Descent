@@ -3,14 +3,14 @@ using UnityEngine;
 using Descent.AI.BehaviourTree.Actions;
 using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Core;
-using Descent.AI.BehaviourTree.Variables;
 using Descent.Common.Attributes.AI;
-using Descent.Constants;
+using Descent.AI.BehaviourTree.Requests;
+using Descent.Gameplay.AI.BehaviourTree.Context;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Actions
 {
     [System.Serializable]
-    public class UpdateSuspicionAction : BehaviourTreeActionWithPins
+    public class UpdateSuspicionAction : IBehaviourTreeAction
     {
         [ShowInNodeInspector("Increase rate")]
         [SerializeField]
@@ -20,10 +20,18 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
         [SerializeField]
         private bool _useDecay = true;
 
-        public override BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
+        public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
-            float currentSuspicion = GetPinValue<float>(PinNames.SUSPICION_LEVEL, contextRegistry);
-            bool hasTarget = GetPinValue<bool>(PinNames.HAS_ACTIVE_TARGET, contextRegistry);
+            AIPerceptionContext perceptionContext = contextRegistry.GetContext(typeof(AIPerceptionContext)) as AIPerceptionContext;
+            AISuspicionContext suspicionContext = contextRegistry.GetContext(typeof(AISuspicionContext)) as AISuspicionContext;
+
+            if (perceptionContext == null || suspicionContext == null)
+            {
+                return BehaviourTreeStatus.Failure;
+            }
+
+            bool hasTarget = perceptionContext.CurrentTarget != null;
+            float currentSuspicion = suspicionContext.SuspicionLevel;
 
             if (hasTarget)
             {
@@ -32,15 +40,16 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             }
             else if (_useDecay)
             {
-                float decayRate = GetPinValue<float>(PinNames.SUSPICION_DECAY_RATE, contextRegistry);
-                currentSuspicion -= decayRate * Time.deltaTime;
+                currentSuspicion -= 0.2f * Time.deltaTime;
                 currentSuspicion = Mathf.Max(0.0f, currentSuspicion);
             }
+
+            contextRegistry.Blackboard.Set("SuspicionLevel", currentSuspicion);
 
             return BehaviourTreeStatus.Success;
         }
 
-        public override IBehaviourTreeAction Clone()
+        public IBehaviourTreeAction Clone()
         {
             UpdateSuspicionAction clone = new UpdateSuspicionAction();
             clone._increaseRate = _increaseRate;
@@ -48,12 +57,14 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             return clone;
         }
 
-        public override IEnumerable<ValuePinDefinition> GetRequiredPins()
+        public void ResetAction()
         {
-            yield return InputPin(PinNames.HAS_ACTIVE_TARGET, VariableType.Bool);
-            yield return InputPin(PinNames.SUSPICION_LEVEL, VariableType.Float);
-            yield return InputPin(PinNames.SUSPICION_THRESHOLD, VariableType.Float);
-            yield return InputPin(PinNames.SUSPICION_DECAY_RATE, VariableType.Float);
+
+        }
+
+        public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
+        {
+
         }
     }
 }

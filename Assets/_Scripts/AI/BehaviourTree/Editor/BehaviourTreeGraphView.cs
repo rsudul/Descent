@@ -7,11 +7,10 @@ using UnityEditor;
 using System.Linq;
 using System.Collections.Generic;
 using System;
-using Descent.AI.BehaviourTree.Variables;
 
 namespace Descent.AI.BehaviourTree.Editor
 {
-    public class BehaviourTreeGraphView : GraphView, IEdgeConnectorListener
+    public class BehaviourTreeGraphView : GraphView
     {
         private BehaviourTreeAsset _treeAsset;
 
@@ -32,7 +31,6 @@ namespace Descent.AI.BehaviourTree.Editor
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
-            this.AddManipulator(new EdgeConnector<Edge>(this));
 
             GridBackground grid = new GridBackground();
             Insert(0, grid);
@@ -89,8 +87,6 @@ namespace Descent.AI.BehaviourTree.Editor
             CreateNodeRecursive(_treeAsset.Root, null);
 
             LoadOrphanedNodes();
-
-            LoadValueConnections();
         }
 
         private void LoadOrphanedNodes()
@@ -108,31 +104,6 @@ namespace Descent.AI.BehaviourTree.Editor
 
                 _nodeViews[node] = nodeView;
                 nodeView.SetPosition(new Rect(node.Position, new Vector2(200, 150)));
-            }
-        }
-
-        private void LoadValueConnections()
-        {
-            foreach (ValueConnection connection in _treeAsset.ValueConnections)
-            {
-                BehaviourTreeNodeView sourceView = _nodeViews.Values.FirstOrDefault(nv => nv.Node.GUID == connection.SourceNodeGUID);
-                BehaviourTreeNodeView targetView = _nodeViews.Values.FirstOrDefault(nv => nv.Node.GUID == connection.TargetNodeGUID);
-
-                if (sourceView == null || targetView == null)
-                {
-                    continue;
-                }
-
-                Port sourcePort = sourceView.outputContainer.Children().OfType<Port>()
-                    .FirstOrDefault(p => p.portName == connection.SourcePinName);
-                Port targetPort = targetView.inputContainer.Children().OfType<Port>()
-                    .FirstOrDefault(p => p.portName == connection.TargetPinName);
-
-                if (sourcePort != null && targetPort != null)
-                {
-                    Edge edge = sourcePort.ConnectTo(targetPort);
-                    AddElement(edge);
-                }
             }
         }
 
@@ -262,26 +233,6 @@ namespace Descent.AI.BehaviourTree.Editor
         {
             if (change.edgesToCreate != null)
             {
-                List<Edge> validEdges = new List<Edge>();
-
-                foreach (Edge edge in change.edgesToCreate)
-                {
-                    ValuePinView outPin = edge.output as ValuePinView;
-                    ValuePinView inPin = edge.input as ValuePinView;
-
-                    if (outPin != null && inPin != null)
-                    {
-                        if (outPin.Definition.Type != inPin.Definition.Type)
-                        {
-                            continue;
-                        }
-                    }
-
-                    validEdges.Add(edge);
-                }
-
-                change.edgesToCreate = validEdges;
-
                 CreateEdges(change);
             }
 
@@ -328,19 +279,6 @@ namespace Descent.AI.BehaviourTree.Editor
 
         private void RemoveEdge(Edge edge)
         {
-            if (edge.output is Port outPort && edge.input is Port inPort)
-            {
-                ValueConnection valueConnection = new ValueConnection
-                {
-                    SourceNodeGUID = (string)outPort.node.userData,
-                    SourcePinName = outPort.portName,
-                    TargetNodeGUID = (string)inPort.node.userData,
-                    TargetPinName = inPort.portName
-                };
-                _treeAsset.RemoveValueConnection(valueConnection);
-                EditorUtility.SetDirty(_treeAsset);
-            }
-
             BehaviourTreeNodeView parentView = edge.output.node as BehaviourTreeNodeView;
             BehaviourTreeNodeView childView = edge.input.node as BehaviourTreeNodeView;
 
@@ -365,23 +303,6 @@ namespace Descent.AI.BehaviourTree.Editor
                 if (parentView == null || childView == null)
                 {
                     continue;
-                }
-
-                bool isValuePinConnection = !string.IsNullOrEmpty(edge.output.portName) ||
-                                            !string.IsNullOrEmpty(edge.input.portName);
-
-                if (isValuePinConnection)
-                {
-                    ValueConnection valueConnection = new ValueConnection
-                    {
-                        SourceNodeGUID = parentView.Node.GUID,
-                        SourcePinName = edge.output.portName,
-                        TargetNodeGUID = childView.Node.GUID,
-                        TargetPinName = edge.input.portName
-                    };
-                    _treeAsset.AddValueConnection(valueConnection);
-                    EditorUtility.SetDirty(_treeAsset);
-                    return;
                 }
 
                 BehaviourTreeNode parentNode = parentView.Node;
@@ -496,29 +417,6 @@ namespace Descent.AI.BehaviourTree.Editor
                 BehaviourTreeNodeView nodeView = nodePair.Value;
                 nodeView.SetStatus(node.Status);
             }
-        }
-
-        public void CreateVariableNode(string variableGuid, VariableType variableType, Vector2 position)
-        {
-            var node = ScriptableObject.CreateInstance<BehaviourTreeGetVariableNode>();
-
-            VariableDefinition variableDefinition = _treeAsset.VariableContainer.GetByGUID(variableGuid);
-            node.Name = variableDefinition != null ? variableDefinition.Name : "Get Variable";
-            node.VariableGUID = variableGuid;
-            node.VariableType = variableType;
-            node.Position = position;
-
-            AddNodeToGraph(node, position);
-        }
-
-        public void OnDrop(GraphView graphView, Edge edge)
-        {
-
-        }
-
-        public void OnDropOutsidePort(Edge edge, Vector2 position)
-        {
-
         }
     }
 }

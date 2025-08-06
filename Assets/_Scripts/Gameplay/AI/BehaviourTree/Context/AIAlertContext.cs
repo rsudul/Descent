@@ -6,7 +6,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Context
 {
     public class AIAlertContext : BehaviourTreeContext
     {
-        public IAlertController AlertController { get; private set; }
+        private IAlertController AlertController = null;
 
         public AlertLevel CurrentAlertLevel => AlertController.CurrentAlertLevel;
         public float AlertTimer => AlertController.AlertTimer;

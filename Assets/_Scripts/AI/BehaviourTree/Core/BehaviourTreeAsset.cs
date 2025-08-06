@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Descent.AI.BehaviourTree.Nodes;
-using Descent.AI.BehaviourTree.Variables;
 using System.Collections.Generic;
 using UnityEditor;
 
@@ -13,17 +12,7 @@ namespace Descent.AI.BehaviourTree.Core
         public BehaviourTreeNode Root;
 
         [SerializeField]
-        private VariableContainer _variableContainer = new VariableContainer();
-
-        [SerializeField]
-        private List<ValueConnection> _valueConnections = new List<ValueConnection>();
-
-        [SerializeField]
         private List<BehaviourTreeNode> _allNodes = new List<BehaviourTreeNode>();
-
-        public VariableContainer VariableContainer => _variableContainer;
-
-        public IReadOnlyList<ValueConnection> ValueConnections => _valueConnections;
 
         public IReadOnlyList<BehaviourTreeNode> AllNodes => _allNodes;
 
@@ -34,11 +23,6 @@ namespace Descent.AI.BehaviourTree.Core
 
         private void OnEnable()
         {
-            if (_variableContainer == null)
-            {
-                _variableContainer = new VariableContainer();
-            }
-
 #if UNITY_EDITOR
             SyncAllNodes();
 #endif
@@ -46,28 +30,9 @@ namespace Descent.AI.BehaviourTree.Core
 
         private void OnValidate()
         {
-            if (_variableContainer == null)
-            {
-                _variableContainer = new VariableContainer();
-            }
-
 #if UNITY_EDITOR
             SyncAllNodes();
 #endif
-        }
-
-        public void AddValueConnection(ValueConnection valueConnection)
-        {
-            _valueConnections.Add(valueConnection);
-        }
-
-        public void RemoveValueConnection(ValueConnection valueConnection)
-        {
-            _valueConnections.RemoveAll(c =>
-            c.SourceNodeGUID == valueConnection.SourceNodeGUID &&
-            c.SourcePinName == valueConnection.SourcePinName &&
-            c.TargetNodeGUID == valueConnection.TargetNodeGUID &&
-            c.TargetPinName == valueConnection.TargetPinName);
         }
 
         public void SyncAllNodes()
