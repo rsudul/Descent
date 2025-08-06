@@ -1,3 +1,6 @@
+using Descent.Gameplay.Events.Arguments;
+using System;
+
 namespace Descent.Gameplay.Systems.Alert
 {
     public interface IAlertController
@@ -6,6 +9,8 @@ namespace Descent.Gameplay.Systems.Alert
         float AlertTimer { get; }
         float CombatTimer { get; }
         float SearchTimeRemaining { get; }
+
+        event EventHandler<AlertLevelChangedEventArgs> OnAlertLevelChanged;
 
         void SetAlertLevel(AlertLevel alertLevel);
         void UpdateTimers(float deltaTime);
