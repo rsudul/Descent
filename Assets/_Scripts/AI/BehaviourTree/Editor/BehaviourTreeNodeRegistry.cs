@@ -146,13 +146,6 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new WaitAction();
                 return node;
             }),
-            new NodeCreationMenuItem("Action/Clear Flag", () =>
-            {
-                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
-                node.Name = "Clear Flag";
-                node.Action = new ClearFlagAction();
-                return node;
-            }),
             new NodeCreationMenuItem("Action/Shoot", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();

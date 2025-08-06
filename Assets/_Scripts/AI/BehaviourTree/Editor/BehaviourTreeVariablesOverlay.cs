@@ -578,11 +578,6 @@ namespace Descent.AI.BehaviourTree.Editor
                         return true;
                     }
 
-                    if (kvp.Key is BehaviourTreeSetVariableNode setNode && setNode.VariableGUID == variableDefinition.GUID)
-                    {
-                        return true;
-                    }
-
                     return false;
                 }).
                 ToList();

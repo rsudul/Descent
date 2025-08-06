@@ -89,10 +89,5 @@ namespace Descent.AI.BehaviourTree.Context
         {
             return Blackboard.Get<T>(variableGuid);
         }
-
-        public void SetVariableValue<T>(string variableGuid, T value)
-        {
-            Blackboard.Set<T>(variableGuid, value);
-        }
     }
 }

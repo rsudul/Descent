@@ -106,7 +106,7 @@ namespace Descent.AI.BehaviourTree.Nodes
                 }
             }
 
-            return contextRegistry.Blackboard.Get<T>(pinName);
+            return default(T);
         }
 
         public void ForceGenerateGuid()

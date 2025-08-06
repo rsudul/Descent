@@ -260,12 +260,7 @@ namespace Descent.AI.BehaviourTree.Editor
             menu.AddItem(new GUIContent("Get Variable"), false, () =>
             {
                 VariableType variableType = _treeAsset.VariableContainer.GetByGUID(variableGuid).VariableType;
-                _graphView.CreateVariableNode(true, variableGuid, variableType, position);
-            });
-
-            menu.AddItem(new GUIContent("Set Variable"), false, () =>
-            {
-                _graphView.CreateVariableNode(false, variableGuid, VariableType.Int, position);
+                _graphView.CreateVariableNode(variableGuid, variableType, position);
             });
 
             menu.DropDown(new Rect(position, Vector2.zero));

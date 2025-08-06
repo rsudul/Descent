@@ -37,7 +37,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 currentSuspicion = Mathf.Max(0.0f, currentSuspicion);
             }
 
-            contextRegistry.SetVariableValue(PinNames.SUSPICION_LEVEL, currentSuspicion);
             return BehaviourTreeStatus.Success;
         }
 
@@ -55,7 +54,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             yield return InputPin(PinNames.SUSPICION_LEVEL, VariableType.Float);
             yield return InputPin(PinNames.SUSPICION_THRESHOLD, VariableType.Float);
             yield return InputPin(PinNames.SUSPICION_DECAY_RATE, VariableType.Float);
-            yield return OutputPin(PinNames.SUSPICION_LEVEL, VariableType.Float);
         }
     }
 }
