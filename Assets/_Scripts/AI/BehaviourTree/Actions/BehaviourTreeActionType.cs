@@ -7,6 +7,7 @@ namespace Descent.AI.BehaviourTree.Actions
         RotateTo,
         StopRotation,
         Shoot,
-        SetAlertLevel
+        SetAlertLevel,
+        EscalateAlert
     };
 }

@@ -54,6 +54,7 @@ namespace Descent.Gameplay.AI.Alert
             if (_dispatcher != null)
             {
                 _dispatcher.Register(BehaviourTreeActionType.SetAlertLevel, this);
+                _dispatcher.Register(BehaviourTreeActionType.EscalateAlert, this);
             }
 
             _currentAlertLevel = _startingAlertLevel;
@@ -73,6 +74,7 @@ namespace Descent.Gameplay.AI.Alert
             if (_dispatcher != null)
             {
                 _dispatcher.Unregister(BehaviourTreeActionType.SetAlertLevel);
+                _dispatcher.Unregister(BehaviourTreeActionType.EscalateAlert);
             }
         }
 
@@ -167,26 +169,43 @@ namespace Descent.Gameplay.AI.Alert
 
         public BehaviourTreeRequestResult HandleRequest(BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
         {
-            if (actionType != BehaviourTreeActionType.SetAlertLevel)
+            if (actionType != BehaviourTreeActionType.SetAlertLevel &&
+                actionType != BehaviourTreeActionType.EscalateAlert)
             {
                 return BehaviourTreeRequestResult.Ignored;
             }
 
-            if (data is not SetAlertLevelActionData alertData)
+            if (actionType == BehaviourTreeActionType.EscalateAlert)
             {
-                return BehaviourTreeRequestResult.Failure;
+                if (data is not EscalateAlertActionData escalateData)
+                {
+                    return BehaviourTreeRequestResult.Failure;
+                }
+
+                SetAlertLevel(escalateData.TargetLevel);
+                return BehaviourTreeRequestResult.Success;
             }
 
-            SetAlertLevel(alertData.TargetAlertLevel);
-
-            if (alertData.ResetTimers)
+            if (actionType == BehaviourTreeActionType.SetAlertLevel)
             {
-                ResetTimers();
-                SetSearchDuration(alertData.SearchDuration);
-                SetCooldownTimer(alertData.CooldownDuration);
+                if (data is not SetAlertLevelActionData alertData)
+                {
+                    return BehaviourTreeRequestResult.Failure;
+                }
+
+                SetAlertLevel(alertData.TargetAlertLevel);
+
+                if (alertData.ResetTimers)
+                {
+                    ResetTimers();
+                    SetSearchDuration(alertData.SearchDuration);
+                    SetCooldownTimer(alertData.CooldownDuration);
+                }
+
+                return BehaviourTreeRequestResult.Success;
             }
 
-            return BehaviourTreeRequestResult.Success;
+            return BehaviourTreeRequestResult.Failure;
         }
 
         public BehaviourTreeContext GetBehaviourTreeContext(Type contextType, GameObject agent)

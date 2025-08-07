@@ -6,16 +6,16 @@ namespace Descent.Gameplay.AI.BehaviourTree.Context
 {
     public class AIAlertContext : BehaviourTreeContext
     {
-        private IAlertController AlertController = null;
+        private IAlertController _alertController = null;
 
-        public AlertLevel CurrentAlertLevel => AlertController.CurrentAlertLevel;
-        public float AlertTimer => AlertController.AlertTimer;
-        public float CombatTimer => AlertController.CombatTimer;
-        public float SearchTimeRemaining => AlertController.SearchTimeRemaining;
+        public AlertLevel CurrentAlertLevel => _alertController.CurrentAlertLevel;
+        public float AlertTimer => _alertController.AlertTimer;
+        public float CombatTimer => _alertController.CombatTimer;
+        public float SearchTimeRemaining => _alertController.SearchTimeRemaining;
 
         public AIAlertContext(GameObject owner, IAlertController alertController) : base(owner)
         {
-            AlertController = alertController;
+            _alertController = alertController;
         }
     }
 }

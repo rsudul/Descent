@@ -174,6 +174,13 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Action = new SetAlertLevelAction();
                 return node;
             }),
+            new NodeCreationMenuItem("Action/Escalate Alert", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Escalate Alert";
+                node.Action = new EscalateAlertAction();
+                return node;
+            }),
             new NodeCreationMenuItem("Action/Update Suspicion", () =>
             {
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
