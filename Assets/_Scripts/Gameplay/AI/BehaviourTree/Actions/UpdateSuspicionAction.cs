@@ -20,6 +20,10 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
         [SerializeField]
         private bool _useDecay = true;
 
+        [ShowInNodeInspector("Decay rate")]
+        [SerializeField]
+        private float _decayRate = 0.2f;
+
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
             AIPerceptionContext perceptionContext = contextRegistry.GetContext(typeof(AIPerceptionContext)) as AIPerceptionContext;
@@ -40,7 +44,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             }
             else if (_useDecay)
             {
-                currentSuspicion -= 0.2f * Time.deltaTime;
+                currentSuspicion -= _decayRate * Time.deltaTime;
                 currentSuspicion = Mathf.Max(0.0f, currentSuspicion);
             }
 
@@ -54,6 +58,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             UpdateSuspicionAction clone = new UpdateSuspicionAction();
             clone._increaseRate = _increaseRate;
             clone._useDecay = _useDecay;
+            clone._decayRate = _decayRate;
             return clone;
         }
 

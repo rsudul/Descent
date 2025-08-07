@@ -5,7 +5,6 @@ using Descent.Common.Attributes.AI;
 using Descent.Gameplay.AI.BehaviourTree.Actions.Data;
 using Descent.Gameplay.AI.BehaviourTree.Context;
 using Descent.Gameplay.Movement;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Descent.Gameplay.AI.Movement

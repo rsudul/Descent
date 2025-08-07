@@ -74,7 +74,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             }
 
             _requested = false;
-            float currentY = rotationContext.RotationController.CurrentYAngle;
+            float currentY = rotationContext.CurrentYAngle;
             float delta = Mathf.DeltaAngle(currentY, _targetYAngle);
             if (Mathf.Abs(delta) <= _angleThreshold)
             {

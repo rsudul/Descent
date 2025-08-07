@@ -6,7 +6,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Context
 {
     public class AIRotationContext : BehaviourTreeContext
     {
-        public IAIRotationController RotationController { get; private set; }
+        private IAIRotationController RotationController = null;
 
         public bool IsRotating => RotationController?.IsRotating ?? false;
         public float CurrentYAngle => RotationController?.CurrentYAngle ?? 0.0f;
