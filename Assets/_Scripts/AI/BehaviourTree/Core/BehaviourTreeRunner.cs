@@ -6,6 +6,7 @@ using Descent.AI.BehaviourTree.Requests;
 using Descent.AI.BehaviourTree.Events.Arguments;
 using System;
 using System.Collections.Generic;
+using Descent.AI.BehaviourTree.Services;
 
 namespace Descent.AI.BehaviourTree.Core
 {
@@ -13,6 +14,9 @@ namespace Descent.AI.BehaviourTree.Core
     public class BehaviourTreeRunner : MonoBehaviour
     {
         private BehaviourTreeActionRequestDispatcher _dispatcher;
+
+        private readonly List<IBehaviourTreeService> _services = new List<IBehaviourTreeService>();
+        private readonly List<float> _serviceNextTimes = new List<float>();
 
         private BehaviourTreeNode _rootNodeInstance;
         private BehaviourTreeContextRegistry _contextRegistry;
@@ -42,17 +46,42 @@ namespace Descent.AI.BehaviourTree.Core
 
             InitializeProviders();
             RefreshContexts();
+            InitializeServices();
 
             ResetAndRebuildTree();
         }
 
         private void OnDisable()
         {
+            foreach (IBehaviourTreeService service in _services)
+            {
+                try
+                {
+                    service.OnStop();
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogException(ex, this);
+                }
+            }
+
             OnTreeStopped?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnDestroy()
         {
+            foreach (IBehaviourTreeService service in _services)
+            {
+                try
+                {
+                    service.OnStop();
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogException(ex, this);
+                }
+            }
+
             ResetAndRebuildTree();
         }
 
@@ -67,6 +96,25 @@ namespace Descent.AI.BehaviourTree.Core
             if (_tickTimer >= _tickInterval)
             {
                 RefreshContexts();
+
+                float now = Time.time;
+                float deltaTime = Time.deltaTime;
+                for (int i = 0; i < _services.Count; i++)
+                {
+                    if (now >= _serviceNextTimes[i])
+                    {
+                        try
+                        {
+                            _services[i].Tick(_contextRegistry, deltaTime);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Debug.LogException(ex, this);
+                        }
+
+                        _serviceNextTimes[i] = now + MathF.Max(0.01f, _services[i].Interval);
+                    }
+                }
 
                 BehaviourTreeStatus status = _rootNodeInstance.Tick(_contextRegistry);
                 LogNodeStatus(status);
@@ -206,7 +254,56 @@ namespace Descent.AI.BehaviourTree.Core
                 return;
             }
 
-            Debug.Log($"[BT][{gameObject.name}] Tick: Root node status = {status}");
+            Debug.Log($"[BT][{gameObject.name}] Tick: Root = {status}\n" + BuildActivePath(_rootNodeInstance, 0));
+        }
+
+        private string BuildActivePath(BehaviourTreeNode node, int d)
+        {
+            if (node == null)
+            {
+                return string.Empty;
+            }
+
+            string line = new string(' ', d * 2) + $"- {node.GetType().Name} [{node.Status}]\n";
+
+            if (node is BehaviourTreeCompositeNode comp)
+            {
+                foreach (BehaviourTreeCompositeNode child in comp.Children)
+                {
+                    if (child.Status == BehaviourTreeStatus.Running)
+                    {
+                        line += BuildActivePath(child, d + 1);
+                    }
+                }
+            }
+
+            return line;
+        }
+
+        private void InitializeServices()
+        {
+            _services.Clear();
+            _serviceNextTimes.Clear();
+
+            foreach (MonoBehaviour component in GetComponents<MonoBehaviour>())
+            {
+                if (component is IBehaviourTreeService service)
+                {
+                    _services.Add(service);
+                    _serviceNextTimes.Add(0.0f);
+                }
+            }
+
+            foreach (IBehaviourTreeService service in _services)
+            {
+                try
+                {
+                    service.OnStart(_contextRegistry, gameObject);
+                } catch (System.Exception ex)
+                {
+                    Debug.LogException(ex, this);
+                }
+            }
         }
     }
 }

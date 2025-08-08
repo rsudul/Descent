@@ -252,19 +252,6 @@ namespace Descent.Gameplay.AI.Alert
                 return BehaviourTreeRequestResult.Success;
             }
 
-            if (actionType == BehaviourTreeActionType.UpdateSuspicion)
-            {
-                if (data is not UpdateSuspicionActionData suspicionData)
-                {
-                    return BehaviourTreeRequestResult.Failure;
-                }
-
-                UpdateSuspicion(suspicionData.IncreaseRate, suspicionData.DecayRate,
-                    suspicionData.HasTarget, Time.deltaTime);
-
-                return BehaviourTreeRequestResult.Success;
-            }
-
             return BehaviourTreeRequestResult.Ignored;
         }
 
