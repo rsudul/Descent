@@ -9,45 +9,52 @@ namespace Descent.AI.BehaviourTree.Nodes
     [NodeInspectorLabel("Priority Reactive Selector")]
     public class BehaviourTreePriorityReactiveSelector : BehaviourTreeCompositeNode
     {
+        [SerializeField]
+        private int _activeIndex = -1;
+
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (Children == null || Children.Count == 0)
+            if (Children?.Count == 0)
             {
-                Status = BehaviourTreeStatus.Failure;
-                return Status;
+                return Status = BehaviourTreeStatus.Failure;
             }
 
-            foreach (BehaviourTreeNode child in Children)
+            int candidate = -1;
+            for (int i=0; i<Children.Count; i++)
             {
-                BehaviourTreeStatus childStatus = child.Tick(contextRegistry);
-                if (childStatus == BehaviourTreeStatus.Running)
+                if (CanRunChild(Children[i], contextRegistry))
                 {
-                    ResetOtherChildren(child);
-                    Status = BehaviourTreeStatus.Running;
-                    return Status;
-                }
-                if (childStatus == BehaviourTreeStatus.Success)
-                {
-                    ResetOtherChildren(child);
-                    Status = BehaviourTreeStatus.Success;
-                    return Status;
+                    candidate = i;
+                    break;
                 }
             }
 
-            Status = BehaviourTreeStatus.Failure;
-            return Status;
+            if (candidate != _activeIndex)
+            {
+                if (_activeIndex >= 0 && _activeIndex < Children.Count)
+                {
+                    Children[_activeIndex].ResetNode();
+                }
+                _activeIndex = candidate;
+            }
+
+            if (_activeIndex < 0)
+            {
+                return Status = BehaviourTreeStatus.Failure;
+            }
+
+            BehaviourTreeStatus childStatus = Children[_activeIndex].Tick(contextRegistry);
+
+            return Status = childStatus;
         }
 
         public override void ResetNode()
         {
-            if (Children != null && Children.Count > 0)
+            if (_activeIndex >= 0 && _activeIndex < Children.Count)
             {
-                foreach (BehaviourTreeNode child in Children)
-                {
-                    child.ResetNode();
-                }
+                Children[_activeIndex].ResetNode();
             }
-
+            _activeIndex = -1;
             Status = BehaviourTreeStatus.Running;
         }
 
@@ -63,15 +70,14 @@ namespace Descent.AI.BehaviourTree.Nodes
             return clone;
         }
 
-        private void ResetOtherChildren(BehaviourTreeNode activeChild)
+        private bool CanRunChild(BehaviourTreeNode node, BehaviourTreeContextRegistry contextRegistry)
         {
-            foreach (BehaviourTreeNode child in Children)
+            if (node is BehaviourTreeGuardNode guard)
             {
-                if (child != activeChild)
-                {
-                    child.ResetNode();
-                }
+                return guard.Condition == null || guard.Condition.Check(contextRegistry);
             }
+
+            return true;
         }
     }
 }
