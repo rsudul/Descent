@@ -1,3 +1,5 @@
+using Descent.AI.BehaviourTree.Events.Arguments;
+using System;
 using System.Collections.Generic;
 
 namespace Descent.AI.BehaviourTree.Context
@@ -6,24 +8,31 @@ namespace Descent.AI.BehaviourTree.Context
     {
         private readonly Dictionary<string, object> _data = new Dictionary<string, object>();
 
+        public event EventHandler<BlackboardChangedEventArgs> OnChanged;
+
         public void Set<T>(string key, T value)
         {
-            if (value == null)
+            _data[key] = value;
+
+            BlackboardChangedEventArgs args = new BlackboardChangedEventArgs(key, value);
+            OnChanged?.Invoke(this, args);
+        }
+
+        public bool TryGet<T>(string key, out T value)
+        {
+            if (_data.TryGetValue(key, out var obj) && obj is T t)
             {
-                return;
+                value = t;
+                return true;
             }
 
-            _data[key] = value;
+            value = default;
+            return false;
         }
 
         public T Get<T>(string key, T defaultValue = default)
         {
-            if (_data.TryGetValue(key, out var obj) && obj is T t)
-            {
-                return t;
-            }
-
-            return defaultValue;
+            return TryGet<T>(key, out var v) ? v : defaultValue;
         }
 
         public bool Has(string key)
@@ -33,7 +42,11 @@ namespace Descent.AI.BehaviourTree.Context
 
         public void Clear(string key)
         {
-            _data.Remove(key);
+            if (_data.Remove(key))
+            {
+                BlackboardChangedEventArgs args = new BlackboardChangedEventArgs(key, null);
+                OnChanged?.Invoke(this, args);
+            }
         }
     }
 }
