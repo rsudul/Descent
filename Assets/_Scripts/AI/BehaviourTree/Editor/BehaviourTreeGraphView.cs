@@ -122,7 +122,13 @@ namespace Descent.AI.BehaviourTree.Editor
         // same as above
         private void CreateNodeRecursive(BehaviourTreeNode node, BehaviourTreeNodeView parentView)
         {
-            BehaviourTreeNodeView nodeView = new BehaviourTreeNodeView(node);
+            bool isRoot = false;
+            if (node.Name == "Root")
+            {
+                isRoot = true;
+            }
+
+            BehaviourTreeNodeView nodeView = new BehaviourTreeNodeView(node, isRoot);
             nodeView.userData = node.GUID;
             AddElement(nodeView);
             

@@ -13,7 +13,7 @@ namespace Descent.AI.BehaviourTree.Editor
         public Port Input { get; private set; }
         public Port Output { get; private set; }
 
-        public BehaviourTreeNodeView(BehaviourTreeNode node)
+        public BehaviourTreeNodeView(BehaviourTreeNode node, bool isRoot = false)
         {
             Node = node;
             title = Node.Name ?? Node.GetType().Name;
@@ -21,6 +21,13 @@ namespace Descent.AI.BehaviourTree.Editor
             Node.OnPropertyChanged += OnNodePropertyChanged;
 
             SetStyles(node);
+
+            if (!isRoot)
+            {
+                Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(BehaviourTreeNode));
+                Input.portName = "";
+                inputContainer.Add(Input);
+            }
 
             if (node is BehaviourTreeCompositeNode)
             {

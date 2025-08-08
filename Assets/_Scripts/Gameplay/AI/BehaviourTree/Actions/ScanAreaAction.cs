@@ -40,21 +40,20 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
         [SerializeField]
         private float _overrideWaitTime = 2.0f;
 
-        [Header("Scan behaviour")]
-        [ShowInNodeInspector("Continuous scanning")]
-        [SerializeField]
-        private bool _continuousScanning = true;
+        private BehaviourTreeStatus status;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
             if (_dispatcher == null)
             {
+                Debug.Log("[ScanAreaAction] No dispatcher.");
                 return BehaviourTreeStatus.Failure;
             }
 
             AIRotationContext rotationContext = contextRegistry.GetContext(typeof(AIRotationContext)) as AIRotationContext;
             if (rotationContext == null)
             {
+                Debug.Log("[ScanAreaAction] No AIRotationContext found.");
                 return BehaviourTreeStatus.Failure;
             }
 
@@ -95,6 +94,11 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 }
             }
 
+            if (_requestedRotation && rotationContext.IsRotating)
+            {
+                return BehaviourTreeStatus.Running;
+            }
+
             if (_requestedRotation && !rotationContext.IsRotating)
             {
                 _isWaiting = true;
@@ -102,7 +106,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 _direction *= -1;
             }
 
-            return _continuousScanning ? BehaviourTreeStatus.Running : BehaviourTreeStatus.Success;
+            return BehaviourTreeStatus.Running;
         }
 
         public IBehaviourTreeAction Clone()
@@ -112,7 +116,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             clone._overrideCenterAngle = _overrideCenterAngle;
             clone._overrideScanAngle = _overrideScanAngle;
             clone._overrideWaitTime = _overrideWaitTime;
-            clone._continuousScanning = _continuousScanning;
             return clone;
         }
 

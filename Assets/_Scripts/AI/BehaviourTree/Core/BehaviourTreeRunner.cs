@@ -157,20 +157,6 @@ namespace Descent.AI.BehaviourTree.Core
                     InjectDispatcherToActions(child, dispatcher);
                 }
             }
-            else if (node is BehaviourTreeRepeatUntilFailureNode repeatUntilFailureNode)
-            {
-                if (repeatUntilFailureNode.Child != null)
-                {
-                    InjectDispatcherToActions(repeatUntilFailureNode.Child, dispatcher);
-                }
-            }
-            else if (node is BehaviourTreeRepeatWhileConditionNode repeatWhileConditionNode)
-            {
-                foreach (BehaviourTreeNode child in repeatWhileConditionNode.Children)
-                {
-                    InjectDispatcherToActions(child, dispatcher);
-                }
-            }
         }
 
         public void SetBehaviourTreeAsset(BehaviourTreeAsset asset)

@@ -25,13 +25,10 @@ namespace Descent.AI.BehaviourTree.Nodes
         [ShowInNodeInspector("Time interval")]
         [SerializeField]
         private float _interval = 0.0f;
-        [ShowInNodeInspector("Failure policy")]
-        [SerializeField]
-        private BehaviourTreeFailurePolicy _failurePolicy = BehaviourTreeFailurePolicy.OnChildFailure;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (Children == null || Children.Count == 0)
+            if (Children?.Count == 0)
             {
                 Status = BehaviourTreeStatus.Failure;
                 return Status;
@@ -54,13 +51,7 @@ namespace Descent.AI.BehaviourTree.Nodes
             {
                 BehaviourTreeStatus childStatus = Children[_currentChildIndex].Tick(contextRegistry);
 
-                if (childStatus == BehaviourTreeStatus.Failure && _failurePolicy == BehaviourTreeFailurePolicy.OnChildFailure)
-                {
-                    Status = BehaviourTreeStatus.Failure;
-                    return Status;
-                }
-
-                if (childStatus == BehaviourTreeStatus.Success && _failurePolicy == BehaviourTreeFailurePolicy.OnChildSuccess)
+                if (childStatus == BehaviourTreeStatus.Failure)
                 {
                     Status = BehaviourTreeStatus.Failure;
                     return Status;
@@ -71,13 +62,15 @@ namespace Descent.AI.BehaviourTree.Nodes
                     Status = BehaviourTreeStatus.Running;
                     return Status;
                 }
+
+                _currentChildIndex++;
             }
 
             _executed++;
+            _currentChildIndex = 0;
 
             if (_executed >= _repeatCount)
             {
-                ResetNode();
                 Status = BehaviourTreeStatus.Success;
                 return Status;
             }

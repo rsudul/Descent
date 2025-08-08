@@ -1,0 +1,441 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7548397631310437130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 4522852e-0769-4513-8efe-ca0e363348e2
+  _parent: {fileID: -1315209795956070415}
+  _position: {x: 1498, y: 911}
+  _name: Threat Response
+  _children:
+  - {fileID: 5178097437994555507}
+  - {fileID: 2253124012451485359}
+--- !u!114 &-7402946736343763881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 5647db24-318b-4337-b4c1-9cae441ee0c4
+  _parent: {fileID: 7651993891941427416}
+  _position: {x: 1241, y: 437}
+  _name: Alert Level
+  Condition:
+    rid: 2196000868190650368
+  references:
+    version: 2
+    RefIds:
+    - rid: 2196000868190650368
+      type: {class: AlertLevelCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
+        asm: Assembly-CSharp}
+      data:
+        _targetAlertLevel: 0
+        _compareOperation: 0
+--- !u!114 &-7087854068984057773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 38d3b28a-e554-44f8-90eb-c6569e3c7468
+  _parent: {fileID: 6542806366950353545}
+  _position: {x: 619, y: 330}
+  _name: Alert Branch
+  _children: []
+--- !u!114 &-6598417719688879310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34464f686ae520a4996242c4140e22cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: bab6de5f-35c8-4f3d-83af-bc616546149f
+  _parent: {fileID: -1815442100177534494}
+  _position: {x: 1036, y: 676}
+  _name: Repeat While Condition
+  _children:
+  - {fileID: 2890050141940771995}
+  _invert: 0
+  Condition:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!114 &-6448427954956281049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 91db2f56-805c-4a2b-918d-1225344d7897
+  _parent: {fileID: 6542806366950353545}
+  _position: {x: 395, y: 330}
+  _name: Search Branch
+  _children: []
+--- !u!114 &-6422468489429262874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: f5632e3a-a3bb-4b03-911f-059db47c2a91
+  _parent: {fileID: 376593443338745472}
+  _position: {x: 1258, y: 790}
+  _name: Update Suspicion
+  Action:
+    rid: 2196000868190650370
+  references:
+    version: 2
+    RefIds:
+    - rid: 2196000868190650370
+      type: {class: UpdateSuspicionAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _increaseRate: 0.1
+        _decayRate: 0.2
+--- !u!114 &-3930011689392483490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: f34e94fe-ce43-4b53-81b0-905ae1d98bd7
+  _parent: {fileID: 6542806366950353545}
+  _position: {x: 165, y: 330}
+  _name: Combat Branch
+  _children: []
+--- !u!114 &-2795635820573636637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f642eac712a055438c0623ba7dd5821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 3086cc72-f510-4563-9790-8c83691e5239
+  _parent: {fileID: 0}
+  _position: {x: 649, y: 100}
+  _name: Root
+  _children:
+  - {fileID: 6542806366950353545}
+--- !u!114 &-1815442100177534494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e81a689e0ce42f41a10b15f736459c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 57a270c4-670c-4f91-9e14-1fbf4e11da43
+  _parent: {fileID: 7651993891941427416}
+  _position: {x: 1229, y: 555}
+  _name: Idle Behaviours
+  _children:
+  - {fileID: -6598417719688879310}
+  - {fileID: 376593443338745472}
+  _mode: 1
+--- !u!114 &-1315209795956070415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f642eac712a055438c0623ba7dd5821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 4c660464-14b8-4716-8688-7eee793313c2
+  _parent: {fileID: 0}
+  _position: {x: 1556, y: 790}
+  _name: Threat Detection
+  _children:
+  - {fileID: -7548397631310437130}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24afc42d98be6df4b968e0dc43df7f72, type: 3}
+  m_Name: TurretBehaviourTree
+  m_EditorClassIdentifier: 
+  Root: {fileID: -2795635820573636637}
+  _allNodes:
+  - {fileID: -2795635820573636637}
+  - {fileID: 6542806366950353545}
+  - {fileID: -3930011689392483490}
+  - {fileID: -6448427954956281049}
+  - {fileID: -7087854068984057773}
+  - {fileID: 8141664020655332141}
+  - {fileID: 7651993891941427416}
+  - {fileID: -7402946736343763881}
+  - {fileID: -1815442100177534494}
+  - {fileID: -6598417719688879310}
+  - {fileID: 2890050141940771995}
+  - {fileID: 376593443338745472}
+  - {fileID: -6422468489429262874}
+  - {fileID: 8106692346330258945}
+  - {fileID: 2253124012451485359}
+  - {fileID: 5178097437994555507}
+  - {fileID: 6824647201599581646}
+  - {fileID: -7548397631310437130}
+  - {fileID: -1315209795956070415}
+--- !u!114 &376593443338745472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57dd8c586f27ec743b76271fd5f36da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 1f09b44a-bf30-430c-ac1c-745fecef8114
+  _parent: {fileID: -1815442100177534494}
+  _position: {x: 1258, y: 676}
+  _name: Background Suspicion
+  _children:
+  - {fileID: -6422468489429262874}
+--- !u!114 &2253124012451485359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 904c16bc-7e5c-4722-a96d-66bdb59f6b70
+  _parent: {fileID: -7548397631310437130}
+  _position: {x: 1498, y: 1107}
+  _name: Escalate Alert
+  Action:
+    rid: 2196000868190650373
+  references:
+    version: 2
+    RefIds:
+    - rid: 2196000868190650373
+      type: {class: EscalateAlertAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _mode: 0
+        _targetLevel: 1
+--- !u!114 &2890050141940771995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 229945a8-e7c8-4596-9a54-4d50c0da0350
+  _parent: {fileID: -6598417719688879310}
+  _position: {x: 1094, y: 790}
+  _name: Scan Area
+  Action:
+    rid: 2196000868190650369
+  references:
+    version: 2
+    RefIds:
+    - rid: 2196000868190650369
+      type: {class: ScanAreaAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data:
+        _useContextSettings: 1
+        _overrideCenterAngle: 0
+        _overrideScanAngle: 90
+        _overrideWaitTime: 2
+--- !u!114 &5178097437994555507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d48ad3ecf1af4f95d4ba0a08e86d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 6612d2cc-7b22-433a-988b-112d720d05e4
+  _parent: {fileID: -7548397631310437130}
+  _position: {x: 1477, y: 1013}
+  _name: Is Hostile Target Visible
+  Condition:
+    rid: 2196000868190650372
+  references:
+    version: 2
+    RefIds:
+    - rid: 2196000868190650372
+      type: {class: IsHostileTargetVisibleCondition, ns: Descent.Gameplay.AI.BehaviourTree.Conditions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &6542806366950353545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304615493207f1b4b9f2a596fed37931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 64aebccb-6532-4bf4-9a6d-01348be6d3fb
+  _parent: {fileID: -2795635820573636637}
+  _position: {x: 584, y: 197}
+  _name: Priority Reactive Selector
+  _children:
+  - {fileID: -3930011689392483490}
+  - {fileID: -6448427954956281049}
+  - {fileID: -7087854068984057773}
+  - {fileID: 8141664020655332141}
+  - {fileID: 7651993891941427416}
+--- !u!114 &6824647201599581646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b6639582987e04bafe6e83ab71510a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: b85b3424-7a84-48af-9aa9-dbe6388b2198
+  _parent: {fileID: 0}
+  _position: {x: 1698, y: 988}
+  _name: Always Fail
+  Action:
+    rid: 2196000868190650371
+  references:
+    version: 2
+    RefIds:
+    - rid: 2196000868190650371
+      type: {class: AlwaysFailAction, ns: Descent.Gameplay.AI.BehaviourTree.Actions,
+        asm: Assembly-CSharp}
+      data: 
+--- !u!114 &7651993891941427416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: e64d2892-a63b-48db-bdc4-ec030b163c18
+  _parent: {fileID: 6542806366950353545}
+  _position: {x: 1215, y: 330}
+  _name: Idle Patrol Branch
+  _children:
+  - {fileID: -7402946736343763881}
+  - {fileID: -1815442100177534494}
+--- !u!114 &8106692346330258945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9a13641815cac24bb7d4313cf3549d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: d3b799b3-5e5f-4bc7-8044-50c567932fb9
+  _parent: {fileID: 0}
+  _position: {x: 1556, y: 676}
+  _name: Threat Monitor
+  _children: []
+  _condition: 0
+--- !u!114 &8141664020655332141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440caa1cf59dd1f4a89dd1d121446874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: db5cb635-9c61-485c-b5e2-74fb86070c0f
+  _parent: {fileID: 6542806366950353545}
+  _position: {x: 866, y: 330}
+  _name: Suspicious Branch
+  _children: []

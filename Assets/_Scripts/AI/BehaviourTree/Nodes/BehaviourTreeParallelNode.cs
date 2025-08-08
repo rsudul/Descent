@@ -19,12 +19,9 @@ namespace Descent.AI.BehaviourTree.Nodes
     [NodeInspectorLabel("Parallel")]
     public class BehaviourTreeParallelNode : BehaviourTreeCompositeNode
     {
-        [SerializeField, Tooltip("Determine when parallel fails")]
-        [ShowInNodeInspector("Failure policy")]
-        private BehaviourTreeParallelFailurePolicy _failurePolicy = BehaviourTreeParallelFailurePolicy.FailOnAny;
-        [SerializeField, Tooltip("Determine when parallel succeeds")]
-        [ShowInNodeInspector("Success policy")]
-        private BehaviourTreeParallelSuccessPolicy _successPolicy = BehaviourTreeParallelSuccessPolicy.SucceedOnAll;
+        [ShowInNodeInspector("Mode")]
+        [SerializeField]
+        private ParallelMode _mode = ParallelMode.RequireOne;
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
@@ -36,10 +33,12 @@ namespace Descent.AI.BehaviourTree.Nodes
 
             int successCount = 0;
             int failureCount = 0;
+            int runningCount = 0;
 
             foreach (BehaviourTreeNode child in Children)
             {
                 BehaviourTreeStatus childStatus = child.Tick(contextRegistry);
+
                 switch (childStatus)
                 {
                     case BehaviourTreeStatus.Success:
@@ -49,35 +48,40 @@ namespace Descent.AI.BehaviourTree.Nodes
                     case BehaviourTreeStatus.Failure:
                         failureCount++;
                         break;
-                }
 
-                if (_failurePolicy == BehaviourTreeParallelFailurePolicy.FailOnAny
-                    && childStatus == BehaviourTreeStatus.Failure)
-                {
-                    Status = BehaviourTreeStatus.Failure;
-                    return Status;
-                }
-
-                if (_successPolicy == BehaviourTreeParallelSuccessPolicy.SucceedOnOne
-                    && childStatus == BehaviourTreeStatus.Success)
-                {
-                    Status = BehaviourTreeStatus.Success;
-                    return Status;
+                    case BehaviourTreeStatus.Running:
+                        runningCount++;
+                        break;
                 }
             }
 
-            if (_failurePolicy == BehaviourTreeParallelFailurePolicy.FailOnAll
-                && failureCount == Children.Count)
+            switch (_mode)
             {
-                Status = BehaviourTreeStatus.Failure;
-                return Status;
-            }
+                case ParallelMode.RequireOne:
+                    if (successCount > 0)
+                    {
+                        Status = BehaviourTreeStatus.Success;
+                        return Status;
+                    }
+                    if (failureCount == Children.Count)
+                    {
+                        Status = BehaviourTreeStatus.Failure;
+                        return Status;
+                    }
+                    break;
 
-            if (_successPolicy == BehaviourTreeParallelSuccessPolicy.SucceedOnAll
-                && successCount == Children.Count)
-            {
-                Status = BehaviourTreeStatus.Success;
-                return Status;
+                case ParallelMode.RequireAll:
+                    if (successCount == Children.Count)
+                    {
+                        Status = BehaviourTreeStatus.Success;
+                        return Status;
+                    }
+                    if (failureCount > 0)
+                    {
+                        Status = BehaviourTreeStatus.Failure;
+                        return Status;
+                    }
+                    break;
             }
 
             Status = BehaviourTreeStatus.Running;
@@ -102,8 +106,7 @@ namespace Descent.AI.BehaviourTree.Nodes
             BehaviourTreeParallelNode clone = ScriptableObject.CreateInstance<BehaviourTreeParallelNode>();
             clone.Name = Name;
             clone.Position = Position;
-            clone._failurePolicy = _failurePolicy;
-            clone._successPolicy = _successPolicy;
+            clone._mode = _mode;
             foreach (BehaviourTreeNode child in Children)
             {
                 clone.AddChild(child.CloneNode());
