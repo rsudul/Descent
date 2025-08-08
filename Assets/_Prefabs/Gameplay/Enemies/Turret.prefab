@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: -5253904722959527305}
   - component: {fileID: 2339794060063370250}
   - component: {fileID: 4246586443457037767}
+  - component: {fileID: 6118768163812800928}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -196,6 +197,10 @@ MonoBehaviour:
   _defaultCooldownDuration: 10
   _alertDecayRate: 1
   _combatTimeoutDuration: 8
+  _suspiciousThreshold: 0.3
+  _alertThreshold: 0.6
+  _combatThreshold: 0.9
+  _autoEscalateOnSuspicion: 1
 --- !u!114 &2339794060063370250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +229,24 @@ MonoBehaviour:
   _treeAsset: {fileID: 11400000, guid: fb7c076eba95fc44cb8449dbbe49fdfa, type: 2}
   _tickInterval: 0.1
   _debug: 0
+--- !u!114 &6118768163812800928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538924006789744770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c6f61a1713cd447961402c3dbcf186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interval: 0.1
+  _increaseRate: 0.6
+  _decayRate: 0.25
+  _writeToBlackboard: 1
+  _blackboardHasTargetKey: HasActiveTarget
+  _blackboardSuspicionKey: Suspicion
 --- !u!1 &2620313905822636940
 GameObject:
   m_ObjectHideFlags: 0

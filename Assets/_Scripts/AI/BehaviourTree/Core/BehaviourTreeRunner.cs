@@ -268,7 +268,7 @@ namespace Descent.AI.BehaviourTree.Core
 
             if (node is BehaviourTreeCompositeNode comp)
             {
-                foreach (BehaviourTreeCompositeNode child in comp.Children)
+                foreach (BehaviourTreeNode child in comp.Children)
                 {
                     if (child.Status == BehaviourTreeStatus.Running)
                     {
