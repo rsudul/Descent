@@ -11,8 +11,6 @@ namespace Descent.AI.BehaviourTree.Nodes
     [NodeInspectorLabel("Repeat While Condition")]
     public class BehaviourTreeRepeatWhileConditionNode : BehaviourTreeCompositeNode
     {
-        private int _currentChildIndex = 0;
-
         [SerializeField]
         [ConditionInvertField]
         private bool _invert = false;
@@ -23,20 +21,13 @@ namespace Descent.AI.BehaviourTree.Nodes
 
         public override BehaviourTreeStatus Tick(BehaviourTreeContextRegistry contextRegistry)
         {
-            if (Condition == null)
-            {
-                ResetNode();
-                Status = BehaviourTreeStatus.Failure;
-                return BehaviourTreeStatus.Failure;
-            }
-
             if (Children?.Count == 0)
             {
-                Status = BehaviourTreeStatus.Success;
-                return BehaviourTreeStatus.Success;
+                return Status = BehaviourTreeStatus.Failure;
             }
 
-            bool cond = Condition.Check(contextRegistry);
+            bool cond = Condition == null ? true : Condition.Check(contextRegistry);
+
             if (_invert)
             {
                 cond = !cond;
@@ -44,50 +35,30 @@ namespace Descent.AI.BehaviourTree.Nodes
 
             if (!cond)
             {
-                ResetNode();
-                Status = BehaviourTreeStatus.Failure;
-                return BehaviourTreeStatus.Failure;
+                Children[0].ResetNode();
+                return Status = BehaviourTreeStatus.Success;
             }
 
-            while (_currentChildIndex < Children.Count)
+            BehaviourTreeStatus childStatus = Children[0].Tick(contextRegistry);
+
+            if (childStatus == BehaviourTreeStatus.Success || childStatus == BehaviourTreeStatus.Failure)
             {
-                BehaviourTreeStatus status = Children[_currentChildIndex].Tick(contextRegistry);
-
-                if (status == BehaviourTreeStatus.Running)
-                {
-                    Status = BehaviourTreeStatus.Running;
-                    return BehaviourTreeStatus.Running;
-                }
-
-                if (status == BehaviourTreeStatus.Failure)
-                {
-                    ResetNode();
-                    Status = BehaviourTreeStatus.Failure;
-                    return BehaviourTreeStatus.Failure;
-                }
-
-                _currentChildIndex++;
+                Children[0].ResetNode();
             }
 
-            ResetNode();
-
-            Status = BehaviourTreeStatus.Running;
-            return BehaviourTreeStatus.Running;
+            return Status = BehaviourTreeStatus.Running;
         }
 
         public override void ResetNode()
         {
-            _currentChildIndex = 0;
-
-            if (Children?.Count == 0)
+            if (Children?.Count > 0)
             {
-                return;
+                Children[0].ResetNode();
             }
 
-            foreach (BehaviourTreeNode child in Children)
-            {
-                child.ResetNode();
-            }
+            Condition?.ResetCondition();
+
+            Status = BehaviourTreeStatus.Running;
         }
 
         public override BehaviourTreeNode CloneNode()
@@ -95,7 +66,6 @@ namespace Descent.AI.BehaviourTree.Nodes
             BehaviourTreeRepeatWhileConditionNode clone = ScriptableObject.CreateInstance<BehaviourTreeRepeatWhileConditionNode>();
             clone.Name = Name;
             clone.Position = Position;
-            clone._currentChildIndex = _currentChildIndex;
             clone._invert = _invert;
             clone.Condition = Condition?.Clone();
             foreach (BehaviourTreeNode child in Children)
@@ -103,6 +73,21 @@ namespace Descent.AI.BehaviourTree.Nodes
                 clone.AddChild(child.CloneNode());
             }
             return clone;
+        }
+
+        public override void AddChild(BehaviourTreeNode child)
+        {
+            if (child == null)
+            {
+                return;
+            }
+
+            if (Children != null && Children.Count > 0)
+            {
+                return;
+            }
+
+            base.AddChild(child);
         }
     }
 }
