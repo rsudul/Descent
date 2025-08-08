@@ -17,7 +17,7 @@ namespace Descent.AI.BehaviourTree.Nodes
         private int _executed = 0;
         private float _timer = 0.0f;
 
-        private int _currentChildIndex = -1;
+        private int _currentChildIndex = 0;
 
         [ShowInNodeInspector("Repeat count")]
         [SerializeField]
