@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Conditions;
@@ -6,7 +5,6 @@ using Descent.AI.BehaviourTree.Core;
 using Descent.Common.Attributes.AI;
 using Descent.Gameplay.Systems.Alert;
 using Descent.Gameplay.AI.BehaviourTree.Context;
-using UnityEngine.Rendering;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 {
@@ -32,7 +30,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
 
             AlertLevel currentLevel = alertContext.CurrentAlertLevel;
 
-            return _compareOperation switch
+            bool result = _compareOperation switch
             {
                 BehaviourTreeCompareOperation.Equal => currentLevel == _targetAlertLevel,
                 BehaviourTreeCompareOperation.NotEqual => currentLevel != _targetAlertLevel,
@@ -42,6 +40,9 @@ namespace Descent.Gameplay.AI.BehaviourTree.Conditions
                 BehaviourTreeCompareOperation.GreaterOrEqual => (int)currentLevel >= (int)_targetAlertLevel,
                 _ => false
             };
+
+            //Debug.Log(result);
+            return result;
         }
 
         public IBehaviourTreeCondition Clone()

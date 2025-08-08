@@ -6,54 +6,51 @@ using Descent.AI.BehaviourTree.Core;
 using Descent.Common.Attributes.AI;
 using Descent.AI.BehaviourTree.Requests;
 using Descent.Gameplay.AI.BehaviourTree.Context;
+using Descent.Gameplay.AI.BehaviourTree.Actions.Data;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Actions
 {
     [System.Serializable]
     public class UpdateSuspicionAction : IBehaviourTreeAction
     {
+        private BehaviourTreeActionRequestDispatcher _dispatcher = null;
+
         [ShowInNodeInspector("Increase rate")]
         [SerializeField]
         private float _increaseRate = 1.0f;
 
-        [ShowInNodeInspector("Use decay")]
+        [ShowInNodeInspector("Decay rate")]
         [SerializeField]
-        private bool _useDecay = true;
+        private float _decayRate = 0.2f;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
-            AIPerceptionContext perceptionContext = contextRegistry.GetContext(typeof(AIPerceptionContext)) as AIPerceptionContext;
-            AISuspicionContext suspicionContext = contextRegistry.GetContext(typeof(AISuspicionContext)) as AISuspicionContext;
+            if (_dispatcher == null)
+            {
+                return BehaviourTreeStatus.Failure;
+            }
 
-            if (perceptionContext == null || suspicionContext == null)
+            AIPerceptionContext perceptionContext = contextRegistry.GetContext(typeof(AIPerceptionContext)) as AIPerceptionContext;
+
+            if (perceptionContext == null)
             {
                 return BehaviourTreeStatus.Failure;
             }
 
             bool hasTarget = perceptionContext.CurrentTarget != null;
-            float currentSuspicion = suspicionContext.SuspicionLevel;
 
-            if (hasTarget)
-            {
-                currentSuspicion += _increaseRate * Time.deltaTime;
-                currentSuspicion = Mathf.Clamp01(currentSuspicion);
-            }
-            else if (_useDecay)
-            {
-                currentSuspicion -= 0.2f * Time.deltaTime;
-                currentSuspicion = Mathf.Max(0.0f, currentSuspicion);
-            }
+            UpdateSuspicionActionData data = new UpdateSuspicionActionData(_increaseRate, _decayRate, hasTarget);
 
-            contextRegistry.Blackboard.Set("SuspicionLevel", currentSuspicion);
+            BehaviourTreeRequestResult result = _dispatcher.RequestAction(BehaviourTreeActionType.UpdateSuspicion, data);
 
-            return BehaviourTreeStatus.Success;
+            return result == BehaviourTreeRequestResult.Success ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure;
         }
 
         public IBehaviourTreeAction Clone()
         {
             UpdateSuspicionAction clone = new UpdateSuspicionAction();
             clone._increaseRate = _increaseRate;
-            clone._useDecay = _useDecay;
+            clone._decayRate = _decayRate;
             return clone;
         }
 
@@ -64,7 +61,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
 
         public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
         {
-
+            _dispatcher = dispatcher;
         }
     }
 }

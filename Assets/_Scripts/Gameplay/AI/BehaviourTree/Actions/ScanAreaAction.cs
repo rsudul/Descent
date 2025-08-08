@@ -1,35 +1,68 @@
+using UnityEngine;
 using Descent.AI.BehaviourTree.Actions;
 using Descent.AI.BehaviourTree.Context;
 using Descent.AI.BehaviourTree.Core;
 using Descent.AI.BehaviourTree.Requests;
+using Descent.Common.Attributes.AI;
+using Descent.Gameplay.AI.BehaviourTree.Actions.Data;
 using Descent.Gameplay.AI.BehaviourTree.Context;
-using UnityEngine;
 
 namespace Descent.Gameplay.AI.BehaviourTree.Actions
 {
     public class ScanAreaAction : IBehaviourTreeAction
     {
-        private BehaviourTreeActionRequestDispatcher _dispatcher = null;
-        private RotateToTargetAction _rotateAction = null;
+        private struct ScanConfig
+        {
+            public float CenterAngle;
+            public float ScanAngle;
+            public float WaitTime;
+        }
+
+        private BehaviourTreeActionRequestDispatcher _dispatcher;
 
         private bool _isWaiting = false;
         private float _waitUntilTime = 0.0f;
-
         private int _direction = 1;
+        private bool _requestedRotation = false;
+        private bool _initialized = false;
+
+        [Header("Scan configuration")]
+        [ShowInNodeInspector("Use context settings")]
+        [SerializeField]
+        private bool _useContextSettings = true;
+        [ShowInNodeInspector("Override center angle")]
+        [SerializeField]
+        private float _overrideCenterAngle = 0.0f;
+        [ShowInNodeInspector("Override scan angle")]
+        [SerializeField]
+        private float _overrideScanAngle = 90.0f;
+        [ShowInNodeInspector("Override wait time")]
+        [SerializeField]
+        private float _overrideWaitTime = 2.0f;
+
+        private BehaviourTreeStatus status;
 
         public BehaviourTreeStatus Execute(BehaviourTreeContextRegistry contextRegistry)
         {
             if (_dispatcher == null)
             {
-                Debug.LogWarning("ScanAreaAction: dispatcher not set.");
+                Debug.Log("[ScanAreaAction] No dispatcher.");
                 return BehaviourTreeStatus.Failure;
             }
 
-            AIScanContext context = contextRegistry.GetContext(typeof(AIScanContext)) as AIScanContext;
-            if (context == null || context.RotationController == null)
+            AIRotationContext rotationContext = contextRegistry.GetContext(typeof(AIRotationContext)) as AIRotationContext;
+            if (rotationContext == null)
             {
-                Debug.LogWarning("ScanAreaAction: No AIRotationContext found.");
+                Debug.Log("[ScanAreaAction] No AIRotationContext found.");
                 return BehaviourTreeStatus.Failure;
+            }
+
+            ScanConfig config = GetScanConfiguration(contextRegistry);
+
+            if (!_initialized)
+            {
+                _initialized = true;
+                _direction = 1;
             }
 
             if (_isWaiting)
@@ -40,26 +73,36 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 }
 
                 _isWaiting = false;
+                _requestedRotation = false;
             }
 
-            if (_rotateAction == null)
+            float targetAngle = config.CenterAngle + (_direction > 0 ? config.ScanAngle : -config.ScanAngle);
+
+            if (!_requestedRotation && !rotationContext.IsRotating)
             {
-                float centerAngle = context.CenterAngle;
-                float scanAngle = context.ScanAngle;
-                float targetY = (_direction > 0) ? (centerAngle + scanAngle) : (centerAngle - scanAngle);
-                _rotateAction = new RotateToTargetAction();
-                _rotateAction.InjectDispatcher(_dispatcher);
-                _rotateAction._targetYAngle = targetY;
+                RotateToTargetActionData rotateData = new RotateToTargetActionData(targetAngle);
+
+                BehaviourTreeRequestResult result = _dispatcher.RequestAction(BehaviourTreeActionType.RotateTo, rotateData);
+
+                if (result == BehaviourTreeRequestResult.Success)
+                {
+                    _requestedRotation = true;
+                }
+                else
+                {
+                    return BehaviourTreeStatus.Failure;
+                }
             }
 
-            BehaviourTreeStatus status = _rotateAction.Execute(contextRegistry);
-
-            if (status == BehaviourTreeStatus.Success)
+            if (_requestedRotation && rotationContext.IsRotating)
             {
-                float waitTimeOnEdge = context.WaitTimeOnEdge;
-                _rotateAction = null;
+                return BehaviourTreeStatus.Running;
+            }
+
+            if (_requestedRotation && !rotationContext.IsRotating)
+            {
                 _isWaiting = true;
-                _waitUntilTime = Time.time + waitTimeOnEdge;
+                _waitUntilTime = Time.time + config.WaitTime;
                 _direction *= -1;
             }
 
@@ -69,18 +112,48 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
         public IBehaviourTreeAction Clone()
         {
             ScanAreaAction clone = new ScanAreaAction();
+            clone._useContextSettings = _useContextSettings;
+            clone._overrideCenterAngle = _overrideCenterAngle;
+            clone._overrideScanAngle = _overrideScanAngle;
+            clone._overrideWaitTime = _overrideWaitTime;
             return clone;
         }
 
         public void ResetAction()
         {
-            _rotateAction = null;
             _isWaiting = false;
+            _requestedRotation = false;
+            _initialized = false;
+            _direction = 1;
         }
 
         public void InjectDispatcher(BehaviourTreeActionRequestDispatcher dispatcher)
         {
             _dispatcher = dispatcher;
+        }
+
+        private ScanConfig GetScanConfiguration(BehaviourTreeContextRegistry contextRegistry)
+        {
+            if (_useContextSettings)
+            {
+                AIScanContext scanContext = contextRegistry.GetContext(typeof(AIScanContext)) as AIScanContext;
+                if (scanContext != null)
+                {
+                    return new ScanConfig
+                    {
+                        CenterAngle = scanContext.CenterAngle,
+                        ScanAngle = scanContext.ScanAngle,
+                        WaitTime = scanContext.WaitTimeOnEdge
+                    };
+                }
+            }
+
+            return new ScanConfig
+            {
+                CenterAngle = _overrideCenterAngle,
+                ScanAngle = _overrideScanAngle,
+                WaitTime = _overrideWaitTime
+            };
         }
     }
 }

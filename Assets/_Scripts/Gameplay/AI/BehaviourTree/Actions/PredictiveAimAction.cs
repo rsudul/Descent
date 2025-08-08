@@ -46,11 +46,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
                 Debug.Log("[PredictiveAimAction]: No AIPerceptionContext found.");
                 return BehaviourTreeStatus.Failure;
             }
-            if (perceptionContext.PerceptionController == null)
-            {
-                Debug.Log("[PredictiveAimAction]: No PerceptionController found.");
-                return BehaviourTreeStatus.Failure;
-            }
+
             if (perceptionContext.CurrentTarget == null)
             {
                 Debug.Log("[PredictiveAimTarget]: No current target.");
@@ -61,11 +57,6 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             if (rotationContext == null)
             {
                 Debug.Log("[PredictiveAimAction]: No AIRotationContext found.");
-                return BehaviourTreeStatus.Failure;
-            }
-            if (rotationContext.RotationController == null)
-            {
-                Debug.Log("[PredictiveAimAction]: No RotationController found.");
                 return BehaviourTreeStatus.Failure;
             }
 
@@ -81,7 +72,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             Vector3 direction = predictedPosition - rotationContext.AgentTransform.position;
             _targetYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 
-            float currentY = rotationContext.RotationController.CurrentYAngle;
+            float currentY = rotationContext.CurrentYAngle;
             float delta = Mathf.DeltaAngle(currentY, _targetYAngle);
             if (Mathf.Abs(delta) <= _angleThreshold)
             {

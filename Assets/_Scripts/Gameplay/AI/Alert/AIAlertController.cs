@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using Descent.AI.BehaviourTree.Actions;
 using Descent.AI.BehaviourTree.Context;
@@ -12,8 +12,10 @@ using Descent.Gameplay.Events.Arguments;
 namespace Descent.Gameplay.AI.Alert
 {
     [BehaviourTreeContextProvider(typeof(AIAlertContext))]
+    [BehaviourTreeContextProvider(typeof(AISuspicionContext))]
     public class AIAlertController : MonoBehaviour,
                                      IAlertController,
+                                     ISuspicionController,
                                      IBehaviourTreeRequestReceiver,
                                      IBehaviourTreeContextProvider
     {
@@ -23,9 +25,10 @@ namespace Descent.Gameplay.AI.Alert
         private float _alertTimer = 0.0f;
         private float _combatTimer = 0.0f;
         private float _searchTimeRemaining = 0.0f;
-
         private float _searchDuration = 0.0f;
         private float _cooldownDuration = 0.0f;
+
+        private float _suspicionLevel = 0.0f;
 
         public AlertLevel CurrentAlertLevel => _currentAlertLevel;
         public float AlertTimer => _alertTimer;
@@ -33,6 +36,8 @@ namespace Descent.Gameplay.AI.Alert
         public float SearchTimeRemaining => _searchTimeRemaining;
 
         public event EventHandler<AlertLevelChangedEventArgs> OnAlertLevelChanged;
+
+        public float SuspicionLevel => _suspicionLevel;
 
         [Header("Alert settings")]
         [SerializeField]
@@ -48,12 +53,28 @@ namespace Descent.Gameplay.AI.Alert
         [SerializeField]
         private float _combatTimeoutDuration = 8.0f;
 
+        [Header("Suspicion settings")]
+        [ShowInNodeInspector("Suspicious threshold")]
+        [SerializeField]
+        private float _suspiciousThreshold = 0.3f;
+        [ShowInNodeInspector("Alert threshold")]
+        [SerializeField]
+        private float _alertThreshold = 0.6f;
+        [ShowInNodeInspector("Combat threshold")]
+        [SerializeField]
+        private float _combatThreshold = 0.9f;
+        [ShowInNodeInspector("Auto escalate on suspicion")]
+        [SerializeField]
+        private bool _autoEscalateOnSuspicion = true;
+
         private void Awake()
         {
             _dispatcher = GetComponent<BehaviourTreeActionRequestDispatcher>();
             if (_dispatcher != null)
             {
                 _dispatcher.Register(BehaviourTreeActionType.SetAlertLevel, this);
+                _dispatcher.Register(BehaviourTreeActionType.EscalateAlert, this);
+                _dispatcher.Register(BehaviourTreeActionType.UpdateSuspicion, this);
             }
 
             _currentAlertLevel = _startingAlertLevel;
@@ -73,6 +94,8 @@ namespace Descent.Gameplay.AI.Alert
             if (_dispatcher != null)
             {
                 _dispatcher.Unregister(BehaviourTreeActionType.SetAlertLevel);
+                _dispatcher.Unregister(BehaviourTreeActionType.EscalateAlert);
+                _dispatcher.Unregister(BehaviourTreeActionType.UpdateSuspicion);
             }
         }
 
@@ -165,28 +188,84 @@ namespace Descent.Gameplay.AI.Alert
             return _alertTimer > threshold;
         }
 
+        public void UpdateSuspicion(float increaseRate, float decayRate, bool hasTarget, float deltaTime)
+        {
+            if (hasTarget)
+            {
+                _suspicionLevel += increaseRate * deltaTime;
+                _suspicionLevel = Mathf.Clamp01(_suspicionLevel);
+            }
+            else
+            {
+                _suspicionLevel -= decayRate * deltaTime;
+                _suspicionLevel = Mathf.Max(0.0f, _suspicionLevel);
+            }
+
+            CheckSuspicionThresholds();
+        }
+
+        public bool ExceedsThreshold(float threshold)
+        {
+            return _suspicionLevel >= threshold;
+        }
+
+        public void SetSuspicionLevel(float suspicionLevel)
+        {
+            _suspicionLevel = Mathf.Clamp01(suspicionLevel);
+            CheckSuspicionThresholds();
+        }
+
+        public void ResetSuspicion()
+        {
+            _suspicionLevel = 0.0f;
+        }
+
         public BehaviourTreeRequestResult HandleRequest(BehaviourTreeActionType actionType, IBehaviourTreeActionData data)
         {
-            if (actionType != BehaviourTreeActionType.SetAlertLevel)
+            if (actionType == BehaviourTreeActionType.EscalateAlert)
             {
-                return BehaviourTreeRequestResult.Ignored;
+                if (data is not EscalateAlertActionData escalateData)
+                {
+                    return BehaviourTreeRequestResult.Failure;
+                }
+
+                SetAlertLevel(escalateData.TargetLevel);
+                return BehaviourTreeRequestResult.Success;
             }
 
-            if (data is not SetAlertLevelActionData alertData)
+            if (actionType == BehaviourTreeActionType.SetAlertLevel)
             {
-                return BehaviourTreeRequestResult.Failure;
+                if (data is not SetAlertLevelActionData alertData)
+                {
+                    return BehaviourTreeRequestResult.Failure;
+                }
+
+                SetAlertLevel(alertData.TargetAlertLevel);
+
+                if (alertData.ResetTimers)
+                {
+                    ResetTimers();
+                    SetSearchDuration(alertData.SearchDuration);
+                    SetCooldownTimer(alertData.CooldownDuration);
+                }
+
+                return BehaviourTreeRequestResult.Success;
             }
 
-            SetAlertLevel(alertData.TargetAlertLevel);
-
-            if (alertData.ResetTimers)
+            if (actionType == BehaviourTreeActionType.UpdateSuspicion)
             {
-                ResetTimers();
-                SetSearchDuration(alertData.SearchDuration);
-                SetCooldownTimer(alertData.CooldownDuration);
+                if (data is not UpdateSuspicionActionData suspicionData)
+                {
+                    return BehaviourTreeRequestResult.Failure;
+                }
+
+                UpdateSuspicion(suspicionData.IncreaseRate, suspicionData.DecayRate,
+                    suspicionData.HasTarget, Time.deltaTime);
+
+                return BehaviourTreeRequestResult.Success;
             }
 
-            return BehaviourTreeRequestResult.Success;
+            return BehaviourTreeRequestResult.Ignored;
         }
 
         public BehaviourTreeContext GetBehaviourTreeContext(Type contextType, GameObject agent)
@@ -194,6 +273,11 @@ namespace Descent.Gameplay.AI.Alert
             if (contextType == typeof(AIAlertContext))
             {
                 return new AIAlertContext(agent, this);
+            }
+
+            if (contextType == typeof(AISuspicionContext))
+            {
+                return new AISuspicionContext(agent, this);
             }
 
             return null;
@@ -214,6 +298,10 @@ namespace Descent.Gameplay.AI.Alert
                 case AlertLevel.Cooldown:
                 case AlertLevel.Idle:
                     ResetTimers();
+                    if (current == AlertLevel.Idle)
+                    {
+                        _suspicionLevel *= 0.5f;
+                    }
                     break;
             }
         }
@@ -254,6 +342,29 @@ namespace Descent.Gameplay.AI.Alert
             }
         }
 
+        private void CheckSuspicionThresholds()
+        {
+            if (!_autoEscalateOnSuspicion)
+            {
+                return;
+            }
+
+            switch (_currentAlertLevel)
+            {
+                case AlertLevel.Idle when _suspicionLevel >= _suspiciousThreshold:
+                    SetAlertLevel(AlertLevel.Suspicious);
+                    break;
+
+                case AlertLevel.Suspicious when _suspicionLevel >= _alertThreshold:
+                    SetAlertLevel(AlertLevel.Alert);
+                    break;
+
+                case AlertLevel.Alert when _suspicionLevel >= _combatThreshold:
+                    SetAlertLevel(AlertLevel.Combat);
+                    break;
+            }
+        }
+
         [ContextMenu("Escalate Alert")]
         private void DebugEscalate() => EscalateAlert();
 
@@ -270,11 +381,18 @@ namespace Descent.Gameplay.AI.Alert
                 return;
             }
 
-            GUILayout.BeginArea(new Rect(10, 10, 250, 150));
+            GUILayout.BeginArea(new Rect(10, 10, 250, 450));
             GUILayout.Label($"Alert level: {_currentAlertLevel}");
             GUILayout.Label($"Alert timer: {_alertTimer:F1}s");
             GUILayout.Label($"Combat timer: {_combatTimer:F1}s");
             GUILayout.Label($"Search remaining: {_searchTimeRemaining:F1}s");
+
+            GUILayout.Space(10);
+            GUILayout.Label($"Suspicion level: {_suspicionLevel:F1}");
+            GUILayout.Label("Thresholds:");
+            GUILayout.Label($"Suspicious: {_suspiciousThreshold:F1} {(_suspicionLevel >= _suspiciousThreshold ? "✓" : "")}");
+            GUILayout.Label($"Alert: {_alertThreshold:F1} {(_suspicionLevel >= _alertThreshold ? "✓" : "")}");
+            GUILayout.Label($"Combat: {_combatThreshold:F1} {(_suspicionLevel >= _combatThreshold ? "✓" : "")}");
             GUILayout.EndArea();
         }
     }

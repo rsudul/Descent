@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 7360331715839916007}
   - component: {fileID: 2836397058292455599}
   - component: {fileID: 3668912231364969782}
+  - component: {fileID: -5253904722959527305}
   - component: {fileID: 2339794060063370250}
   - component: {fileID: 4246586443457037767}
   m_Layer: 0
@@ -178,6 +179,23 @@ MonoBehaviour:
   _rotatingTransform: {fileID: 2974651506854455849}
   _rotationSpeed: 30
   _angleThreshold: 0.5
+--- !u!114 &-5253904722959527305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538924006789744770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8853c5074fdeaef41ac04b88110f21b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingAlertLevel: 0
+  _defaultSearchDuration: 15
+  _defaultCooldownDuration: 10
+  _alertDecayRate: 1
+  _combatTimeoutDuration: 8
 --- !u!114 &2339794060063370250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseTree: 0
-  _treeAsset: {fileID: 11400000, guid: 3a72679980500434f809969b0f28d164, type: 2}
+  _treeAsset: {fileID: 11400000, guid: fb7c076eba95fc44cb8449dbbe49fdfa, type: 2}
   _tickInterval: 0.1
   _debug: 0
 --- !u!1 &2620313905822636940

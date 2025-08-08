@@ -6,7 +6,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Context
 {
     public class AISuspicionContext : BehaviourTreeContext
     {
-        public ISuspicionController SuspicionController { get; private set; }
+        private ISuspicionController SuspicionController = null;
 
         public float SuspicionLevel => SuspicionController.SuspicionLevel;
 

@@ -22,15 +22,16 @@ namespace Descent.AI.BehaviourTree.Nodes
                 BehaviourTreeStatus childStatus = child.Tick(contextRegistry);
                 if (childStatus == BehaviourTreeStatus.Running)
                 {
+                    ResetOtherChildren(child);
                     Status = BehaviourTreeStatus.Running;
                     return Status;
                 }
                 if (childStatus == BehaviourTreeStatus.Success)
                 {
+                    ResetOtherChildren(child);
                     Status = BehaviourTreeStatus.Success;
                     return Status;
                 }
-                child.ResetNode();
             }
 
             Status = BehaviourTreeStatus.Failure;
@@ -60,6 +61,17 @@ namespace Descent.AI.BehaviourTree.Nodes
                 clone.AddChild(child.CloneNode());
             }
             return clone;
+        }
+
+        private void ResetOtherChildren(BehaviourTreeNode activeChild)
+        {
+            foreach (BehaviourTreeNode child in Children)
+            {
+                if (child != activeChild)
+                {
+                    child.ResetNode();
+                }
+            }
         }
     }
 }

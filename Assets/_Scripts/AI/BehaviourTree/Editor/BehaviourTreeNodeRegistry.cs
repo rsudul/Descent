@@ -41,10 +41,10 @@ namespace Descent.AI.BehaviourTree.Editor
                 node.Name = "Repeat Forever";
                 return node;
             }),
-            new NodeCreationMenuItem("Composite/Repeat Until Failure", () =>
+            new NodeCreationMenuItem("Composite/Repeat Until", () =>
             {
-                var node = ScriptableObject.CreateInstance<BehaviourTreeRepeatUntilFailureNode>();
-                node.Name = "Repeat Until Failure";
+                var node = ScriptableObject.CreateInstance<BehaviourTreeRepeatUntilNode>();
+                node.Name = "Repeat Until";
                 return node;
             }),
             new NodeCreationMenuItem("Composite/Repeat While Condition", () =>
@@ -172,6 +172,13 @@ namespace Descent.AI.BehaviourTree.Editor
                 var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
                 node.Name = "Set Alert Level";
                 node.Action = new SetAlertLevelAction();
+                return node;
+            }),
+            new NodeCreationMenuItem("Action/Escalate Alert", () =>
+            {
+                var node = ScriptableObject.CreateInstance<BehaviourTreeActionNode>();
+                node.Name = "Escalate Alert";
+                node.Action = new EscalateAlertAction();
                 return node;
             }),
             new NodeCreationMenuItem("Action/Update Suspicion", () =>

@@ -63,13 +63,6 @@ namespace Descent.AI.BehaviourTree.Core
                     CollectRecursive(child);
                 }
             }
-            else if (node is BehaviourTreeRepeatUntilFailureNode repeatUntilFailureNode)
-            {
-                if (repeatUntilFailureNode.Child != null)
-                {
-                    CollectRecursive(repeatUntilFailureNode.Child);
-                }
-            }
 #endif
         }
 

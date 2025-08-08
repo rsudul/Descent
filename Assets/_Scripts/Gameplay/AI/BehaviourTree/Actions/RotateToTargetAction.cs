@@ -24,7 +24,7 @@ namespace Descent.Gameplay.AI.BehaviourTree.Actions
             }
 
             AIRotationContext context = contextRegistry.GetContext(typeof(AIRotationContext)) as AIRotationContext;
-            if (context == null || context.RotationController == null)
+            if (context == null)
             {
                 Debug.LogWarning("RotateToTargetAction: No AIRotationContext found.");
                 return BehaviourTreeStatus.Failure;
